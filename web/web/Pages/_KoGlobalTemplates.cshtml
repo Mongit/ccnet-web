@@ -1,0 +1,11 @@
+﻿<script id="Validation" type="text/html">
+    <!-- ko if: errors().length > 0 -->    
+        <!-- ko foreach: errors -->
+        <div class="invalid-feedback" data-bind="text: $data"></div>
+        <!-- /ko  -->    
+    <!-- /ko  -->
+</script>
+
+<script type="text/html" id="templatePrice">
+    <span data-bind="visible: !isNaN( $data ), text:'$' + $data.toFixed(2)"></span>
+</script>

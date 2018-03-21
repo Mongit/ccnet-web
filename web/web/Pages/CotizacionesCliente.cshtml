@@ -1,0 +1,44 @@
+﻿@page
+@model web.Pages.CotizacionesClienteModel
+@{
+    ViewData["Title"] = "CotizacionesCliente";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+
+@section Scripts {
+    <script src="~/dist/cotizacionesClienteApp.bundle.js" type="text/javascript"></script>
+}
+
+@Html.Partial("_ConfirmDeleteModal")
+
+<h2>Cotizaciones</h2>
+
+<div class="mt-4" id="cotizacionesCliente">
+
+    <div class="text-muted">
+        <h5>[<span data-bind="text: folio"></span>] <span data-bind="text: contacto"></span></h5>
+    </div>
+
+    <table class="table table-hover mt-3">
+        <thead>
+            <tr>
+                <th scope="col" class="w-25">Folio</th>
+                <th scope="col" class="w-50">Fecha</th>
+                <th scope="col" class="w-25">
+                    <a class="btn btn-secondary btn-block" data-bind="click: save">Nueva cotización</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- ko foreach: cotizacionesArray -->
+            <tr>
+                <td data-bind="text: folio"></td>
+                <td data-bind="text: $parent.dateFormatter($data.fecha)"></td>
+                <td>
+                    <button class="btn btn-light btn-block" data-bind="click: $parent.remove.bind($parent)">Borrar</button>
+                </td>
+            </tr>
+            <!-- /ko -->
+        </tbody>
+    </table>
+</div>

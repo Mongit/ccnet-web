@@ -1,0 +1,18 @@
+﻿@page
+@model web.Pages.NuevoClienteModel
+@{
+    ViewData["Title"] = "NuevoCliente";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+
+@section Scripts {
+    <script src="~/dist/nuevoClienteApp.bundle.js" type="text/javascript"></script>
+}
+
+@Html.Partial("_KoGlobalTemplates")
+
+<h2>Nuevo Cliente</h2>
+
+<div id="nuevoClienteForm">
+    @Html.Partial("_Cliente")
+</div>

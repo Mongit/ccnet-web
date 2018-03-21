@@ -1,0 +1,135 @@
+﻿<div class="jumbotron" id="printableArea">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-header">
+
+
+                    <div class="media">
+                        <div class="media-body">
+                            <h3 data-bind="text: empresa"></h3>
+                            <br />
+                            <h4>
+                                <small data-bind="text: domicilio"></small>
+                            </h4>
+                            <h4 data-bind="text: contacto"></h4>
+                            <h5>
+                                <small>Presente</small>
+                            </h5>
+
+                        </div>
+                        <img class="ml-3" src="~/images/logo-transparente.png" alt="logo" style="width: 200px; height:250px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="text-right" data-bind="text: fechaCreado"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-header">
+                    <h3>Asunto</h3>
+                    <br />
+                    <h4>
+                        <small>Cotización</small>
+                    </h4>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="lead">
+                    Apreciable cliente, atendiendo a su solicitud, me permito presentarle la siguiente cotización,
+                    la cuál será válida desde el
+                    <span data-bind="text: fechaCreado"></span>
+                    hasta el
+                    <span data-bind="text: fechaFuturo"></span>.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <br />
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Subtotal</th>
+                            <th scope="col">IVA</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: presupuestos.value">
+                        <tr>
+                            <td data-bind="text: cantidad.value"></td>
+                            <td data-bind="text: descripcion.value"></td>
+                            <td>
+                                <span data-bind="template: { name: 'templatePrice', data: subtotal() }"></span>
+                            </td>
+                            <td>
+                                <span data-bind="template: { name: 'templatePrice', data: iva() }"></span>
+                            </td>
+                            <td>
+                                <span data-bind="template: { name: 'templatePrice', data: total() }"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td>
+                                <strong><span data-bind="template: {name: 'templatePrice', data: subtotalPresupuestos() }"></span></strong>
+                            </td>
+                            <td>
+                                <strong><span data-bind="template: {name: 'templatePrice', data: ivaPresupuestos() }"></span></strong>
+                            </td>
+                            <td>
+                                <strong><span data-bind="template: {name: 'templatePrice', data: totalPresupuestos() }"></span></strong>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <br />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="lead">
+                    Sin más por el momento, quedo a sus órdenes para cualquier duda al respecto.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-header text-right mt-4">
+                    <h3>Dayana Cartagena</h3>
+                    <h4>
+                        <small>Jefa de Producción</small>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="font-size:x-small">
+        <p class="text-sm-center mb-0 pb-0">
+            http://confeccionescolombia.com |
+            contacto@confeccionescolombia.com |
+            Cel. 452 202 8697 |
+            Justo Sierra #60. Col. Jorhentpiri 60074. |
+            Uruapan, Michoacán, México. 
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="text-right mb-4">
+            <button class="btn btn-default" data-bind="click: editarTemplate">Editar</button>
+            <button class="btn btn-default">Cancelar</button>
+            <button class="btn btn-primary" data-bind="click: print">Imprimir</button>
+        </div>
+    </div>
+</div>

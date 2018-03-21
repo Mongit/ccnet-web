@@ -1,0 +1,32 @@
+﻿<form data-bind="submit: guardar" novalidate>
+    <div class="form-group">
+        <label><strong>Contacto *</strong></label>
+        <input type="text" class="form-control" placeholder="Contacto" data-bind="value: contacto.value, css: { 'is-invalid': contacto.hasError() }, hasFocus: true" />
+        <!-- ko template: { name: "Validation", data: contacto } -->
+        <!-- /ko -->
+    </div>
+    <div class="form-group">
+        <label><strong>Empresa *</strong></label>
+        <input type="text" class="form-control" placeholder="Empresa" data-bind="value: empresa.value, css: { 'is-invalid': empresa.hasError() }" />
+        <!-- ko template: { name: "Validation", data: empresa } -->
+        <!-- /ko -->
+    </div>
+    <div class="form-group">
+        <label><strong>Teléfono</strong></label>
+        <input type="text" class="form-control" placeholder="Teléfono" data-bind="value: telefono.value" />
+    </div>
+    <div class="form-group">
+        <label><strong>Email</strong></label>
+        <input type="text" class="form-control" placeholder="Email" data-bind="value: email.value" />
+    </div>
+    <div class="form-group">
+        <label><strong>Domicilio *</strong></label>
+        <textarea class="form-control" rows="3" placeholder="Domicilio" data-bind="value: domicilio.value, css: { 'is-invalid': domicilio.hasError() }"></textarea>
+        <!-- ko template: { name: "Validation", data: domicilio } -->
+        <!-- /ko -->
+    </div>
+    <div class="form-group text-right">
+        <button class="btn btn-default">Cancelar</button>
+        <input class="btn btn-primary" type="submit" value="Guardar">
+    </div>
+</form>

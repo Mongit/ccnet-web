@@ -1,0 +1,46 @@
+﻿@page
+@model web.Pages.ClientesModel
+@{
+    ViewData["Title"] = "Clientes";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+
+@section Scripts {
+    <script src="~/dist/clientesApp.bundle.js" type="text/javascript"></script>
+}
+
+<h2>Clientes</h2>
+
+<div class="mt-5" id="clientesForm">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Folio</th>
+                <th scope="col">Contacto</th>
+                <th scope="col">Empresa</th>
+                <th scope="col">Teléfono</th>
+                <th scope="col">Email</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Domicilio</th>
+                <th scope="col"><a class="btn btn-light btn-block" data-bind="attr: { href: 'NuevoCliente' }">Nuevo cliente</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- ko foreach: clientes -->
+            <tr>
+                <td data-bind="text: folio"></td>
+                <td data-bind="text: contacto"></td>
+                <td data-bind="text: empresa"></td>
+                <td data-bind="text: telefono"></td>
+                <td data-bind="text: email"></td>
+                <td data-bind="text: $parent.dateFormatter($data.fechaCreado)"></td>
+                <td data-bind="text: domicilio"></td>
+                <td>
+                    <a class="btn btn-light btn-block" data-bind="attr: { href: 'EditarCliente?id=' + id }">Editar</a>
+                    <a class="btn btn-secondary btn-block" data-bind="attr: { href: 'CotizacionesCliente?id=' + id }">Cotizaciones</a>
+                </td>
+            </tr>
+            <!-- /ko -->
+        </tbody>
+    </table>
+</div>

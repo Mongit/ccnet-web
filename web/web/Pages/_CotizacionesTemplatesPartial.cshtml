@@ -1,0 +1,241 @@
+﻿
+<script id="DatosEmpresa" type="text/html">
+    <div class="form">
+        <div class="form-group mx-1 text-right">
+            <button class="btn btn-default" data-bind="click: addPresupuesto">Agregar</button>
+
+            <button class="btn btn-default" data-bind="click: verTemplate">Ver</button>
+            <button type="button" class="btn btn-default">Volver</button>            
+        </div>
+    </div>
+</script>
+
+<script id="Materiales" type="text/html">
+    <div class="row">
+        <div class="col-md-12">
+            <h5>
+                Materiales
+            </h5>
+
+            <div class="form-row" data-bind="with: temporal()">
+                <div class="col-md-2">
+                    <label>Cantidad</label>
+                    <input type="text" placeholder="Cantidad" class="form-control" data-bind="value: cantidad.value, css: { 'is-invalid': cantidad.hasError() }, hasFocus: $parent.temporalHasFocus" />
+                    <!-- ko  template: { name: "Validation", data: cantidad } -->
+                    <!-- /ko -->
+                </div>
+
+                <div class="col-md-6">
+                    <label>Descripción</label>
+                    <input type="text" placeholder="Descripción" class="form-control" data-bind="value: descripcion.value, css: { 'is-invalid': descripcion.hasError() }" />
+                    <!-- ko  template: { name: "Validation", data: descripcion } -->
+                    <!-- /ko -->
+                </div>
+
+                <div class="col-md-2">
+                    <label>Precio</label>
+                    <input type="text" placeholder="Precio" class="form-control" data-bind="value: precio.value, css: { 'is-invalid': precio.hasError() }" />
+                    <!-- ko  template: { name: "Validation", data: precio } -->
+                    <!-- /ko -->
+                </div>
+
+                <div class="col-md-2">
+                    <label>Acciones</label>
+                    <input type="button" class="btn btn-default" data-bind="click: $parent.addPresupuestoItem.bind($parent)" value="Agregar" />
+                </div>
+            </div>
+
+            <div class="form-row pt-4">
+                <div class="col-md-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Costo</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- ko foreach: presupuestosItem -->
+                            <tr>
+                                <td>
+                                    <div>
+                                        <span data-bind="text: cantidad.value"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span data-bind="text: descripcion.value"></span>
+                                </td>
+                                <td>
+                                    <span data-bind="template: { name: 'templatePrice', data: parseFloat(precio.value()) }"> </span>
+                                </td>
+                                <td>
+                                    <span data-bind="template: { name: 'templatePrice', data: costo() }"> </span>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-secondary" data-bind="click: $parent.removePresupuestoItem.bind($parent)">Borrar</button>
+                                </td>
+                            </tr>
+                            <!-- /ko -->
+
+                            <tr>
+                                <td>
+                                    <span> 1 </span>
+                                </td>
+                                <td>
+                                    <span>Porcentaje de gastos</span>
+                                </td>
+                                <td class="text-center">
+                                    <span data-bind="text: porcentajeGastos.value"></span>
+                                </td>
+                                <td>
+                                    <span data-bind="template: { name: 'templatePrice', data: gasto() }"> </span>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span> 1 </span>
+                                </td>
+                                <td>
+                                    <span>Porcentaje de ganancias</span>
+                                </td>
+                                <td class="text-center">
+                                    <span data-bind="text: porcentajeGanancia.value"></span>
+                                </td>
+                                <td>
+                                    <span data-bind="template: { name: 'templatePrice', data: ganancia() }"> </span>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="text-right" colspan="3"><strong>Subtotal:</strong></td>
+                                <td class="text-left" colspan="2">
+                                    <span data-bind="template: { name: 'templatePrice', data: subtotal() }"> </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="Cotizacion" type="text/html">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-row">
+                <div class="col-md-2">
+                    <label>Cantidad</label>
+                    <input type="text" placeholder="Cantidad" class="form-control" data-bind="value: cantidad.value, hasFocus: true, css: { 'is-invalid': cantidad.hasError() }" />
+                    <!-- ko template: { name: "Validation", data: cantidad } -->
+                    <!-- /ko  -->
+                </div>
+
+                <div class="col-md-10">
+                    <label>Descripción</label>
+                    <input type="text" placeholder="Descripción" class="form-control" data-bind="value: descripcion.value, css: { 'is-invalid': descripcion.hasError() }" />
+                    <!-- ko template: { name: "Validation", data: descripcion } -->
+                    <!-- /ko  -->
+                </div>
+            </div>
+
+            <div class="form-row mt-2">
+                <div class="col-md-4">
+                    <label>% Gastos</label>
+                    <input type="text" placeholder="% Gastos" class="form-control" data-bind="value: porcentajeGastos.value, css: { 'is-invalid': porcentajeGastos.hasError() }" />
+                    <!-- ko template: { name: "Validation", data: porcentajeGastos }-->
+                    <!-- /ko -->
+                </div>
+
+                <div class="col-md-4">
+                    <label>% Gancancias</label>
+                    <input type="text" placeholder="% Ganancias" class="form-control" data-bind="value: porcentajeGanancia.value, css: { 'is-invalid': porcentajeGanancia.hasError() }" />
+                    <!-- ko template: { name: "Validation", data: porcentajeGanancia }-->
+                    <!-- /ko -->
+                </div>
+
+                <div class="col-md-4">
+                    <label>% IVA</label>
+                    <input type="text" placeholder="% IVA" class="form-control" data-bind="value: porcentajeIva.value, css: { 'is-invalid': porcentajeIva.hasError() }" />
+                    <!-- ko template: {name: "Validation", data: porcentajeIva }-->
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <ul class="list-group pt-4">
+                <li class="list-group-item d-flex justify-content-between 1h-condensed">
+                    <span>Subtotal</span>
+                    <span class="text-muted" data-bind="template: { name: 'templatePrice', data: subtotal() }"> </span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between 1h-condensed">
+                    <span>IVA</span>
+                    <span class="text-muted" data-bind="template: { name: 'templatePrice', data: iva() }"> </span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between 1h-condensed">
+                    <span>Total </span>
+                    <strong data-bind="template: { name: 'templatePrice', data: total() }"> </strong>
+                </li>
+            </ul>
+            <div class="text-right pt-2">
+                <input type="submit" class="btn btn-primary" value="Guardar" />
+                <button class="btn btn-secondary" data-bind="click: $parent.removePresupuesto.bind($parent)">
+                    Borrar
+                </button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="Presupuesto" type="text/html">
+    <form class="form" novalidate>
+        <h3>
+            Cotización
+        </h3>
+
+        <!-- ko template: { name: "Cotizacion" } -->
+        <!-- /ko  -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <br />
+                <br />
+            </div>
+        </div>
+
+        <!-- ko template: { name: "Materiales" } -->
+        <!-- /ko  -->
+
+    </form>
+</script>
+
+<script id="editar" type="text/html">
+        <!-- ko  template: { name: "DatosEmpresa" } --><!-- /ko -->
+        <div id="accordion" class="my-lg-5">
+            <!-- ko foreach: presupuestos.value -->
+            <div class="card">
+                <form data-bind="submit: guardar" novalidate>
+                    <div class="card-header" data-bind="attr: { id: 'presupuestoHeading' + $index() }, css: { 'alert-danger' : $data.hasError() }">
+                        <h5 class="mb-0">
+                            <button type="button" class="btn btn-link" data-toggle="collapse" data-bind="attr: { 'data-target': '#collapse' + $index(), 'aria-controls': 'collapse' + $index() }" aria-expanded="true">
+                                <span data-bind="text: (cantidad.value() === undefined ? '' : cantidad.value() + ' ' ) + (descripcion.value() === undefined ? 'Cotización' : descripcion.value()) + ' |  Total: $' + total().toFixed(2) ">
+                                </span>
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div class="collapse show" data-parent="#accordion" data-bind="attr: { 'aria-labelledby': 'presupuestoHeading' + $index(), id: 'collapse' + $index() }">
+                        <div class="card-body">
+                            <!-- ko  template: { name: "Presupuesto" } --><!-- /ko -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /ko -->
+        </div>
+</script>
