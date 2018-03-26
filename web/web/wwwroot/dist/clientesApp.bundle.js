@@ -18311,7 +18311,7 @@ var ClientesModel = /** @class */ (function () {
         var self = this;
         this.fechaParsed = ko.observable();
         this.clientes = ko.observableArray();
-        this.proxy = new ProxyRest("/server/api/Clientes");
+        this.proxy = new ProxyRest("/api/Clientes");
         self.getAll();
     }
     ClientesModel.prototype.getAll = function () {

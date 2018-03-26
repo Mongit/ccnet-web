@@ -18,7 +18,7 @@ class ClientesModel {
 
         this.clientes = ko.observableArray<ClienteModel>();
 
-        this.proxy = new ProxyRest("/server/api/Clientes");
+        this.proxy = new ProxyRest("/api/Clientes");
 
         self.getAll();
     }

@@ -32,7 +32,7 @@ namespace web
         public void ConfigureServices(IServiceCollection services)
         {
             services.Add(new ServiceDescriptor(typeof(ILog), GetIlog()));
-            services.AddSingleton(typeof(IApiProxy), new ApiProxy());
+            services.AddSingleton(typeof(IApiProxy), new ApiProxy(Configuration.GetValue<string>("Webapi")));
             services.AddMvc();
         }
 

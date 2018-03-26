@@ -8,7 +8,7 @@ namespace web.Pages.Models
     public class ApiProxy : IApiProxy
     {
         private HttpClient Client { get; set; }
-        public ApiProxy()
+        public ApiProxy(String apiUrl)
         {
             HttpClientHandler httpClientHandler = new HttpClientHandler
             {
@@ -17,7 +17,7 @@ namespace web.Pages.Models
             };
 
             this.Client = new HttpClient(httpClientHandler);
-            this.Client.BaseAddress = new Uri("http://localhost");
+            this.Client.BaseAddress = new Uri(apiUrl);
         }
 
         public async Task<HttpResponseMessage> ServerCall(ApiProxyModel model)
