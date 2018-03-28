@@ -26,7 +26,7 @@ class CotizacionesClienteModel {
 
         this.cotizacionesArray = ko.observableArray<CotizacionesModel>();
 
-        this.proxy = new ProxyRest("/server/api/Cotizaciones");
+        this.proxy = new ProxyRest("/api/Cotizaciones");
         this.clienteIdUrlParam = UrlUtils.getParameterByName('id', window.location);
 
         this.getCotizaciones();
@@ -52,7 +52,7 @@ class CotizacionesClienteModel {
 
     public async getCliente() {
         const self = this;
-        let proxyCliente = new ProxyRest("/server/api/Clientes");
+        let proxyCliente = new ProxyRest("/api/Clientes");
         let cliente = await proxyCliente.get(self.clienteIdUrlParam);
         let clienteJson = JSON.parse((JSON.parse(JSON.stringify(cliente))));
 

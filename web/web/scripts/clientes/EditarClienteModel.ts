@@ -30,7 +30,7 @@ class EditarClienteModel extends KoForm {
         this.domicilio = self.addField<string>([new validators.RequiredStringValidator()]);
         this.fechaCreado = new Date();
 
-        this.proxy = new ProxyRest("/server/api/Clientes");
+        this.proxy = new ProxyRest("/api/Clientes");
 
         this.clienteIdUrlParam = UrlUtils.getParameterByName("id", window.location);
         this.folio = 0;

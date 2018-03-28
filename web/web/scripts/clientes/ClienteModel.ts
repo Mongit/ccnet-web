@@ -27,7 +27,7 @@ class ClienteModel extends KoForm {
         this.domicilio = self.addField<string>([new validators.RequiredStringValidator()]);
         this.fechaCreado = new Date();
         
-        this.proxy = new ProxyRest("/server/api/Clientes");
+        this.proxy = new ProxyRest("/api/Clientes");
     }
 
     public getModel(): IClienteModel {

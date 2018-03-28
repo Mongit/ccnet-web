@@ -798,7 +798,7 @@ var EditarClienteModel = /** @class */ (function (_super) {
         _this.email = self.addField([]);
         _this.domicilio = self.addField([new validators.RequiredStringValidator()]);
         _this.fechaCreado = new Date();
-        _this.proxy = new ProxyRest("/server/api/Clientes");
+        _this.proxy = new ProxyRest("/api/Clientes");
         _this.clienteIdUrlParam = UrlUtils.getParameterByName("id", window.location);
         _this.folio = 0;
         _this.getCliente();

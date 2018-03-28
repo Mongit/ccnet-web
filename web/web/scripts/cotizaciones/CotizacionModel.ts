@@ -49,7 +49,7 @@ class CotizacionModel extends KoForm {
         this.idCotizacion = UrlUtils.getParameterByName('cotId', window.location);
         this.idCliente = UrlUtils.getParameterByName('cteId', window.location);;
         
-        this.proxy = new ProxyRest("/server/api/Cotizaciones");
+        this.proxy = new ProxyRest("/api/Cotizaciones");
                 
         this.presupuestos = self.addFieldArray<PresupuestoModel>([new ValidatableValidator<IFieldBase<any, any>>("Encontramos un error en alguno de sus campos.")]);    
         
@@ -103,7 +103,7 @@ class CotizacionModel extends KoForm {
 
     public async getCliente(): Promise<void> {
         const self = this;
-        let proxyCliente = new ProxyRest("/server/api/Clientes");
+        let proxyCliente = new ProxyRest("/api/Clientes");
         let cliente = await proxyCliente.get(self.idCliente);
         let clienteJson = JSON.parse((JSON.parse(JSON.stringify(cliente))));
 
