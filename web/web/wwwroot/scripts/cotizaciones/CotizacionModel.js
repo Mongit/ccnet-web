@@ -68,7 +68,7 @@ var CotizacionModel = /** @class */ (function (_super) {
         _this.idCotizacion = UrlUtils.getParameterByName('cotId', window.location);
         _this.idCliente = UrlUtils.getParameterByName('cteId', window.location);
         ;
-        _this.proxy = new ProxyRest("/server/api/Cotizaciones");
+        _this.proxy = new ProxyRest("/api/Cotizaciones");
         _this.presupuestos = self.addFieldArray([new ValidatableValidator("Encontramos un error en alguno de sus campos.")]);
         _this.subtotalPresupuestos = ko.computed(function () {
             var suma = 0;
@@ -132,7 +132,7 @@ var CotizacionModel = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         self = this;
-                        proxyCliente = new ProxyRest("/server/api/Clientes");
+                        proxyCliente = new ProxyRest("/api/Clientes");
                         return [4 /*yield*/, proxyCliente.get(self.idCliente)];
                     case 1:
                         cliente = _a.sent();

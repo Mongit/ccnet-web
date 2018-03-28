@@ -25,7 +25,7 @@
                 <th scope="col" class="w-25">Folio</th>
                 <th scope="col" class="w-50">Fecha</th>
                 <th scope="col" class="w-25">
-                    <a class="btn btn-secondary btn-block" data-bind="click: save">Nueva cotización</a>
+                    <a class="btn btn-light btn-block" data-bind="click: save">Nueva cotización</a>
                 </th>
             </tr>
         </thead>
@@ -36,6 +36,7 @@
                 <td data-bind="text: $parent.dateFormatter($data.fecha)"></td>
                 <td>
                     <button class="btn btn-light btn-block" data-bind="click: $parent.remove.bind($parent)">Borrar</button>
+                    <a class="btn btn-secondary btn-block" data-bind="attr: { href: 'Presupuestos?cotId=' + $data.id }, text: $data.id">Presupuestos</a>
                 </td>
             </tr>
             <!-- /ko -->

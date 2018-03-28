@@ -48,7 +48,7 @@ var CotizacionesClienteModel = /** @class */ (function () {
         this.contacto = ko.observable();
         this.fechaParsed = ko.observable();
         this.cotizacionesArray = ko.observableArray();
-        this.proxy = new ProxyRest("/server/api/Cotizaciones");
+        this.proxy = new ProxyRest("/api/Cotizaciones");
         this.clienteIdUrlParam = UrlUtils.getParameterByName('id', window.location);
         this.getCotizaciones();
     }
@@ -84,7 +84,7 @@ var CotizacionesClienteModel = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         self = this;
-                        proxyCliente = new ProxyRest("/server/api/Clientes");
+                        proxyCliente = new ProxyRest("/api/Clientes");
                         return [4 /*yield*/, proxyCliente.get(self.clienteIdUrlParam)];
                     case 1:
                         cliente = _a.sent();

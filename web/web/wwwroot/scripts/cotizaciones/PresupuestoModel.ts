@@ -50,7 +50,7 @@ class PresupuestoModel extends KoForm {
 
         this.presupuestosItem = ko.observableArray<PresupuestoItemModel>();
 
-        this.proxy = new ProxyRest("/server/api/Presupuestos");
+        this.proxy = new ProxyRest("/api/Presupuestos");
 
         this.subtotal = ko.computed<number>(function (): number {
 

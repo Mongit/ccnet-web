@@ -17,6 +17,9 @@ module.exports = {
         ],
         editarClienteApp: [
             './scripts/clientes/appEditar.ts'
+        ],
+        presupuestosApp: [
+            './scripts/cotizaciones/appPresupuestos.ts'
         ]
     },
     module: {
