@@ -26,7 +26,7 @@ class PresupuestoModel extends KoForm {
     public temporalHasFocus: KnockoutObservable<boolean>;
     public temporal: KnockoutObservable<PresupuestoItemModel>;
     
-    public presupuestosItem: KnockoutObservableArray<PresupuestoItemModel>;
+    public items: KnockoutObservableArray<PresupuestoItemModel>;
     
     public subtotalModal: KnockoutComputed<number>;
     public subtotal: KnockoutComputed<number>;
@@ -48,7 +48,7 @@ class PresupuestoModel extends KoForm {
         this.porcentajeIva = self.addField<number>([new numberValidator.FloatValidator, new numberValidator.RequiredNumberValidator()], null, 16);
         this.iva = ko.observable<number>(0);
 
-        this.presupuestosItem = ko.observableArray<PresupuestoItemModel>();
+        this.items = ko.observableArray<PresupuestoItemModel>();
 
         this.proxy = new ProxyRest("/api/Presupuestos");
 
@@ -56,7 +56,7 @@ class PresupuestoModel extends KoForm {
 
             let sumaCostos: number = 0;
             let subTotal: number = 0;
-            for (let pi of self.presupuestosItem()) {
+            for (let pi of self.items()) {
                 sumaCostos += pi.costo();
             }
 
@@ -77,7 +77,7 @@ class PresupuestoModel extends KoForm {
         const self = this;
 
         let itemArray = new Array<IPresupuestoItemModel>();
-        for (let item of self.presupuestosItem()) {
+        for (let item of self.items()) {
             itemArray.push(item.getModel());
         }
 
@@ -88,7 +88,6 @@ class PresupuestoModel extends KoForm {
             porcentajeGanancia: self.porcentajeGanancia.value(),
             porcentajeIva: self.porcentajeIva.value(),
             cotizacionId: self.cotizacionId,
-            //presupuestosItem: itemArray
             items: itemArray
         };
     }    
@@ -102,7 +101,7 @@ class PresupuestoModel extends KoForm {
             newPresupuesto.descripcion.value(self.temporal().descripcion.value());
             newPresupuesto.precio.value(self.temporal().precio.value());
 
-            self.presupuestosItem.push(newPresupuesto);
+            self.items.push(newPresupuesto);
 
             self.temporal(new PresupuestoItemModel());
             self.temporalHasFocus(true);
@@ -121,7 +120,7 @@ class PresupuestoModel extends KoForm {
             title: "¡Confirmación!",
             onClose: function (e: JQuery.Event<HTMLElement, null>): void {
                 if (modalModel.result() === true) {
-                    self.presupuestosItem.remove(item);
+                    self.items.remove(item);
                 }
             }
         });        

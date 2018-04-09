@@ -7,7 +7,7 @@ interface IPresupuestoModel {
     porcentajeGanancia: number;
     porcentajeIva: number;
     cotizacionId: string;
-    presupuestosItem: IPresupuestoItemModel[];
+    items: IPresupuestoItemModel[];
 }
 
 export = IPresupuestoModel;

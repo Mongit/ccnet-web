@@ -1,4 +1,14 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -36,16 +46,25 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var ProxyRest = require("./../api/proxyRest");
 var UrlUtils = require("./../utils/UrlUtils");
-var PresupuetosModel = /** @class */ (function () {
+var KoForm = require("./../form/KoForm");
+var ValidatableValidator = require("./../validators/ValidatableValidator");
+var PresupuestoModel = require("./PresupuestoModel");
+var PresupuestoItemModel = require("./PresupuestoItemModel");
+var PresupuetosModel = /** @class */ (function (_super) {
+    __extends(PresupuetosModel, _super);
     function PresupuetosModel() {
-        this.cotId = UrlUtils.getParameterByName("cotId", window.location);
-        this.proxy = new ProxyRest("/api/Presupuestos");
-        this.presupuestos = ko.observableArray();
-        this.getAll();
+        var _this = _super.call(this) || this;
+        var self = _this;
+        _this.cotId = UrlUtils.getParameterByName("cotId", window.location);
+        _this.proxy = new ProxyRest("/api/Presupuestos");
+        _this.presupuestos = self.addFieldArray([new ValidatableValidator("Encontramos un error en alguno de sus campos.")]);
+        _this.presupuestoItems = ko.observableArray();
+        _this.getAll();
+        return _this;
     }
     PresupuetosModel.prototype.getAll = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var self, presupuestosFromServer, presupuestosParsed, _i, presupuestosParsed_1, presupuesto, itemmodel, _a, _b, item;
+            var self, presupuestosFromServer, presupuestosParsed, _i, presupuestosParsed_1, presupuesto, presupuestomodel, _a, _b, item, newitem;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -56,28 +75,20 @@ var PresupuetosModel = /** @class */ (function () {
                         presupuestosParsed = JSON.parse((JSON.parse(JSON.stringify(presupuestosFromServer))));
                         for (_i = 0, presupuestosParsed_1 = presupuestosParsed; _i < presupuestosParsed_1.length; _i++) {
                             presupuesto = presupuestosParsed_1[_i];
-                            itemmodel = void 0;
+                            presupuestomodel = new PresupuestoModel();
                             for (_a = 0, _b = presupuesto.items; _a < _b.length; _a++) {
                                 item = _b[_a];
-                                itemmodel = {
-                                    cantidad: item.cantidad,
-                                    descripcion: item.descripcion,
-                                    precio: item.precio,
-                                    presupuestoId: item.presupuestoId
-                                };
+                                newitem = new PresupuestoItemModel();
+                                self.presupuestoItems.push(newitem.getModelFromTo(item, newitem));
                             }
-                            //verificar por que solo imprime un presupuesto en html
-                            //error en items not defined
-                            self.presupuestos.push({
-                                cantidad: presupuesto.cantidad,
-                                descripcion: presupuesto.descripcion,
-                                porcentajeGastos: presupuesto.porcentajeGastos,
-                                porcentajeGanancia: presupuesto.porcentajeGanancia,
-                                porcentajeIva: presupuesto.porcentajeIVA,
-                                cotizacionId: presupuesto.cotizacionId,
-                                presupuestosItem: itemmodel
-                            });
-                            alert(presupuesto);
+                            presupuestomodel.cantidad = presupuesto.cantidad;
+                            presupuestomodel.descripcion = presupuesto.descripcion;
+                            presupuestomodel.porcentajeGastos = presupuesto.porcentajeGastos;
+                            presupuestomodel.porcentajeGanancia = presupuesto.porcentajeGanancia;
+                            presupuestomodel.porcentajeIva = presupuesto.porcentajeIVA;
+                            presupuestomodel.cotizacionId = presupuesto.cotizacionId;
+                            presupuestomodel.presupuestosItem = self.presupuestoItems;
+                            self.presupuestos.value.push(presupuestomodel);
                         }
                         return [2 /*return*/];
                 }
@@ -85,6 +96,6 @@ var PresupuetosModel = /** @class */ (function () {
         });
     };
     return PresupuetosModel;
-}());
+}(KoForm));
 module.exports = PresupuetosModel;
 //# sourceMappingURL=PresupuestosModel.js.map

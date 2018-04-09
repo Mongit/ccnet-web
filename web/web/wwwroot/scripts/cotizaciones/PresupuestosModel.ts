@@ -1,21 +1,30 @@
 import ProxyRest = require("./../api/proxyRest");
 import UrlUtils = require("./../utils/UrlUtils");
-import IPresupuestoModel = require("./iPresupuestoModel");
-import IPresupuestoItemModel = require("./iPresupuestoItemModel");
+import IFieldArray = require("./../field/iFieldArray");
+import KoForm = require("./../form/KoForm");
+import ValidatableValidator = require("./../validators/ValidatableValidator");
+import IFieldBase = require("./../field/iFieldBase");
+import PresupuestoModel = require("./PresupuestoModel");
+import PresupuestoItemModel = require("./PresupuestoItemModel");
 
-class PresupuetosModel {
+class PresupuetosModel extends KoForm {
     public cotId: string;
 
     public proxy: ProxyRest;
 
-    public presupuestos: KnockoutObservableArray<IPresupuestoModel>;
+    public presupuestos: IFieldArray<PresupuestoModel>;
+    public presupuestoItems: KnockoutObservableArray<PresupuestoItemModel>;
 
     constructor() {
+        super();
+        const self = this;
+
         this.cotId = UrlUtils.getParameterByName("cotId", window.location);
 
         this.proxy = new ProxyRest("/api/Presupuestos");
 
-        this.presupuestos = ko.observableArray<IPresupuestoModel>();
+        this.presupuestos = self.addFieldArray<PresupuestoModel>([new ValidatableValidator<IFieldBase<any, any>>("Encontramos un error en alguno de sus campos.")]);
+        this.presupuestoItems = ko.observableArray<PresupuestoItemModel>();
 
         this.getAll();
     }
@@ -24,43 +33,26 @@ class PresupuetosModel {
         const self = this;
         let presupuestosFromServer = await self.proxy.get(self.cotId);
         let presupuestosParsed = JSON.parse((JSON.parse(JSON.stringify(presupuestosFromServer))));
-        
+
         for (let presupuesto of presupuestosParsed) {
+            let presupuestomodel = new PresupuestoModel();
 
-            //let itemArray = new Array<IPresupuestoItemModel>();
-            //for (let item of presupuesto.items) {
-            //    itemArray.push({
-            //        cantidad: item.cantidad,
-            //        descripcion: item.descripcion,
-            //        precio: item.precio,
-            //        presupuestoId: item.presupuestoId
-            //    });
-            //}
-
-            let itemmodel;
             for (let item of presupuesto.items) {
-                itemmodel = {
-                    cantidad: item.cantidad,
-                    descripcion: item.descripcion,
-                    precio: item.precio,
-                    presupuestoId: item.presupuestoId
-                };
+                let newitem = new PresupuestoItemModel();
+                
+                self.presupuestoItems.push(newitem.getModelFromTo(item, newitem));
             }
 
-            //verificar por que solo imprime un presupuesto en html
-            //error en items not defined
-
-            self.presupuestos.push({
-                cantidad: presupuesto.cantidad,
-                descripcion: presupuesto.descripcion,
-                porcentajeGastos: presupuesto.porcentajeGastos,
-                porcentajeGanancia: presupuesto.porcentajeGanancia,
-                porcentajeIva: presupuesto.porcentajeIVA,
-                cotizacionId: presupuesto.cotizacionId,
-                presupuestosItem: itemmodel
-            });
-
-            alert(presupuesto);
+            presupuestomodel.cantidad = presupuesto.cantidad;
+            presupuestomodel.descripcion = presupuesto.descripcion;
+            presupuestomodel.porcentajeGastos = presupuesto.porcentajeGastos;
+            presupuestomodel.porcentajeGanancia = presupuesto.porcentajeGanancia;
+            presupuestomodel.porcentajeIva = presupuesto.porcentajeIVA;
+            presupuestomodel.cotizacionId = presupuesto.cotizacionId;
+            presupuestomodel.presupuestosItem = self.presupuestoItems;
+            
+            self.presupuestos.value.push(presupuestomodel); 
+            
         }
     }
 }

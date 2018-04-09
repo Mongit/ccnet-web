@@ -68,12 +68,278 @@
 /***/ 1:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(4).Promise;
+module.exports = __webpack_require__(6).Promise;
 
 
 /***/ }),
 
 /***/ 10:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var Field = __webpack_require__(138);
+var FieldBase = __webpack_require__(2);
+var FieldArray = __webpack_require__(141);
+var ValidatableValidator = __webpack_require__(15);
+var KoForm = /** @class */ (function (_super) {
+    __extends(KoForm, _super);
+    function KoForm(validators) {
+        if (validators === void 0) { validators = [new ValidatableValidator("Encontramos un error en alguno de sus campos.")]; }
+        var _this = _super.call(this, validators, true, []) || this;
+        _this.value = ko.observableArray();
+        return _this;
+    }
+    KoForm.prototype.resetHasChanged = function () {
+        var self = this;
+        for (var _i = 0, _a = self.value(); _i < _a.length; _i++) {
+            var field = _a[_i];
+            field.resetHasChanged();
+        }
+    };
+    KoForm.prototype.getHasChanged = function () {
+        var self = this;
+        for (var _i = 0, _a = self.value(); _i < _a.length; _i++) {
+            var field = _a[_i];
+            if (field.hasChanged()) {
+                return true;
+            }
+        }
+        return false;
+    };
+    KoForm.prototype.addField = function (validators, useStrictForComparations, value) {
+        if (useStrictForComparations === void 0) { useStrictForComparations = true; }
+        var self = this;
+        var field = new Field(validators, useStrictForComparations, value);
+        self.value.push(field);
+        return field;
+    };
+    KoForm.prototype.addFieldArray = function (validators, useStrictForComparations, value) {
+        if (useStrictForComparations === void 0) { useStrictForComparations = true; }
+        var self = this;
+        var field = new FieldArray(validators, useStrictForComparations, value);
+        self.value.push(field);
+        return field;
+    };
+    return KoForm;
+}(FieldBase));
+module.exports = KoForm;
+
+
+/***/ }),
+
+/***/ 11:
+/***/ (function(module, exports, __webpack_require__) {
+
+var pSlice = Array.prototype.slice;
+var objectKeys = __webpack_require__(139);
+var isArguments = __webpack_require__(140);
+
+var deepEqual = module.exports = function (actual, expected, opts) {
+  if (!opts) opts = {};
+  // 7.1. All identical values are equivalent, as determined by ===.
+  if (actual === expected) {
+    return true;
+
+  } else if (actual instanceof Date && expected instanceof Date) {
+    return actual.getTime() === expected.getTime();
+
+  // 7.3. Other pairs that do not both pass typeof value == 'object',
+  // equivalence is determined by ==.
+  } else if (!actual || !expected || typeof actual != 'object' && typeof expected != 'object') {
+    return opts.strict ? actual === expected : actual == expected;
+
+  // 7.4. For all other Object pairs, including Array objects, equivalence is
+  // determined by having the same number of owned properties (as verified
+  // with Object.prototype.hasOwnProperty.call), the same set of keys
+  // (although not necessarily the same order), equivalent values for every
+  // corresponding key, and an identical 'prototype' property. Note: this
+  // accounts for both named and indexed properties on Arrays.
+  } else {
+    return objEquiv(actual, expected, opts);
+  }
+}
+
+function isUndefinedOrNull(value) {
+  return value === null || value === undefined;
+}
+
+function isBuffer (x) {
+  if (!x || typeof x !== 'object' || typeof x.length !== 'number') return false;
+  if (typeof x.copy !== 'function' || typeof x.slice !== 'function') {
+    return false;
+  }
+  if (x.length > 0 && typeof x[0] !== 'number') return false;
+  return true;
+}
+
+function objEquiv(a, b, opts) {
+  var i, key;
+  if (isUndefinedOrNull(a) || isUndefinedOrNull(b))
+    return false;
+  // an identical 'prototype' property.
+  if (a.prototype !== b.prototype) return false;
+  //~~~I've managed to break Object.keys through screwy arguments passing.
+  //   Converting to array solves the problem.
+  if (isArguments(a)) {
+    if (!isArguments(b)) {
+      return false;
+    }
+    a = pSlice.call(a);
+    b = pSlice.call(b);
+    return deepEqual(a, b, opts);
+  }
+  if (isBuffer(a)) {
+    if (!isBuffer(b)) {
+      return false;
+    }
+    if (a.length !== b.length) return false;
+    for (i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) return false;
+    }
+    return true;
+  }
+  try {
+    var ka = objectKeys(a),
+        kb = objectKeys(b);
+  } catch (e) {//happens when one is a string literal and the other isn't
+    return false;
+  }
+  // having the same number of owned properties (keys incorporates
+  // hasOwnProperty)
+  if (ka.length != kb.length)
+    return false;
+  //the same set of keys (although not necessarily the same order),
+  ka.sort();
+  kb.sort();
+  //~~~cheap key test
+  for (i = ka.length - 1; i >= 0; i--) {
+    if (ka[i] != kb[i])
+      return false;
+  }
+  //equivalent values for every corresponding key, and
+  //~~~possibly expensive deep test
+  for (i = ka.length - 1; i >= 0; i--) {
+    key = ka[i];
+    if (!deepEqual(a[key], b[key], opts)) return false;
+  }
+  return typeof a === typeof b;
+}
+
+
+/***/ }),
+
+/***/ 12:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Promise) {
+var PromiseUtils = /** @class */ (function () {
+    function PromiseUtils() {
+    }
+    PromiseUtils.toPromise = function (value) {
+        var promise = new Promise(function (resolve, reject) {
+            resolve(value);
+        });
+        return promise;
+    };
+    return PromiseUtils;
+}());
+module.exports = PromiseUtils;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+
+/***/ 13:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var HttpMethod;
+(function (HttpMethod) {
+    HttpMethod[HttpMethod["get"] = 0] = "get";
+    HttpMethod[HttpMethod["post"] = 1] = "post";
+    HttpMethod[HttpMethod["put"] = 2] = "put";
+    HttpMethod[HttpMethod["delete"] = 3] = "delete";
+})(HttpMethod || (HttpMethod = {}));
+module.exports = HttpMethod;
+
+
+/***/ }),
+
+/***/ 138:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var equal = __webpack_require__(11);
+var FieldBase = __webpack_require__(2);
+var Field = /** @class */ (function (_super) {
+    __extends(Field, _super);
+    function Field(validators, useStrictForComparations, value) {
+        if (useStrictForComparations === void 0) { useStrictForComparations = true; }
+        var _this = _super.call(this, validators, useStrictForComparations, value) || this;
+        _this.value = ko.observable(value);
+        var self = _this;
+        _this.value.subscribe(function (newValue) {
+            self.validate();
+        });
+        return _this;
+    }
+    Field.prototype.getHasChanged = function () {
+        var self = this;
+        var areEqual = equal(self.initialValue, self.value(), { strict: self.useStrictForComparations });
+        return areEqual === false;
+    };
+    Field.prototype.resetHasChanged = function () {
+        var self = this;
+        self.initialValue = self.value();
+    };
+    return Field;
+}(FieldBase));
+module.exports = Field;
+
+
+/***/ }),
+
+/***/ 139:
+/***/ (function(module, exports) {
+
+exports = module.exports = typeof Object.keys === 'function'
+  ? Object.keys : shim;
+
+exports.shim = shim;
+function shim (obj) {
+  var keys = [];
+  for (var key in obj) keys.push(key);
+  return keys;
+}
+
+
+/***/ }),
+
+/***/ 14:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -145,28 +411,640 @@ module.exports = ProxyBase;
 
 /***/ }),
 
-/***/ 14:
+/***/ 140:
+/***/ (function(module, exports) {
+
+var supportsArgumentsClass = (function(){
+  return Object.prototype.toString.call(arguments)
+})() == '[object Arguments]';
+
+exports = module.exports = supportsArgumentsClass ? supported : unsupported;
+
+exports.supported = supported;
+function supported(object) {
+  return Object.prototype.toString.call(object) == '[object Arguments]';
+};
+
+exports.unsupported = unsupported;
+function unsupported(object){
+  return object &&
+    typeof object == 'object' &&
+    typeof object.length == 'number' &&
+    Object.prototype.hasOwnProperty.call(object, 'callee') &&
+    !Object.prototype.propertyIsEnumerable.call(object, 'callee') ||
+    false;
+};
+
+
+/***/ }),
+
+/***/ 141:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var UrlUtils = /** @class */ (function () {
-    function UrlUtils() {
-    }
-    UrlUtils.getParameterByName = function (name, url) {
-        if (!url)
-            url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
-        if (!results)
-            return null;
-        if (!results[2])
-            return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
-    return UrlUtils;
+})();
+var equal = __webpack_require__(11);
+var FieldBase = __webpack_require__(2);
+var FieldArray = /** @class */ (function (_super) {
+    __extends(FieldArray, _super);
+    function FieldArray(validators, useStrictForComparations, value) {
+        if (useStrictForComparations === void 0) { useStrictForComparations = true; }
+        var _this = _super.call(this, validators, useStrictForComparations, value) || this;
+        _this.value = ko.observableArray(value);
+        return _this;
+        // =========================================================================
+        // "arrayChange": Please subscribe on the cosumer class.
+        // =========================================================================        
+        // const self = this;
+        // this.value.subscribe(function (changes: KnockoutArrayChange<T>): void {
+        //     //self.validate();
+        // }, self, "arrayChange");
+        // =========================================================================
+    }
+    FieldArray.prototype.getHasChanged = function () {
+        var self = this;
+        var areEqual = equal(self.initialValue, self.value(), { strict: self.useStrictForComparations });
+        return areEqual === false;
+    };
+    FieldArray.prototype.resetHasChanged = function () {
+        var self = this;
+        self.initialValue = self.value();
+    };
+    return FieldArray;
+}(FieldBase));
+module.exports = FieldArray;
+
+
+/***/ }),
+
+/***/ 142:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Size = __webpack_require__(17);
+var KoBinder = __webpack_require__(3);
+var BindedModal = /** @class */ (function () {
+    function BindedModal(info) {
+        this.title = ko.observable(info.title);
+        this.templateBody = ko.observable(info.templateBody);
+        this.templateFooter = ko.observable(info.templateFooter);
+        this.model = info.model;
+        this.size = info.size;
+        this.selector = "GlobalModalContainer";
+        this.info = info;
+        this.modal = this.create();
+        var self = this;
+        info.model.setModal(self.modal);
+    }
+    BindedModal.prototype.getContainer = function () {
+        var self = this;
+        var container = $("#" + self.selector);
+        if (container.length === 0) {
+            $("<div id='" + self.selector + "'></div>").prependTo("body");
+        }
+        else {
+            container.empty();
+        }
+        return container;
+    };
+    BindedModal.prototype.create = function () {
+        var self = this;
+        var myModal = $('<div class="modal" tabindex="-1" role="dialog">' +
+            '    <div class="modal-dialog" role="document">' +
+            '        <div class="modal-content">' +
+            '            <div class="modal-header">   ' +
+            '                <h5 class="modal-title" data-bind="text: title"></h5>' +
+            '                <button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+            '                    <span aria-hidden="true">&times;</span>' +
+            '                 </button>' +
+            '            </div>' +
+            '            <div class="modal-body" data-bind="template: { name: templateBody(), data: model }">' +
+            '            ' +
+            '            </div>' +
+            '            <div class="modal-footer" data-bind="template: { name: templateFooter(), data: model }">' +
+            '         ' +
+            '            </div>' +
+            '        </div>' +
+            '    </div>' +
+            '</div>');
+        var modal = myModal.find('div.modal-dialog');
+        switch (self.size) {
+            case Size.small:
+                modal.addClass('modal-sm');
+                break;
+            case Size.medium:
+                modal.addClass('modal-md');
+                break;
+            case Size.large:
+                modal.addClass('modal-lg');
+                break;
+        }
+        self.getContainer().append(myModal);
+        KoBinder.bind(myModal, self);
+        myModal.modal();
+        if (self.info.onClose !== undefined) {
+            myModal.on('hidden.bs.modal', self.info.onClose);
+        }
+        return myModal;
+    };
+    return BindedModal;
 }());
-module.exports = UrlUtils;
+module.exports = BindedModal;
+
+
+/***/ }),
+
+/***/ 143:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var ConfirmModel = /** @class */ (function () {
+    function ConfirmModel(message) {
+        this.message = ko.observable(message);
+        this.result = ko.observable(false);
+    }
+    ConfirmModel.prototype.setToTrue = function () {
+        var self = this;
+        self.result(true);
+        self.dialog.modal('hide');
+    };
+    ConfirmModel.prototype.setModal = function (modal) {
+        var self = this;
+        this.dialog = modal;
+    };
+    return ConfirmModel;
+}());
+module.exports = ConfirmModel;
+
+
+/***/ }),
+
+/***/ 144:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ValidatorBase = __webpack_require__(4);
+var NumberValidatorBase = /** @class */ (function (_super) {
+    __extends(NumberValidatorBase, _super);
+    function NumberValidatorBase() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    NumberValidatorBase.prototype.hasValue = function (value) {
+        if (value === null || value === undefined || $.trim(value.toString()).length === 0) {
+            return false;
+        }
+        return true;
+    };
+    return NumberValidatorBase;
+}(ValidatorBase));
+var RequiredNumberValidator = /** @class */ (function (_super) {
+    __extends(RequiredNumberValidator, _super);
+    function RequiredNumberValidator() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    RequiredNumberValidator.prototype.check = function (value) {
+        var self = this;
+        var isValid = self.hasValue(value);
+        return self.toPromise(isValid, "Éste campo no puede estar vacío.");
+    };
+    return RequiredNumberValidator;
+}(NumberValidatorBase));
+exports.RequiredNumberValidator = RequiredNumberValidator;
+var FloatValidator = /** @class */ (function (_super) {
+    __extends(FloatValidator, _super);
+    function FloatValidator() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    FloatValidator.prototype.check = function (value) {
+        var self = this;
+        var isValid = self.hasValue(value) === false || /^-?\d*(\.\d+)?$/.test(value.toString());
+        return self.toPromise(isValid, "Éste campo debe ser númerico.");
+    };
+    return FloatValidator;
+}(NumberValidatorBase));
+exports.FloatValidator = FloatValidator;
+
+
+/***/ }),
+
+/***/ 147:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var KoForm = __webpack_require__(10);
+var stringValidator = __webpack_require__(16);
+var numberValidator = __webpack_require__(144);
+var PresupuestoItemModel = /** @class */ (function (_super) {
+    __extends(PresupuestoItemModel, _super);
+    function PresupuestoItemModel() {
+        var _this = _super.call(this) || this;
+        var self = _this;
+        _this.cantidad = self.addField([new numberValidator.FloatValidator(), new numberValidator.RequiredNumberValidator()]);
+        _this.descripcion = self.addField([new stringValidator.RequiredStringValidator()]);
+        _this.precio = self.addField([new numberValidator.FloatValidator(), new numberValidator.RequiredNumberValidator()]);
+        _this.costo = ko.computed(function () {
+            return self.cantidad.value() * self.precio.value();
+        }, self);
+        return _this;
+    }
+    PresupuestoItemModel.prototype.getModel = function () {
+        var self = this;
+        return {
+            cantidad: self.cantidad.value(),
+            descripcion: self.descripcion.value(),
+            precio: self.precio.value(),
+            presupuestoId: "00000000-0000-0000-0000-000000000000"
+        };
+    };
+    return PresupuestoItemModel;
+}(KoForm));
+module.exports = PresupuestoItemModel;
+
+
+/***/ }),
+
+/***/ 148:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Promise) {
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var PresupuestoItemModel = __webpack_require__(147);
+var Size = __webpack_require__(17);
+var BindedModal = __webpack_require__(142);
+var ConfirmModal = __webpack_require__(143);
+var KoForm = __webpack_require__(10);
+var numberValidator = __webpack_require__(144);
+var stringValidator = __webpack_require__(16);
+var UrlUtils = __webpack_require__(18);
+var ProxyRest = __webpack_require__(5);
+var PresupuestoModel = /** @class */ (function (_super) {
+    __extends(PresupuestoModel, _super);
+    function PresupuestoModel() {
+        var _this = _super.call(this) || this;
+        var self = _this;
+        _this.cotizacionId = UrlUtils.getParameterByName('cotId', window.location);
+        _this.cantidad = self.addField([new numberValidator.FloatValidator(), new numberValidator.RequiredNumberValidator()]);
+        _this.descripcion = self.addField([new stringValidator.RequiredStringValidator()]);
+        _this.porcentajeGastos = self.addField([new numberValidator.FloatValidator(), new numberValidator.RequiredNumberValidator()], null, 5);
+        _this.gasto = ko.observable(0);
+        _this.porcentajeGanancia = self.addField([new numberValidator.FloatValidator(), new numberValidator.RequiredNumberValidator()], null, 80);
+        _this.ganancia = ko.observable(0);
+        _this.porcentajeIva = self.addField([new numberValidator.FloatValidator, new numberValidator.RequiredNumberValidator()], null, 16);
+        _this.iva = ko.observable(0);
+        _this.items = ko.observableArray();
+        _this.proxy = new ProxyRest("/api/Presupuestos");
+        _this.subtotal = ko.computed(function () {
+            var sumaCostos = 0;
+            var subTotal = 0;
+            for (var _i = 0, _a = self.items(); _i < _a.length; _i++) {
+                var pi = _a[_i];
+                sumaCostos += pi.costo();
+            }
+            subTotal = self.sumaPorcentajesCostos(sumaCostos);
+            self.iva(self.obtenerPorcentaje(subTotal, self.porcentajeIva.value()));
+            return subTotal;
+        }, self);
+        _this.total = ko.computed(function () {
+            return self.subtotal() + self.iva();
+        }, self);
+        _this.temporal = ko.observable(new PresupuestoItemModel());
+        _this.temporalHasFocus = ko.observable();
+        return _this;
+    }
+    PresupuestoModel.prototype.getModel = function () {
+        var self = this;
+        var itemArray = new Array();
+        for (var _i = 0, _a = self.items(); _i < _a.length; _i++) {
+            var item = _a[_i];
+            itemArray.push(item.getModel());
+        }
+        return {
+            cantidad: self.cantidad.value(),
+            descripcion: self.descripcion.value(),
+            porcentajeGastos: self.porcentajeGastos.value(),
+            porcentajeGanancia: self.porcentajeGanancia.value(),
+            porcentajeIva: self.porcentajeIva.value(),
+            cotizacionId: self.cotizacionId,
+            items: itemArray
+        };
+    };
+    PresupuestoModel.prototype.addPresupuestoItem = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, newPresupuesto;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        self = this;
+                        return [4 /*yield*/, self.temporal().validate()];
+                    case 1:
+                        if ((_a.sent()) === true) {
+                            newPresupuesto = new PresupuestoItemModel();
+                            newPresupuesto.cantidad.value(self.temporal().cantidad.value());
+                            newPresupuesto.descripcion.value(self.temporal().descripcion.value());
+                            newPresupuesto.precio.value(self.temporal().precio.value());
+                            self.items.push(newPresupuesto);
+                            self.temporal(new PresupuestoItemModel());
+                            self.temporalHasFocus(true);
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    PresupuestoModel.prototype.removePresupuestoItem = function (item) {
+        var self = this;
+        var modalModel = new ConfirmModal("¿Está seguro de borrar éste Material?");
+        var dialog = new BindedModal({
+            model: modalModel,
+            size: Size.small,
+            templateBody: "ConfirmDeleteModalBody",
+            templateFooter: "ConfirmDeleteModalFooter",
+            title: "¡Confirmación!",
+            onClose: function (e) {
+                if (modalModel.result() === true) {
+                    self.items.remove(item);
+                }
+            }
+        });
+    };
+    PresupuestoModel.prototype.obtenerPorcentaje = function (subtotal, porciento) {
+        var porcentaje = 0;
+        porcentaje = subtotal * (porciento / 100);
+        return porcentaje;
+    };
+    PresupuestoModel.prototype.sumaPorcentajesCostos = function (sumaCostos) {
+        var suma = 0;
+        var gasto = 0;
+        var ganancia = 0;
+        gasto = this.obtenerPorcentaje(sumaCostos, this.porcentajeGastos.value());
+        suma = sumaCostos + gasto;
+        ganancia = this.obtenerPorcentaje(suma, this.porcentajeGanancia.value());
+        suma += ganancia;
+        this.gasto(gasto);
+        this.ganancia(ganancia);
+        return suma;
+    };
+    PresupuestoModel.prototype.guardar = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, model, serverModel;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        self = this;
+                        return [4 /*yield*/, self.validate()];
+                    case 1:
+                        if (!_a.sent()) return [3 /*break*/, 3];
+                        model = self.getModel();
+                        return [4 /*yield*/, self.proxy.post(model)];
+                    case 2:
+                        serverModel = _a.sent();
+                        alert("cotizacion" + JSON.stringify(serverModel));
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return PresupuestoModel;
+}(KoForm));
+module.exports = PresupuestoModel;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+
+/***/ 15:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Promise) {
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var ValidatorBase = __webpack_require__(4);
+var ValidatableValidator = /** @class */ (function (_super) {
+    __extends(ValidatableValidator, _super);
+    function ValidatableValidator(message) {
+        var _this = _super.call(this) || this;
+        _this.message = message;
+        return _this;
+    }
+    ValidatableValidator.prototype.check = function (value) {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, isValid, _i, value_1, f;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        self = this;
+                        isValid = true;
+                        if (value === null || value === undefined || !$.isArray(value)) {
+                            return [2 /*return*/, self.toPromise(isValid, self.message)];
+                        }
+                        _i = 0, value_1 = value;
+                        _a.label = 1;
+                    case 1:
+                        if (!(_i < value_1.length)) return [3 /*break*/, 4];
+                        f = value_1[_i];
+                        return [4 /*yield*/, f.validate()];
+                    case 2:
+                        if ((_a.sent()) === false) {
+                            isValid = false;
+                        }
+                        _a.label = 3;
+                    case 3:
+                        _i++;
+                        return [3 /*break*/, 1];
+                    case 4: return [2 /*return*/, self.toPromise(isValid, self.message)];
+                }
+            });
+        });
+    };
+    return ValidatableValidator;
+}(ValidatorBase));
+module.exports = ValidatableValidator;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+
+/***/ 16:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ValidatorBase = __webpack_require__(4);
+var StringValidatorBase = /** @class */ (function (_super) {
+    __extends(StringValidatorBase, _super);
+    function StringValidatorBase() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    StringValidatorBase.prototype.hasValue = function (value) {
+        if (value === null || value === undefined || $.trim(value).length === 0) {
+            return false;
+        }
+        return true;
+    };
+    return StringValidatorBase;
+}(ValidatorBase));
+var StartsByRStringValidator = /** @class */ (function (_super) {
+    __extends(StartsByRStringValidator, _super);
+    function StartsByRStringValidator() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    StartsByRStringValidator.prototype.check = function (value) {
+        var self = this;
+        var isValid = !self.hasValue(value) || value[0].toUpperCase() === "R";
+        return self.toPromise(isValid, "Éste campo debe comenzar con la letra R.");
+    };
+    return StartsByRStringValidator;
+}(StringValidatorBase));
+exports.StartsByRStringValidator = StartsByRStringValidator;
+var RequiredStringValidator = /** @class */ (function (_super) {
+    __extends(RequiredStringValidator, _super);
+    function RequiredStringValidator() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    RequiredStringValidator.prototype.check = function (value) {
+        var self = this;
+        var isValid = self.hasValue(value);
+        return self.toPromise(isValid, "Éste campo no puede estar vacío.");
+    };
+    return RequiredStringValidator;
+}(StringValidatorBase));
+exports.RequiredStringValidator = RequiredStringValidator;
 
 
 /***/ }),
@@ -220,7 +1098,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var KoBinder = __webpack_require__(2);
+var KoBinder = __webpack_require__(3);
 var PresupuestosModel = __webpack_require__(169);
 $(function () {
     return __awaiter(this, void 0, void 0, function () {
@@ -236,121 +1114,6 @@ $(function () {
 /***/ }),
 
 /***/ 169:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(Promise) {
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-var ProxyRest = __webpack_require__(3);
-var UrlUtils = __webpack_require__(14);
-var PresupuetosModel = /** @class */ (function () {
-    function PresupuetosModel() {
-        this.cotId = UrlUtils.getParameterByName("cotId", window.location);
-        this.proxy = new ProxyRest("/api/Presupuestos");
-        this.presupuestos = ko.observableArray();
-        this.presupuestoItems = ko.observableArray();
-        this.getAll();
-    }
-    PresupuetosModel.prototype.getAll = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var self, presupuestosFromServer, presupuestosParsed, _i, presupuestosParsed_1, presupuesto, _a, _b, item;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        self = this;
-                        return [4 /*yield*/, self.proxy.get(self.cotId)];
-                    case 1:
-                        presupuestosFromServer = _c.sent();
-                        presupuestosParsed = JSON.parse((JSON.parse(JSON.stringify(presupuestosFromServer))));
-                        for (_i = 0, presupuestosParsed_1 = presupuestosParsed; _i < presupuestosParsed_1.length; _i++) {
-                            presupuesto = presupuestosParsed_1[_i];
-                            for (_a = 0, _b = presupuesto.items; _a < _b.length; _a++) {
-                                item = _b[_a];
-                                self.presupuestoItems.push({
-                                    cantidad: item.cantidad,
-                                    descripcion: item.descripcion,
-                                    precio: item.precio,
-                                    presupuestoId: item.presupuestoId
-                                });
-                            }
-                            self.presupuestos.push({
-                                cantidad: presupuesto.cantidad,
-                                descripcion: presupuesto.descripcion,
-                                porcentajeGastos: presupuesto.porcentajeGastos,
-                                porcentajeGanancia: presupuesto.porcentajeGanancia,
-                                porcentajeIva: presupuesto.porcentajeIVA,
-                                cotizacionId: presupuesto.cotizacionId,
-                                items: self.presupuestoItems()
-                            });
-                        }
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    return PresupuetosModel;
-}());
-module.exports = PresupuetosModel;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-
-/***/ 2:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var KoBinder = /** @class */ (function () {
-    function KoBinder() {
-    }
-    KoBinder.bind = function (view, model) {
-        var domObj = view.get()[0];
-        ko.cleanNode(domObj);
-        ko.applyBindings(model, domObj);
-    };
-    return KoBinder;
-}());
-module.exports = KoBinder;
-
-
-/***/ }),
-
-/***/ 3:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -400,8 +1163,302 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var HttpMethod = __webpack_require__(9);
-var ProxyBase = __webpack_require__(10);
+var ProxyRest = __webpack_require__(5);
+var UrlUtils = __webpack_require__(18);
+var KoForm = __webpack_require__(10);
+var ValidatableValidator = __webpack_require__(15);
+var PresupuestoModel = __webpack_require__(148);
+var PresupuestoItemModel = __webpack_require__(147);
+var PresupuetosModel = /** @class */ (function (_super) {
+    __extends(PresupuetosModel, _super);
+    function PresupuetosModel() {
+        var _this = _super.call(this) || this;
+        var self = _this;
+        _this.cotId = UrlUtils.getParameterByName("cotId", window.location);
+        _this.proxy = new ProxyRest("/api/Presupuestos");
+        _this.presupuestos = self.addFieldArray([new ValidatableValidator("Encontramos un error en alguno de sus campos.")]);
+        _this.presupuestoItems = ko.observableArray();
+        _this.getAll();
+        return _this;
+    }
+    PresupuetosModel.prototype.getAll = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, presupuestosFromServer, presupuestosParsed, _i, presupuestosParsed_1, presupuesto, presupuestomodel, _a, _b, item;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        self = this;
+                        return [4 /*yield*/, self.proxy.get(self.cotId)];
+                    case 1:
+                        presupuestosFromServer = _c.sent();
+                        presupuestosParsed = JSON.parse((JSON.parse(JSON.stringify(presupuestosFromServer))));
+                        for (_i = 0, presupuestosParsed_1 = presupuestosParsed; _i < presupuestosParsed_1.length; _i++) {
+                            presupuesto = presupuestosParsed_1[_i];
+                            presupuestomodel = new PresupuestoModel();
+                            for (_a = 0, _b = presupuesto.items; _a < _b.length; _a++) {
+                                item = _b[_a];
+                                self.presupuestoItems.push(self.getModelFromTo(new PresupuestoItemModel(), item));
+                            }
+                            presupuestomodel.cantidad = presupuesto.cantidad;
+                            presupuestomodel.descripcion = presupuesto.descripcion;
+                            presupuestomodel.porcentajeGastos = presupuesto.porcentajeGastos;
+                            presupuestomodel.porcentajeGanancia = presupuesto.porcentajeGanancia;
+                            presupuestomodel.porcentajeIva = presupuesto.porcentajeIVA;
+                            presupuestomodel.cotizacionId = presupuesto.cotizacionId;
+                            presupuestomodel.items = self.presupuestoItems;
+                            self.presupuestos.value.push(presupuestomodel);
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    PresupuetosModel.prototype.getModelFromTo = function (newitem, item) {
+        newitem.cantidad = item.cantidad;
+        newitem.descripcion = item.descripcion;
+        newitem.precio = item.precio;
+        newitem.presupuestoId = item.presupuestoId;
+        return newitem;
+    };
+    return PresupuetosModel;
+}(KoForm));
+module.exports = PresupuetosModel;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+
+/***/ 17:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Size;
+(function (Size) {
+    Size[Size["small"] = 0] = "small";
+    Size[Size["medium"] = 1] = "medium";
+    Size[Size["large"] = 2] = "large";
+})(Size || (Size = {}));
+module.exports = Size;
+
+
+/***/ }),
+
+/***/ 18:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var UrlUtils = /** @class */ (function () {
+    function UrlUtils() {
+    }
+    UrlUtils.getParameterByName = function (name, url) {
+        if (!url)
+            url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
+        if (!results)
+            return null;
+        if (!results[2])
+            return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    };
+    return UrlUtils;
+}());
+module.exports = UrlUtils;
+
+
+/***/ }),
+
+/***/ 2:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Promise) {
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var PromiseUtils = __webpack_require__(12);
+var FieldBase = /** @class */ (function () {
+    function FieldBase(validators, useStrictForComparations, value) {
+        this.validators = validators;
+        this.initialValue = value;
+        this.useStrictForComparations = useStrictForComparations;
+        this.errors = ko.observableArray([]);
+        var self = this;
+        this.hasChanged = ko.pureComputed(function () {
+            return self.getHasChanged();
+        }, self);
+        this.hasError = ko.pureComputed(function () {
+            return self.errors().length > 0;
+        }, self);
+    }
+    FieldBase.prototype.validate = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, isValid, _i, _a, validator, result;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        self = this;
+                        self.errors.removeAll();
+                        isValid = true;
+                        _i = 0, _a = self.validators;
+                        _b.label = 1;
+                    case 1:
+                        if (!(_i < _a.length)) return [3 /*break*/, 4];
+                        validator = _a[_i];
+                        return [4 /*yield*/, validator.check(self.value())];
+                    case 2:
+                        result = _b.sent();
+                        if (result.isValid === false) {
+                            self.errors.push(result.message);
+                            isValid = false;
+                        }
+                        _b.label = 3;
+                    case 3:
+                        _i++;
+                        return [3 /*break*/, 1];
+                    case 4: return [2 /*return*/, PromiseUtils.toPromise(isValid)];
+                }
+            });
+        });
+    };
+    return FieldBase;
+}());
+module.exports = FieldBase;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+
+/***/ 3:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var KoBinder = /** @class */ (function () {
+    function KoBinder() {
+    }
+    KoBinder.bind = function (view, model) {
+        var domObj = view.get()[0];
+        ko.cleanNode(domObj);
+        ko.applyBindings(model, domObj);
+    };
+    return KoBinder;
+}());
+module.exports = KoBinder;
+
+
+/***/ }),
+
+/***/ 4:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var PromiseUtils = __webpack_require__(12);
+var ValidatorBase = /** @class */ (function () {
+    function ValidatorBase() {
+    }
+    ValidatorBase.prototype.toPromise = function (isValid, message) {
+        if (message === void 0) { message = ""; }
+        var result = {
+            isValid: isValid,
+            message: isValid ? "" : message
+        };
+        return PromiseUtils.toPromise(result);
+    };
+    return ValidatorBase;
+}());
+module.exports = ValidatorBase;
+
+
+/***/ }),
+
+/***/ 5:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Promise) {
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var HttpMethod = __webpack_require__(13);
+var ProxyBase = __webpack_require__(14);
 var ProxyRest = /** @class */ (function (_super) {
     __extends(ProxyRest, _super);
     function ProxyRest(endPoint) {
@@ -475,7 +1532,7 @@ module.exports = ProxyRest;
 
 /***/ }),
 
-/***/ 4:
+/***/ 6:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, global) {var require;/*!
@@ -610,7 +1667,7 @@ function flush() {
 function attemptVertx() {
   try {
     var r = require;
-    var vertx = __webpack_require__(7);
+    var vertx = __webpack_require__(9);
     vertxNext = vertx.runOnLoop || vertx.runOnContext;
     return useVertxTimer();
   } catch (e) {
@@ -1632,11 +2689,11 @@ return Promise;
 
 })));
 //# sourceMappingURL=es6-promise.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(8)))
 
 /***/ }),
 
-/***/ 5:
+/***/ 7:
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -1827,7 +2884,7 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ 6:
+/***/ 8:
 /***/ (function(module, exports) {
 
 var g;
@@ -1855,27 +2912,10 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 7:
+/***/ 9:
 /***/ (function(module, exports) {
 
 /* (ignored) */
-
-/***/ }),
-
-/***/ 9:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var HttpMethod;
-(function (HttpMethod) {
-    HttpMethod[HttpMethod["get"] = 0] = "get";
-    HttpMethod[HttpMethod["post"] = 1] = "post";
-    HttpMethod[HttpMethod["put"] = 2] = "put";
-    HttpMethod[HttpMethod["delete"] = 3] = "delete";
-})(HttpMethod || (HttpMethod = {}));
-module.exports = HttpMethod;
-
 
 /***/ })
 

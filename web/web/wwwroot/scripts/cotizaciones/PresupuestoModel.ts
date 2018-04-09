@@ -88,7 +88,7 @@ class PresupuestoModel extends KoForm {
             porcentajeGanancia: self.porcentajeGanancia.value(),
             porcentajeIva: self.porcentajeIva.value(),
             cotizacionId: self.cotizacionId,
-            presupuestosItem: itemArray
+            items: itemArray
         };
     }    
 
