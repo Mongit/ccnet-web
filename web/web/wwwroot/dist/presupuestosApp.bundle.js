@@ -281,19 +281,42 @@ var PresupuetosModel = /** @class */ (function () {
     function PresupuetosModel() {
         this.cotId = UrlUtils.getParameterByName("cotId", window.location);
         this.proxy = new ProxyRest("/api/Presupuestos");
+        this.presupuestos = ko.observableArray();
+        this.presupuestoItems = ko.observableArray();
         this.getAll();
     }
     PresupuetosModel.prototype.getAll = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var self, presupuestosFromServer;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var self, presupuestosFromServer, presupuestosParsed, _i, presupuestosParsed_1, presupuesto, _a, _b, item;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         self = this;
                         return [4 /*yield*/, self.proxy.get(self.cotId)];
                     case 1:
-                        presupuestosFromServer = _a.sent();
-                        alert(presupuestosFromServer);
+                        presupuestosFromServer = _c.sent();
+                        presupuestosParsed = JSON.parse((JSON.parse(JSON.stringify(presupuestosFromServer))));
+                        for (_i = 0, presupuestosParsed_1 = presupuestosParsed; _i < presupuestosParsed_1.length; _i++) {
+                            presupuesto = presupuestosParsed_1[_i];
+                            for (_a = 0, _b = presupuesto.items; _a < _b.length; _a++) {
+                                item = _b[_a];
+                                self.presupuestoItems.push({
+                                    cantidad: item.cantidad,
+                                    descripcion: item.descripcion,
+                                    precio: item.precio,
+                                    presupuestoId: item.presupuestoId
+                                });
+                            }
+                            self.presupuestos.push({
+                                cantidad: presupuesto.cantidad,
+                                descripcion: presupuesto.descripcion,
+                                porcentajeGastos: presupuesto.porcentajeGastos,
+                                porcentajeGanancia: presupuesto.porcentajeGanancia,
+                                porcentajeIva: presupuesto.porcentajeIVA,
+                                cotizacionId: presupuesto.cotizacionId,
+                                items: self.presupuestoItems()
+                            });
+                        }
                         return [2 /*return*/];
                 }
             });

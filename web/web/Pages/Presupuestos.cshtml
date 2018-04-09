@@ -12,5 +12,23 @@
 <h2>Presupuestos</h2>
 
 <div id="presupuestosForm">
-    Hola desde getall
+    PRESUPUESTO
+    <!-- ko foreach: presupuestos -->
+    <input type="text" class="form-control" placeholder="Cantidad" data-bind="value: cantidad" />
+    <input type="text" class="form-control" placeholder="Descripcion" data-bind="value: descripcion" />
+    <input type="text" class="form-control" placeholder="PorcentajeGastos" data-bind="value: porcentajeGastos" />
+    <input type="text" class="form-control" placeholder="PorcentajeGanancias" data-bind="value: porcentajeGanancia" />
+    <input type="text" class="form-control" placeholder="PorcentajeIVA" data-bind="value: porcentajeIva" />
+    <input type="text" class="form-control" placeholder="PorcentajeIVA" data-bind="value: items" />
+    <!-- /ko -->
+
+    <br />
+    Items
+    <!-- ko foreach: presupuestoItems -->
+    <input type="text" class="form-control" placeholder="Cantidad" data-bind="value: cantidad" />
+    <input type="text" class="form-control" placeholder="Descripcion" data-bind="value: descripcion" />
+    <input type="text" class="form-control" placeholder="precio" data-bind="value: precio" />
+    <input type="text" class="form-control" placeholder="ptoId" data-bind="value: presupuestoId" />
+    <!-- /ko -->
+    ====================================================================================================
 </div>
