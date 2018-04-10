@@ -9,6 +9,8 @@
     <script src="~/dist/presupuestosApp.bundle.js" type="text/javascript"></script>
 }
 
+@Html.Partial("_KoGlobalTemplates")
+
 <h2>Presupuestos</h2>
 
 <div id="presupuestosForm">
@@ -67,36 +69,45 @@
     </form>
 </script>
 
-
 <script id="Cotizacion" type="text/html">
     <div class="row">
         <div class="col-md-8">
             <div class="form-row">
                 <div class="col-md-2">
                     <label>Cantidad</label>
-                    <input type="text" class="form-control" placeholder="Cantidad" data-bind="value: cantidad" />
+                    <input type="text" class="form-control" placeholder="Cantidad" data-bind="value: cantidad.value, hasFocus: true, css: { 'is-invalid': cantidad.hasError() }" />
+                    <!-- ko template: { name: "Validation", data: cantidad } -->
+                    <!-- /ko  -->
                 </div>
 
                 <div class="col-md-10">
                     <label>Descripción</label>
-                    <input type="text" class="form-control" placeholder="Descripcion" data-bind="value: descripcion" />
+                    <input type="text" class="form-control" placeholder="Descripcion" data-bind="value: descripcion.value, css: { 'is-invalid': descripcion.hasError() }" />
+                    <!-- ko template: { name: "Validation", data: descripcion } -->
+                    <!-- /ko  -->
                 </div>
             </div>
 
             <div class="form-row mt-2">
                 <div class="col-md-4">
                     <label>% Gastos</label>
-                    <input type="text" class="form-control" placeholder="PorcentajeGastos" data-bind="value: porcentajeGastos" />
+                    <input type="text" class="form-control" placeholder="PorcentajeGastos" data-bind="value: porcentajeGastos.value, css: { 'is-invalid': porcentajeGastos.hasError() }" />
+                    <!-- ko template: { name: "Validation", data: porcentajeGastos }-->
+                    <!-- /ko -->
                 </div>
 
                 <div class="col-md-4">
                     <label>% Gancancias</label>
-                    <input type="text" class="form-control" placeholder="PorcentajeGanancias" data-bind="value: porcentajeGanancia" />
+                    <input type="text" class="form-control" placeholder="PorcentajeGanancias" data-bind="value: porcentajeGanancia.value, css: { 'is-invalid': porcentajeGanancia.hasError() }" />
+                    <!-- ko template: { name: "Validation", data: porcentajeGanancia }-->
+                    <!-- /ko -->
                 </div>
 
                 <div class="col-md-4">
                     <label>% IVA</label>
-                    <input type="text" class="form-control" placeholder="PorcentajeIVA" data-bind="value: porcentajeIva" />
+                    <input type="text" class="form-control" placeholder="PorcentajeIVA" data-bind="value: porcentajeIva.value, css: { 'is-invalid': porcentajeIva.hasError() }" />
+                    <!-- ko template: {name: "Validation", data: porcentajeIva }-->
+                    <!-- /ko -->
                 </div>
             </div>
         </div>
@@ -105,15 +116,15 @@
             <ul class="list-group pt-4">
                 <li class="list-group-item d-flex justify-content-between 1h-condensed">
                     <span>Subtotal</span>
-                    <span class="text-muted" > SUBTOTAL </span>
+                    <span class="text-muted" data-bind="template: { name: 'templatePrice', data: subtotal() }"> </span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between 1h-condensed">
                     <span>IVA</span>
-                    <span class="text-muted" >IVA </span>
+                    <span class="text-muted" data-bind="template: { name: 'templatePrice', data: iva() }"> </span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between 1h-condensed">
                     <span>Total </span>
-                    <strong >TOTAL </strong>
+                    <strong data-bind="template: { name: 'templatePrice', data: total() }"> </strong>
                 </li>
             </ul>
             <div class="text-right pt-2">
@@ -127,7 +138,6 @@
     </div>
 </script>
 
-
 <script id="Materiales" type="text/html">
     <div class="row">
         <div class="col-md-12">
@@ -136,26 +146,26 @@
             </h5>
 
             <div class="form-row">
-                    <div class="col-md-2">
-                        <label>Cantidad</label>
-                        <input type="text" placeholder="Cantidad" class="form-control" />
-                    </div>
-
-                    <div class="col-md-6">
-                        <label>Descripción</label>
-                        <input type="text" placeholder="Descripción" class="form-control" />
-                    </div>
-
-                    <div class="col-md-2">
-                        <label>Precio</label>
-                        <input type="text" placeholder="Precio" class="form-control" />
-                    </div>
-
-                    <div class="col-md-2">
-                        <label>Acciones</label>
-                        <input type="button" class="btn btn-default" value="Agregar" />
-                    </div>
+                <div class="col-md-2">
+                    <label>Cantidad</label>
+                    <input type="text" placeholder="Cantidad" class="form-control" />
                 </div>
+
+                <div class="col-md-6">
+                    <label>Descripción</label>
+                    <input type="text" placeholder="Descripción" class="form-control" />
+                </div>
+
+                <div class="col-md-2">
+                    <label>Precio</label>
+                    <input type="text" placeholder="Precio" class="form-control" />
+                </div>
+
+                <div class="col-md-2">
+                    <label>Acciones</label>
+                    <input type="button" class="btn btn-default" value="Agregar" />
+                </div>
+            </div>
 
             <div class="form-row pt-4">
                 <div class="col-md-12">
@@ -174,17 +184,23 @@
                             <tr>
                                 <td>
                                     <div>
-                                        <input type="text" class="form-control" placeholder="Cantidad" data-bind="value: cantidad" />
+                                        <input type="text" class="form-control" placeholder="Cantidad" data-bind="value: cantidad.value, css: { 'is-invalid': cantidad.hasError() }" />
+                                        <!-- ko  template: { name: "Validation", data: cantidad } -->
+                                        <!-- /ko -->
                                     </div>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" placeholder="Descripcion" data-bind="value: descripcion" />
+                                    <input type="text" class="form-control" placeholder="Descripcion" data-bind="value: descripcion.value, css: { 'is-invalid': descripcion.hasError() }" />
+                                    <!-- ko  template: { name: "Validation", data: descripcion } -->
+                                    <!-- /ko -->
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" placeholder="precio" data-bind="value: precio" />
+                                    <input type="text" class="form-control" placeholder="Precio" data-bind="value: precio.value, css: { 'is-invalid': precio.hasError() }" />
+                                    <!-- ko  template: { name: "Validation", data: precio } -->
+                                    <!-- /ko -->
                                 </td>
                                 <td>
-                                    <span> COSTOS </span>
+                                    <span data-bind="template: { name: 'templatePrice', data: costo() }"></span>
                                 </td>
                                 <td class="text-center">
                                     <button class="btn btn-secondary">Borrar</button>
@@ -200,10 +216,10 @@
                                     <span>Porcentaje de gastos</span>
                                 </td>
                                 <td class="text-center">
-                                    <span>GASTOS</span>
+                                    <span data-bind="text: porcentajeGastos.value"></span>
                                 </td>
                                 <td>
-                                    <span> GASTOS </span>
+                                    <span data-bind="template: { name: 'templatePrice', data: gasto() }"> </span>
                                 </td>
                                 <td></td>
                             </tr>
@@ -215,18 +231,17 @@
                                     <span>Porcentaje de ganancias</span>
                                 </td>
                                 <td class="text-center">
-                                    <span>GANACIA</span>
+                                    <span data-bind="text: porcentajeGanancia.value"></span>
                                 </td>
                                 <td>
-                                    <span> GANANCIA </span>
+                                    <span data-bind="template: { name: 'templatePrice', data: ganancia() }"> </span>
                                 </td>
-                                <td>
-                                </td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td class="text-right" colspan="3"><strong>Subtotal:</strong></td>
                                 <td class="text-left" colspan="2">
-                                    <span>SUBTOTAL </span>
+                                    <span data-bind="template: { name: 'templatePrice', data: subtotal() }"> </span>
                                 </td>
                             </tr>
                         </tbody>

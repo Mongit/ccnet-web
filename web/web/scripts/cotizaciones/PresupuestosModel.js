@@ -58,13 +58,38 @@ var PresupuetosModel = /** @class */ (function (_super) {
         _this.cotId = UrlUtils.getParameterByName("cotId", window.location);
         _this.proxy = new ProxyRest("/api/Presupuestos");
         _this.presupuestos = self.addFieldArray([new ValidatableValidator("Encontramos un error en alguno de sus campos.")]);
-        _this.presupuestoItems = ko.observableArray();
+        //this.presupuestoItems = ko.observableArray<PresupuestoItemModel>();
+        _this.gastos = ko.observable(0);
+        _this.ganancias = ko.observable(0);
+        _this.iva = ko.observable(0);
+        _this.subtotal = ko.computed(function () {
+            var suma = 0;
+            for (var _i = 0, _a = self.presupuestos.value(); _i < _a.length; _i++) {
+                var presupuesto = _a[_i];
+                suma = suma + presupuesto.subtotal();
+            }
+            return suma;
+        }, self);
+        _this.subtotalItems = ko.computed(function () {
+            var suma = 0;
+            for (var _i = 0, _a = self.presupuestos.value(); _i < _a.length; _i++) {
+                var presupuesto = _a[_i];
+                for (var _b = 0, _c = presupuesto.items(); _b < _c.length; _b++) {
+                    var item = _c[_b];
+                    suma = suma + item.costo();
+                }
+            }
+            return suma;
+        }, self);
+        _this.total = ko.computed(function () {
+            return 1;
+        }, self);
         _this.getAll();
         return _this;
     }
     PresupuetosModel.prototype.getAll = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var self, presupuestosFromServer, presupuestosParsed, _i, presupuestosParsed_1, presupuesto, presupuestomodel, _a, _b, item, newitem;
+            var self, presupuestosFromServer, presupuestosParsed, _i, presupuestosParsed_1, presupuesto, presupuestomodel, _a, _b, item;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -78,22 +103,27 @@ var PresupuetosModel = /** @class */ (function (_super) {
                             presupuestomodel = new PresupuestoModel();
                             for (_a = 0, _b = presupuesto.items; _a < _b.length; _a++) {
                                 item = _b[_a];
-                                newitem = new PresupuestoItemModel();
-                                self.presupuestoItems.push(newitem.getModelFromTo(item, newitem));
+                                presupuestomodel.items.push(self.getModelFromTo(new PresupuestoItemModel(), item));
                             }
-                            presupuestomodel.cantidad = presupuesto.cantidad;
-                            presupuestomodel.descripcion = presupuesto.descripcion;
-                            presupuestomodel.porcentajeGastos = presupuesto.porcentajeGastos;
-                            presupuestomodel.porcentajeGanancia = presupuesto.porcentajeGanancia;
-                            presupuestomodel.porcentajeIva = presupuesto.porcentajeIVA;
+                            presupuestomodel.cantidad.value(presupuesto.cantidad);
+                            presupuestomodel.descripcion.value(presupuesto.descripcion);
+                            presupuestomodel.porcentajeGastos.value(presupuesto.porcentajeGastos);
+                            presupuestomodel.porcentajeGanancia.value(presupuesto.porcentajeGanancia);
+                            presupuestomodel.porcentajeIva.value(presupuesto.porcentajeIVA);
                             presupuestomodel.cotizacionId = presupuesto.cotizacionId;
-                            presupuestomodel.presupuestosItem = self.presupuestoItems;
                             self.presupuestos.value.push(presupuestomodel);
                         }
                         return [2 /*return*/];
                 }
             });
         });
+    };
+    PresupuetosModel.prototype.getModelFromTo = function (newitem, item) {
+        newitem.cantidad.value(item.cantidad);
+        newitem.descripcion.value(item.descripcion);
+        newitem.precio.value(item.precio);
+        newitem.presupuestoId = item.presupuestoId;
+        return newitem;
     };
     return PresupuetosModel;
 }(KoForm));

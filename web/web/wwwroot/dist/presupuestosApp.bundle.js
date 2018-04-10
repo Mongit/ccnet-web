@@ -677,6 +677,7 @@ var PresupuestoItemModel = /** @class */ (function (_super) {
         _this.cantidad = self.addField([new numberValidator.FloatValidator(), new numberValidator.RequiredNumberValidator()]);
         _this.descripcion = self.addField([new stringValidator.RequiredStringValidator()]);
         _this.precio = self.addField([new numberValidator.FloatValidator(), new numberValidator.RequiredNumberValidator()]);
+        _this.presupuestoId = "";
         _this.costo = ko.computed(function () {
             return self.cantidad.value() * self.precio.value();
         }, self);
@@ -688,7 +689,7 @@ var PresupuestoItemModel = /** @class */ (function (_super) {
             cantidad: self.cantidad.value(),
             descripcion: self.descripcion.value(),
             precio: self.precio.value(),
-            presupuestoId: "00000000-0000-0000-0000-000000000000"
+            presupuestoId: self.presupuestoId || "00000000-0000-0000-0000-000000000000"
         };
     };
     return PresupuestoItemModel;
@@ -1177,7 +1178,32 @@ var PresupuetosModel = /** @class */ (function (_super) {
         _this.cotId = UrlUtils.getParameterByName("cotId", window.location);
         _this.proxy = new ProxyRest("/api/Presupuestos");
         _this.presupuestos = self.addFieldArray([new ValidatableValidator("Encontramos un error en alguno de sus campos.")]);
-        _this.presupuestoItems = ko.observableArray();
+        //this.presupuestoItems = ko.observableArray<PresupuestoItemModel>();
+        _this.gastos = ko.observable(0);
+        _this.ganancias = ko.observable(0);
+        _this.iva = ko.observable(0);
+        _this.subtotal = ko.computed(function () {
+            var suma = 0;
+            for (var _i = 0, _a = self.presupuestos.value(); _i < _a.length; _i++) {
+                var presupuesto = _a[_i];
+                suma = suma + presupuesto.subtotal();
+            }
+            return suma;
+        }, self);
+        _this.subtotalItems = ko.computed(function () {
+            var suma = 0;
+            for (var _i = 0, _a = self.presupuestos.value(); _i < _a.length; _i++) {
+                var presupuesto = _a[_i];
+                for (var _b = 0, _c = presupuesto.items(); _b < _c.length; _b++) {
+                    var item = _c[_b];
+                    suma = suma + item.costo();
+                }
+            }
+            return suma;
+        }, self);
+        _this.total = ko.computed(function () {
+            return 1;
+        }, self);
         _this.getAll();
         return _this;
     }
@@ -1197,15 +1223,14 @@ var PresupuetosModel = /** @class */ (function (_super) {
                             presupuestomodel = new PresupuestoModel();
                             for (_a = 0, _b = presupuesto.items; _a < _b.length; _a++) {
                                 item = _b[_a];
-                                self.presupuestoItems.push(self.getModelFromTo(new PresupuestoItemModel(), item));
+                                presupuestomodel.items.push(self.getModelFromTo(new PresupuestoItemModel(), item));
                             }
-                            presupuestomodel.cantidad = presupuesto.cantidad;
-                            presupuestomodel.descripcion = presupuesto.descripcion;
-                            presupuestomodel.porcentajeGastos = presupuesto.porcentajeGastos;
-                            presupuestomodel.porcentajeGanancia = presupuesto.porcentajeGanancia;
-                            presupuestomodel.porcentajeIva = presupuesto.porcentajeIVA;
+                            presupuestomodel.cantidad.value(presupuesto.cantidad);
+                            presupuestomodel.descripcion.value(presupuesto.descripcion);
+                            presupuestomodel.porcentajeGastos.value(presupuesto.porcentajeGastos);
+                            presupuestomodel.porcentajeGanancia.value(presupuesto.porcentajeGanancia);
+                            presupuestomodel.porcentajeIva.value(presupuesto.porcentajeIVA);
                             presupuestomodel.cotizacionId = presupuesto.cotizacionId;
-                            presupuestomodel.items = self.presupuestoItems;
                             self.presupuestos.value.push(presupuestomodel);
                         }
                         return [2 /*return*/];
@@ -1214,9 +1239,9 @@ var PresupuetosModel = /** @class */ (function (_super) {
         });
     };
     PresupuetosModel.prototype.getModelFromTo = function (newitem, item) {
-        newitem.cantidad = item.cantidad;
-        newitem.descripcion = item.descripcion;
-        newitem.precio = item.precio;
+        newitem.cantidad.value(item.cantidad);
+        newitem.descripcion.value(item.descripcion);
+        newitem.precio.value(item.precio);
         newitem.presupuestoId = item.presupuestoId;
         return newitem;
     };

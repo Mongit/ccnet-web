@@ -67,12 +67,12 @@ var PresupuestoModel = /** @class */ (function (_super) {
         _this.ganancia = ko.observable(0);
         _this.porcentajeIva = self.addField([new numberValidator.FloatValidator, new numberValidator.RequiredNumberValidator()], null, 16);
         _this.iva = ko.observable(0);
-        _this.presupuestosItem = ko.observableArray();
+        _this.items = ko.observableArray();
         _this.proxy = new ProxyRest("/api/Presupuestos");
         _this.subtotal = ko.computed(function () {
             var sumaCostos = 0;
             var subTotal = 0;
-            for (var _i = 0, _a = self.presupuestosItem(); _i < _a.length; _i++) {
+            for (var _i = 0, _a = self.items(); _i < _a.length; _i++) {
                 var pi = _a[_i];
                 sumaCostos += pi.costo();
             }
@@ -90,7 +90,7 @@ var PresupuestoModel = /** @class */ (function (_super) {
     PresupuestoModel.prototype.getModel = function () {
         var self = this;
         var itemArray = new Array();
-        for (var _i = 0, _a = self.presupuestosItem(); _i < _a.length; _i++) {
+        for (var _i = 0, _a = self.items(); _i < _a.length; _i++) {
             var item = _a[_i];
             itemArray.push(item.getModel());
         }
@@ -118,7 +118,7 @@ var PresupuestoModel = /** @class */ (function (_super) {
                             newPresupuesto.cantidad.value(self.temporal().cantidad.value());
                             newPresupuesto.descripcion.value(self.temporal().descripcion.value());
                             newPresupuesto.precio.value(self.temporal().precio.value());
-                            self.presupuestosItem.push(newPresupuesto);
+                            self.items.push(newPresupuesto);
                             self.temporal(new PresupuestoItemModel());
                             self.temporalHasFocus(true);
                         }
@@ -138,7 +138,7 @@ var PresupuestoModel = /** @class */ (function (_super) {
             title: "¡Confirmación!",
             onClose: function (e) {
                 if (modalModel.result() === true) {
-                    self.presupuestosItem.remove(item);
+                    self.items.remove(item);
                 }
             }
         });

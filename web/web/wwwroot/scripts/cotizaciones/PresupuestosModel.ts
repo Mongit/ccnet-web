@@ -13,8 +13,16 @@ class PresupuetosModel extends KoForm {
     public proxy: ProxyRest;
 
     public presupuestos: IFieldArray<PresupuestoModel>;
-    public presupuestoItems: KnockoutObservableArray<PresupuestoItemModel>;
+    //public presupuestoItems: KnockoutObservableArray<PresupuestoItemModel>;
 
+    public gastos: KnockoutObservable<number>;
+    public ganancias: KnockoutObservable<number>;
+    public iva: KnockoutObservable<number>;
+
+    public subtotal: KnockoutComputed<number>;
+    public subtotalItems: KnockoutComputed<number>;
+    public total: KnockoutComputed<number>;
+    
     constructor() {
         super();
         const self = this;
@@ -24,7 +32,31 @@ class PresupuetosModel extends KoForm {
         this.proxy = new ProxyRest("/api/Presupuestos");
 
         this.presupuestos = self.addFieldArray<PresupuestoModel>([new ValidatableValidator<IFieldBase<any, any>>("Encontramos un error en alguno de sus campos.")]);
-        this.presupuestoItems = ko.observableArray<PresupuestoItemModel>();
+        //this.presupuestoItems = ko.observableArray<PresupuestoItemModel>();
+
+        this.gastos = ko.observable<number>(0);
+        this.ganancias = ko.observable<number>(0);
+        this.iva = ko.observable<number>(0);
+
+        this.subtotal = ko.computed<number>(function (): number {
+            let suma = 0;
+            for (let presupuesto of self.presupuestos.value()) {
+                suma = suma + presupuesto.subtotal();
+            }
+            return suma;
+        }, self);
+        this.subtotalItems = ko.computed<number>(function (): number {
+            let suma = 0;
+            for (let presupuesto of self.presupuestos.value()) {
+                for (let item of presupuesto.items()) {
+                    suma = suma + item.costo();
+                }
+            }
+            return suma;
+        }, self);
+        this.total = ko.computed<number>(function (): number {
+            return 1;
+        }, self);
 
         this.getAll();
     }
@@ -36,24 +68,29 @@ class PresupuetosModel extends KoForm {
 
         for (let presupuesto of presupuestosParsed) {
             let presupuestomodel = new PresupuestoModel();
-
+            
             for (let item of presupuesto.items) {
-                let newitem = new PresupuestoItemModel();
-                
-                self.presupuestoItems.push(newitem.getModelFromTo(item, newitem));
+                presupuestomodel.items.push(self.getModelFromTo(new PresupuestoItemModel(), item));
             }
 
-            presupuestomodel.cantidad = presupuesto.cantidad;
-            presupuestomodel.descripcion = presupuesto.descripcion;
-            presupuestomodel.porcentajeGastos = presupuesto.porcentajeGastos;
-            presupuestomodel.porcentajeGanancia = presupuesto.porcentajeGanancia;
-            presupuestomodel.porcentajeIva = presupuesto.porcentajeIVA;
+            presupuestomodel.cantidad.value(presupuesto.cantidad);
+            presupuestomodel.descripcion.value(presupuesto.descripcion);
+            presupuestomodel.porcentajeGastos.value(presupuesto.porcentajeGastos);
+            presupuestomodel.porcentajeGanancia.value(presupuesto.porcentajeGanancia);
+            presupuestomodel.porcentajeIva.value(presupuesto.porcentajeIVA);
             presupuestomodel.cotizacionId = presupuesto.cotizacionId;
-            presupuestomodel.presupuestosItem = self.presupuestoItems;
             
             self.presupuestos.value.push(presupuestomodel); 
-            
         }
+    }
+    
+    public getModelFromTo(newitem, item): PresupuestoItemModel {
+        newitem.cantidad.value(item.cantidad);
+        newitem.descripcion.value(item.descripcion);
+        newitem.precio.value(item.precio);
+        newitem.presupuestoId = item.presupuestoId;
+
+        return newitem;
     }
 }
 
