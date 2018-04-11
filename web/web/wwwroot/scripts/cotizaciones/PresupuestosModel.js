@@ -50,19 +50,24 @@ var KoForm = require("./../form/KoForm");
 var ValidatableValidator = require("./../validators/ValidatableValidator");
 var PresupuestoModel = require("./PresupuestoModel");
 var PresupuestoItemModel = require("./PresupuestoItemModel");
+var moment = require("moment");
+moment.locale('es');
 var PresupuetosModel = /** @class */ (function (_super) {
     __extends(PresupuetosModel, _super);
     function PresupuetosModel() {
         var _this = _super.call(this) || this;
         var self = _this;
         _this.cotId = UrlUtils.getParameterByName("cotId", window.location);
+        _this.cteId = UrlUtils.getParameterByName("cteId", window.location);
         _this.proxy = new ProxyRest("/api/Presupuestos");
         _this.presupuestos = self.addFieldArray([new ValidatableValidator("Encontramos un error en alguno de sus campos.")]);
-        //this.presupuestoItems = ko.observableArray<PresupuestoItemModel>();
-        _this.gastos = ko.observable(0);
-        _this.ganancias = ko.observable(0);
-        _this.iva = ko.observable(0);
-        _this.subtotal = ko.computed(function () {
+        _this.empresa = ko.observable("");
+        _this.domicilio = ko.observable("");
+        _this.contacto = ko.observable("");
+        _this.fechaCreado = ko.observable("");
+        _this.fechaFuturo = ko.observable("");
+        _this.currentTemplate = ko.observable("editarPresupuestos");
+        _this.subtotalPresupuestos = ko.computed(function () {
             var suma = 0;
             for (var _i = 0, _a = self.presupuestos.value(); _i < _a.length; _i++) {
                 var presupuesto = _a[_i];
@@ -70,19 +75,16 @@ var PresupuetosModel = /** @class */ (function (_super) {
             }
             return suma;
         }, self);
-        _this.subtotalItems = ko.computed(function () {
+        _this.ivaPresupuestos = ko.computed(function () {
             var suma = 0;
             for (var _i = 0, _a = self.presupuestos.value(); _i < _a.length; _i++) {
                 var presupuesto = _a[_i];
-                for (var _b = 0, _c = presupuesto.items(); _b < _c.length; _b++) {
-                    var item = _c[_b];
-                    suma = suma + item.costo();
-                }
+                suma = suma + presupuesto.iva();
             }
             return suma;
         }, self);
-        _this.total = ko.computed(function () {
-            return 1;
+        _this.totalPresupuestos = ko.computed(function () {
+            return self.subtotalPresupuestos() + self.ivaPresupuestos();
         }, self);
         _this.getAll();
         return _this;
@@ -124,6 +126,82 @@ var PresupuetosModel = /** @class */ (function (_super) {
         newitem.precio.value(item.precio);
         newitem.presupuestoId = item.presupuestoId;
         return newitem;
+    };
+    PresupuetosModel.prototype.addPresupuesto = function () {
+        var self = this;
+        $("div.collapse").removeClass("show");
+        var presupuesto = new PresupuestoModel();
+        self.presupuestos.value.push(presupuesto);
+    };
+    PresupuetosModel.prototype.verTemplate = function () {
+        this.getCotizacion();
+        this.currentTemplate('verPresupuestos');
+    };
+    PresupuetosModel.prototype.editarTemplate = function () {
+        this.currentTemplate('editarPresupuestos');
+    };
+    PresupuetosModel.prototype.getCotizacion = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, proxyCotizaciones, cotizaciones, cotizacionesJson, _i, cotizacionesJson_1, cotizacion;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getCliente()];
+                    case 1:
+                        _a.sent();
+                        self = this;
+                        proxyCotizaciones = new ProxyRest("/api/Cotizaciones");
+                        return [4 /*yield*/, proxyCotizaciones.get(self.cteId)];
+                    case 2:
+                        cotizaciones = _a.sent();
+                        cotizacionesJson = JSON.parse((JSON.parse(JSON.stringify(cotizaciones))));
+                        for (_i = 0, cotizacionesJson_1 = cotizacionesJson; _i < cotizacionesJson_1.length; _i++) {
+                            cotizacion = cotizacionesJson_1[_i];
+                            if (self.cotId === cotizacion.id) {
+                                self.fechaCreado(moment(cotizacion.fecha).format('LL'));
+                                self.fechaFuturo(moment(cotizacion.fecha).add(15, 'days').format('LL'));
+                                break;
+                            }
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    PresupuetosModel.prototype.getCliente = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, proxyCliente, cliente, clienteJson;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        self = this;
+                        proxyCliente = new ProxyRest("/api/Clientes");
+                        return [4 /*yield*/, proxyCliente.get(self.cteId)];
+                    case 1:
+                        cliente = _a.sent();
+                        clienteJson = JSON.parse((JSON.parse(JSON.stringify(cliente))));
+                        self.empresa(clienteJson.empresa);
+                        self.domicilio(clienteJson.domicilio);
+                        self.contacto(clienteJson.contacto);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    PresupuetosModel.prototype.print = function () {
+        var self = this;
+        var data = $("#printableArea").html();
+        var myWindow = window.open('', 'ConfeccionesColombia', 'height=600,width=800,scrollbars=yes');
+        myWindow.document.write('<!DOCTYPE html>');
+        myWindow.document.write('<html><head>');
+        myWindow.document.write('<head>');
+        myWindow.document.write('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
+        myWindow.document.write('<title>Confecciones Colombia</title>');
+        myWindow.document.write('<link href="/css/bootstrap.print.min.css" rel="stylesheet" type="text/css"/>');
+        myWindow.document.write('</head><body>');
+        myWindow.document.write(data);
+        myWindow.document.write('</body></html>');
+        myWindow.document.close();
+        myWindow.print();
     };
     return PresupuetosModel;
 }(KoForm));

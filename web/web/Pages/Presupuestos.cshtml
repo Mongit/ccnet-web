@@ -14,46 +14,50 @@
 <h2>Presupuestos</h2>
 
 <div id="presupuestosForm">
-    <!-- ko  template: { name: "DatosEmpresa" } --><!-- /ko -->
+    <div data-bind="template: { name: currentTemplate() }"></div>
+</div>
+
+<script id="editarPresupuestos" type="text/html">
+    <!-- ko  template: { name: "DatosEmpresaPresupuestos" } --><!-- /ko -->
     <div id="accordion" class="my-lg-5">
         <!-- ko foreach: presupuestos.value -->
         <div class="card">
             <form data-bind="submit: guardar" novalidate>
-                <div class="card-header">
+                <div class="card-header" data-bind="attr: { id: 'presupuestoHeading' + $index() }, css: { 'alert-danger' : $data.hasError() }">
                     <h5 class="mb-0">
-                        <button type="button" class="btn btn-link" data-toggle="collapse" aria-expanded="true">
-                            <span>Title?</span>
+                        <button type="button" class="btn btn-link" data-toggle="collapse" data-bind="attr: { 'data-target': '#collapse' + $index(), 'aria-controls': 'collapse' + $index() }" aria-expanded="true">
+                            <span data-bind="text: (cantidad.value() === undefined ? '' : cantidad.value() + ' ' ) + (descripcion.value() === undefined ? 'Cotización' : descripcion.value()) + ' |  Total: $' + total().toFixed(2) "></span>
                         </button>
                     </h5>
                 </div>
-                <div class="collapse show" data-parent="#accordion">
+                <div class="collapse show" data-parent="#accordion" data-bind="attr: { 'aria-labelledby': 'presupuestoHeading' + $index(), id: 'collapse' + $index() }">
                     <div class="card-body">
-                        <!-- ko  template: { name: "Presupuesto" } --><!-- /ko -->
+                        <!-- ko  template: { name: "Presupuestos" } --><!-- /ko -->
                     </div>
                 </div>
             </form>
         </div>
         <!-- /ko -->
     </div>
-</div>
+</script>
 
-<script id="DatosEmpresa" type="text/html">
+<script id="DatosEmpresaPresupuestos" type="text/html">
     <div class="form">
         <div class="form-group mx-1 text-right">
-            <button class="btn btn-default">Agregar</button>
-            <button class="btn btn-default">Ver</button>
+            <button class="btn btn-default" data-bind="click: addPresupuesto">Agregar</button>
+            <button class="btn btn-default" data-bind="click: verTemplate">Ver</button>
             <button type="button" class="btn btn-default">Volver</button>
         </div>
     </div>
 </script>
 
-<script id="Presupuesto" type="text/html">
+<script id="Presupuestos" type="text/html">
     <form class="form" novalidate>
         <h3>
             Cotización
         </h3>
 
-        <!-- ko template: { name: "Cotizacion" } -->
+        <!-- ko template: { name: "CotizacionPresupuestos" } -->
         <!-- /ko  -->
 
         <div class="row">
@@ -63,19 +67,19 @@
             </div>
         </div>
 
-        <!-- ko template: { name: "Materiales" } -->
+        <!-- ko template: { name: "MaterialesPresupuestos" } -->
         <!-- /ko  -->
 
     </form>
 </script>
 
-<script id="Cotizacion" type="text/html">
+<script id="CotizacionPresupuestos" type="text/html">
     <div class="row">
         <div class="col-md-8">
             <div class="form-row">
                 <div class="col-md-2">
                     <label>Cantidad</label>
-                    <input type="text" class="form-control" placeholder="Cantidad" data-bind="value: cantidad.value, hasFocus: true, css: { 'is-invalid': cantidad.hasError() }" />
+                    <input type="text" class="form-control" placeholder="Cantidad" data-bind="value: cantidad.value, css: { 'is-invalid': cantidad.hasError() }" />
                     <!-- ko template: { name: "Validation", data: cantidad } -->
                     <!-- /ko  -->
                 </div>
@@ -91,21 +95,21 @@
             <div class="form-row mt-2">
                 <div class="col-md-4">
                     <label>% Gastos</label>
-                    <input type="text" class="form-control" placeholder="PorcentajeGastos" data-bind="value: porcentajeGastos.value, css: { 'is-invalid': porcentajeGastos.hasError() }" />
+                    <input type="text" class="form-control" placeholder="% Gastos" data-bind="value: porcentajeGastos.value, css: { 'is-invalid': porcentajeGastos.hasError() }" />
                     <!-- ko template: { name: "Validation", data: porcentajeGastos }-->
                     <!-- /ko -->
                 </div>
 
                 <div class="col-md-4">
                     <label>% Gancancias</label>
-                    <input type="text" class="form-control" placeholder="PorcentajeGanancias" data-bind="value: porcentajeGanancia.value, css: { 'is-invalid': porcentajeGanancia.hasError() }" />
+                    <input type="text" class="form-control" placeholder="% Ganancias" data-bind="value: porcentajeGanancia.value, css: { 'is-invalid': porcentajeGanancia.hasError() }" />
                     <!-- ko template: { name: "Validation", data: porcentajeGanancia }-->
                     <!-- /ko -->
                 </div>
 
                 <div class="col-md-4">
                     <label>% IVA</label>
-                    <input type="text" class="form-control" placeholder="PorcentajeIVA" data-bind="value: porcentajeIva.value, css: { 'is-invalid': porcentajeIva.hasError() }" />
+                    <input type="text" class="form-control" placeholder="% IVA" data-bind="value: porcentajeIva.value, css: { 'is-invalid': porcentajeIva.hasError() }" />
                     <!-- ko template: {name: "Validation", data: porcentajeIva }-->
                     <!-- /ko -->
                 </div>
@@ -138,7 +142,7 @@
     </div>
 </script>
 
-<script id="Materiales" type="text/html">
+<script id="MaterialesPresupuestos" type="text/html">
     <div class="row">
         <div class="col-md-12">
             <h5>
@@ -250,4 +254,8 @@
             </div>
         </div>
     </div>
+</script>
+
+<script type="text/html" id="verPresupuestos">
+    @Html.Partial("_CotizacionesViewVerPartial")
 </script>
