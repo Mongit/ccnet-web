@@ -169,9 +169,14 @@ class PresupuetosModel extends KoForm {
     public async update(presupuesto: PresupuestoModel): Promise<void> {
         const self = this;
         if (await presupuesto.validate()) {
-            let model = presupuesto.getModel();
-            let serverModel = await self.proxy.put<IPresupuestoModel>(presupuesto.presupuestoId, model);
-            alert("cotizacion" + JSON.stringify(serverModel));
+            if (!presupuesto.presupuestoId) {
+                presupuesto.guardar();
+            }
+            else {
+                let model = presupuesto.getModel();
+                let serverModel = await self.proxy.put<IPresupuestoModel>(presupuesto.presupuestoId, model);
+                alert("cotizacion" + JSON.stringify(serverModel));
+            }
         }
     }
 }

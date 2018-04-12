@@ -19508,14 +19508,18 @@ var PresupuetosModel = /** @class */ (function (_super) {
                         self = this;
                         return [4 /*yield*/, presupuesto.validate()];
                     case 1:
-                        if (!_a.sent()) return [3 /*break*/, 3];
+                        if (!_a.sent()) return [3 /*break*/, 4];
+                        if (!!presupuesto.presupuestoId) return [3 /*break*/, 2];
+                        presupuesto.guardar();
+                        return [3 /*break*/, 4];
+                    case 2:
                         model = presupuesto.getModel();
                         return [4 /*yield*/, self.proxy.put(presupuesto.presupuestoId, model)];
-                    case 2:
+                    case 3:
                         serverModel = _a.sent();
                         alert("cotizacion" + JSON.stringify(serverModel));
-                        _a.label = 3;
-                    case 3: return [2 /*return*/];
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
                 }
             });
         });
