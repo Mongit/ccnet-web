@@ -10,6 +10,7 @@
 }
 
 @Html.Partial("_KoGlobalTemplates")
+@Html.Partial("_ConfirmDeleteModal")
 
 <h2>Presupuestos</h2>
 
@@ -149,25 +150,31 @@
                 Materiales
             </h5>
 
-            <div class="form-row">
+            <div class="form-row" data-bind="with: temporal()">
                 <div class="col-md-2">
                     <label>Cantidad</label>
-                    <input type="text" placeholder="Cantidad" class="form-control" />
+                    <input type="text" placeholder="Cantidad" class="form-control" data-bind="value: cantidad.value, css: { 'is-invalid': cantidad.hasError() }" />
+                    <!-- ko  template: { name: "Validation", data: cantidad } -->
+                    <!-- /ko -->
                 </div>
 
                 <div class="col-md-6">
                     <label>Descripción</label>
-                    <input type="text" placeholder="Descripción" class="form-control" />
+                    <input type="text" placeholder="Descripción" class="form-control" data-bind="value: descripcion.value, css: { 'is-invalid': descripcion.hasError() }" />
+                    <!-- ko  template: { name: "Validation", data: descripcion } -->
+                    <!-- /ko -->
                 </div>
 
                 <div class="col-md-2">
                     <label>Precio</label>
-                    <input type="text" placeholder="Precio" class="form-control" />
+                    <input type="text" placeholder="Precio" class="form-control" data-bind="value: precio.value, css: { 'is-invalid': precio.hasError() }" />
+                    <!-- ko  template: { name: "Validation", data: precio } -->
+                    <!-- /ko -->
                 </div>
 
                 <div class="col-md-2">
                     <label>Acciones</label>
-                    <input type="button" class="btn btn-default" value="Agregar" />
+                    <input type="button" class="btn btn-default" data-bind="click: $parent.addPresupuestoItem.bind($parent)" value="Agregar" />
                 </div>
             </div>
 
@@ -207,7 +214,7 @@
                                     <span data-bind="template: { name: 'templatePrice', data: costo() }"></span>
                                 </td>
                                 <td class="text-center">
-                                    <button class="btn btn-secondary">Borrar</button>
+                                    <button class="btn btn-secondary" data-bind="click: $parent.removePresupuestoItem.bind($parent)">Borrar</button>
                                 </td>
                             </tr>
                             <!-- /ko -->
