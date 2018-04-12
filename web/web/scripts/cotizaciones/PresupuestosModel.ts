@@ -8,6 +8,9 @@ import PresupuestoModel = require("./PresupuestoModel");
 import PresupuestoItemModel = require("./PresupuestoItemModel");
 import IPresupuestoModel = require("./iPresupuestoModel");
 import IPresupuestoItemModel = require("./PresupuestoItemModel");
+import ConfirmModal = require("./../modals/confirmModal");
+import BindedModal = require("./../modals/BindedModal");
+import Size = require("./../utils/Size");
 import * as moment from 'moment';
 
 moment.locale('es');
@@ -178,6 +181,33 @@ class PresupuetosModel extends KoForm {
                 alert("cotizacion" + JSON.stringify(serverModel));
             }
         }
+    }
+
+    public removePresupuesto(presupuesto: PresupuestoModel): void {
+        const self = this;
+        let modalModel = new ConfirmModal("¿Está seguro de borrar ésta Cotización?");
+
+        let dialog = new BindedModal({
+            model: modalModel,
+            size: Size.medium,
+            templateBody: "ConfirmDeleteModalBody",
+            templateFooter: "ConfirmDeleteModalFooter",
+            title: "¡Confirmación!",
+            onClose: async function (e: JQuery.Event<HTMLElement, null>): Promise<void> {
+
+                if (modalModel.result() === true) {
+                    if (!presupuesto.presupuestoId) {
+                        self.presupuestos.value.remove(presupuesto);
+                    }
+                    else {
+                        self.presupuestos.value.remove(presupuesto);
+                        await self.proxy.delete<PresupuestoModel>(presupuesto.presupuestoId);
+                        alert("Cotizacion eliminada con éxito.")
+                    }
+                }
+
+            }
+        });
     }
 }
 

@@ -91,7 +91,7 @@ var __extends = (this && this.__extends) || (function () {
 var Field = __webpack_require__(138);
 var FieldBase = __webpack_require__(2);
 var FieldArray = __webpack_require__(141);
-var ValidatableValidator = __webpack_require__(134);
+var ValidatableValidator = __webpack_require__(135);
 var KoForm = /** @class */ (function (_super) {
     __extends(KoForm, _super);
     function KoForm(validators) {
@@ -278,7 +278,7 @@ module.exports = HttpMethod;
 
 /***/ }),
 
-/***/ 134:
+/***/ 135:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -374,7 +374,7 @@ module.exports = ValidatableValidator;
 
 /***/ }),
 
-/***/ 135:
+/***/ 136:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -786,7 +786,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var KoForm = __webpack_require__(10);
 var ProxyRest = __webpack_require__(5);
 var UrlUtils = __webpack_require__(137);
-var validators = __webpack_require__(135);
+var validators = __webpack_require__(136);
 var EditarClienteModel = /** @class */ (function (_super) {
     __extends(EditarClienteModel, _super);
     function EditarClienteModel() {
