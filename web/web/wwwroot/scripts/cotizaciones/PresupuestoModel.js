@@ -59,6 +59,7 @@ var PresupuestoModel = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         var self = _this;
         _this.cotizacionId = UrlUtils.getParameterByName('cotId', window.location);
+        _this.presupuestoId = "";
         _this.cantidad = self.addField([new numberValidator.FloatValidator(), new numberValidator.RequiredNumberValidator()]);
         _this.descripcion = self.addField([new stringValidator.RequiredStringValidator()]);
         _this.porcentajeGastos = self.addField([new numberValidator.FloatValidator(), new numberValidator.RequiredNumberValidator()], null, 5);
@@ -95,6 +96,7 @@ var PresupuestoModel = /** @class */ (function (_super) {
             itemArray.push(item.getModel());
         }
         return {
+            id: self.presupuestoId ? self.presupuestoId : "00000000-0000-0000-0000-000000000000",
             cantidad: self.cantidad.value(),
             descripcion: self.descripcion.value(),
             porcentajeGastos: self.porcentajeGastos.value(),

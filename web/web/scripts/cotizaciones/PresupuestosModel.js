@@ -107,6 +107,7 @@ var PresupuetosModel = /** @class */ (function (_super) {
                                 item = _b[_a];
                                 presupuestomodel.items.push(self.getModelFromTo(new PresupuestoItemModel(), item));
                             }
+                            presupuestomodel.presupuestoId = presupuesto.id;
                             presupuestomodel.cantidad.value(presupuesto.cantidad);
                             presupuestomodel.descripcion.value(presupuesto.descripcion);
                             presupuestomodel.porcentajeGastos.value(presupuesto.porcentajeGastos);
@@ -121,6 +122,7 @@ var PresupuetosModel = /** @class */ (function (_super) {
         });
     };
     PresupuetosModel.prototype.getModelFromTo = function (newitem, item) {
+        newitem.itemId = item.id;
         newitem.cantidad.value(item.cantidad);
         newitem.descripcion.value(item.descripcion);
         newitem.precio.value(item.precio);
@@ -202,6 +204,27 @@ var PresupuetosModel = /** @class */ (function (_super) {
         myWindow.document.write('</body></html>');
         myWindow.document.close();
         myWindow.print();
+    };
+    PresupuetosModel.prototype.update = function (presupuesto) {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, model, serverModel;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        self = this;
+                        return [4 /*yield*/, presupuesto.validate()];
+                    case 1:
+                        if (!_a.sent()) return [3 /*break*/, 3];
+                        model = presupuesto.getModel();
+                        return [4 /*yield*/, self.proxy.put(presupuesto.presupuestoId, model)];
+                    case 2:
+                        serverModel = _a.sent();
+                        alert("cotizacion" + JSON.stringify(serverModel));
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
     };
     return PresupuetosModel;
 }(KoForm));

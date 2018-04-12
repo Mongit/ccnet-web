@@ -1,6 +1,7 @@
 ﻿import IPresupuestoItemModel = require("./iPresupuestoItemModel");
 
 interface IPresupuestoModel {
+    id: string;
     cantidad: number;
     descripcion: string;
     porcentajeGastos: number;

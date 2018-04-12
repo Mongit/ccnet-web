@@ -14,6 +14,7 @@ import ProxyRest = require("./../api/proxyRest");
 
 class PresupuestoModel extends KoForm {
     public cotizacionId: string;
+    public presupuestoId: string;
 
     public cantidad: IField<number>;
     public descripcion: IField<string>;
@@ -38,6 +39,7 @@ class PresupuestoModel extends KoForm {
         super();
         const self = this;
         this.cotizacionId = UrlUtils.getParameterByName('cotId', window.location);
+        this.presupuestoId = "";
 
         this.cantidad = self.addField<number>([new numberValidator.FloatValidator(), new numberValidator.RequiredNumberValidator()]);
         this.descripcion = self.addField<string>([new stringValidator.RequiredStringValidator()]);
@@ -82,6 +84,7 @@ class PresupuestoModel extends KoForm {
         }
 
         return {
+            id: self.presupuestoId ? self.presupuestoId : "00000000-0000-0000-0000-000000000000",
             cantidad: self.cantidad.value(),
             descripcion: self.descripcion.value(),
             porcentajeGastos: self.porcentajeGastos.value(),

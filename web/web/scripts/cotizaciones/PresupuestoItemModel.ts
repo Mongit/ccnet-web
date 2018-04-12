@@ -9,6 +9,7 @@ class PresupuestoItemModel extends KoForm {
     public descripcion: IField<string>;
     public precio: IField<number>;
     public presupuestoId: string;
+    public itemId: string;
 
     public costo: KnockoutComputed<number>;
 
@@ -20,6 +21,7 @@ class PresupuestoItemModel extends KoForm {
         this.precio = self.addField<number>([new numberValidator.FloatValidator(), new numberValidator.RequiredNumberValidator()]);
 
         this.presupuestoId = "";
+        this.itemId = "";
 
         this.costo = ko.computed<number>(function (): number {
             return self.cantidad.value() * self.precio.value();
@@ -29,10 +31,11 @@ class PresupuestoItemModel extends KoForm {
     public getModel(): IPresupuestoItemModel {
         const self = this;
         return {
+            id: self.itemId ? self.itemId : "00000000-0000-0000-0000-000000000000",
             cantidad: self.cantidad.value(),
             descripcion: self.descripcion.value(),
             precio: self.precio.value(),
-            presupuestoId: self.presupuestoId || "00000000-0000-0000-0000-000000000000"
+            presupuestoId: self.presupuestoId ? self.presupuestoId : "00000000-0000-0000-0000-000000000000"
         };
     }
 }

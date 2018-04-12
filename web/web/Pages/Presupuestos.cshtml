@@ -22,7 +22,7 @@
     <div id="accordion" class="my-lg-5">
         <!-- ko foreach: presupuestos.value -->
         <div class="card">
-            <form data-bind="submit: guardar" novalidate>
+            <form>
                 <div class="card-header" data-bind="attr: { id: 'presupuestoHeading' + $index() }, css: { 'alert-danger' : $data.hasError() }">
                     <h5 class="mb-0">
                         <button type="button" class="btn btn-link" data-toggle="collapse" data-bind="attr: { 'data-target': '#collapse' + $index(), 'aria-controls': 'collapse' + $index() }" aria-expanded="true">
@@ -132,7 +132,7 @@
                 </li>
             </ul>
             <div class="text-right pt-2">
-                <input type="submit" class="btn btn-primary" value="Guardar" />
+                <button class="btn btn-primary" data-bind="click: $parent.update.bind($parent)">Guardar</button>
                 <button class="btn btn-secondary">
                     Borrar
                 </button>

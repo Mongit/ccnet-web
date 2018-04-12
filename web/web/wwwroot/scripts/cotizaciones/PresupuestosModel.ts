@@ -6,6 +6,8 @@ import ValidatableValidator = require("./../validators/ValidatableValidator");
 import IFieldBase = require("./../field/iFieldBase");
 import PresupuestoModel = require("./PresupuestoModel");
 import PresupuestoItemModel = require("./PresupuestoItemModel");
+import IPresupuestoModel = require("./iPresupuestoModel");
+import IPresupuestoItemModel = require("./PresupuestoItemModel");
 import * as moment from 'moment';
 
 moment.locale('es');
@@ -79,7 +81,8 @@ class PresupuetosModel extends KoForm {
             for (let item of presupuesto.items) {
                 presupuestomodel.items.push(self.getModelFromTo(new PresupuestoItemModel(), item));
             }
-            
+
+            presupuestomodel.presupuestoId = presupuesto.id;
             presupuestomodel.cantidad.value(presupuesto.cantidad);
             presupuestomodel.descripcion.value(presupuesto.descripcion);
             presupuestomodel.porcentajeGastos.value(presupuesto.porcentajeGastos);
@@ -92,6 +95,7 @@ class PresupuetosModel extends KoForm {
     }
     
     public getModelFromTo(newitem, item): PresupuestoItemModel {
+        newitem.itemId = item.id;
         newitem.cantidad.value(item.cantidad);
         newitem.descripcion.value(item.descripcion);
         newitem.precio.value(item.precio);
@@ -160,6 +164,15 @@ class PresupuetosModel extends KoForm {
         myWindow.document.write('</body></html>');
         myWindow.document.close();
         myWindow.print();
+    }
+
+    public async update(presupuesto: PresupuestoModel): Promise<void> {
+        const self = this;
+        if (await presupuesto.validate()) {
+            let model = presupuesto.getModel();
+            let serverModel = await self.proxy.put<IPresupuestoModel>(presupuesto.presupuestoId, model);
+            alert("cotizacion" + JSON.stringify(serverModel));
+        }
     }
 }
 

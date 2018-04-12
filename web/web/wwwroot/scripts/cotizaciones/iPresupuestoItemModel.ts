@@ -1,4 +1,5 @@
 interface IPresupuestoItemModel {
+    id: string;
     cantidad: number;
     descripcion: string;
     precio: number;

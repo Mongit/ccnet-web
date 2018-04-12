@@ -21,6 +21,7 @@ var PresupuestoItemModel = /** @class */ (function (_super) {
         _this.descripcion = self.addField([new stringValidator.RequiredStringValidator()]);
         _this.precio = self.addField([new numberValidator.FloatValidator(), new numberValidator.RequiredNumberValidator()]);
         _this.presupuestoId = "";
+        _this.itemId = "";
         _this.costo = ko.computed(function () {
             return self.cantidad.value() * self.precio.value();
         }, self);
@@ -29,10 +30,11 @@ var PresupuestoItemModel = /** @class */ (function (_super) {
     PresupuestoItemModel.prototype.getModel = function () {
         var self = this;
         return {
+            id: self.itemId ? self.itemId : "00000000-0000-0000-0000-000000000000",
             cantidad: self.cantidad.value(),
             descripcion: self.descripcion.value(),
             precio: self.precio.value(),
-            presupuestoId: self.presupuestoId || "00000000-0000-0000-0000-000000000000"
+            presupuestoId: self.presupuestoId ? self.presupuestoId : "00000000-0000-0000-0000-000000000000"
         };
     };
     return PresupuestoItemModel;
