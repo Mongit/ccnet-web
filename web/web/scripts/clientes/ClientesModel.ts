@@ -5,7 +5,11 @@ import * as moment from 'moment';
 moment.locale('es');
 
 class ClientesModel {
+    public pageSize: number; 
+
     public fechaParsed: KnockoutObservable<string>;
+    public pageNumber: KnockoutObservable<number>;
+    public totalPages: KnockoutObservable<number>;
 
     public clientes: KnockoutObservableArray<ClienteModel>;
 
@@ -14,7 +18,11 @@ class ClientesModel {
     constructor() {
         const self = this;
 
+        this.pageSize = 20;
+
         this.fechaParsed = ko.observable<string>();
+        this.pageNumber = ko.observable<number>(1);
+        this.totalPages = ko.observable<number>(1);
 
         this.clientes = ko.observableArray<ClienteModel>();
 
@@ -25,19 +33,20 @@ class ClientesModel {
 
     public async getAll(): Promise<void> {
         const self = this;
-        let resultados = await self.proxy.get();
+        let resultados = await self.proxy.get("", self.pageNumber(), self.pageSize);
         let myjson = JSON.parse((JSON.parse(JSON.stringify(resultados))));
-        
-        for (let i = 0; i < myjson.length; i++) {
+        self.totalPages = myjson.totalPages;
+
+        for (let clientejson of myjson.clientes) {
             let cliente = new ClienteModel();
-            cliente.id = myjson[i].id;
-            cliente.folio = myjson[i].folio;
-            cliente.contacto = myjson[i].contacto;
-            cliente.empresa = myjson[i].empresa;
-            cliente.telefono = myjson[i].telefono;
-            cliente.email = myjson[i].email;
-            cliente.fechaCreado = myjson[i].fechaCreado;
-            cliente.domicilio = myjson[i].domicilio;
+            cliente.id = clientejson.id;
+            cliente.folio = clientejson.folio;
+            cliente.contacto = clientejson.contacto;
+            cliente.empresa = clientejson.empresa;
+            cliente.telefono = clientejson.telefono;
+            cliente.email = clientejson.email;
+            cliente.fechaCreado = clientejson.fechaCreado;
+            cliente.domicilio = clientejson.domicilio;
             self.clientes.push(cliente);
         }
     }

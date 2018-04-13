@@ -4691,14 +4691,14 @@ var ProxyRest = /** @class */ (function (_super) {
     function ProxyRest(endPoint) {
         return _super.call(this, endPoint) || this;
     }
-    ProxyRest.prototype.get = function (id) {
+    ProxyRest.prototype.get = function (id, pageNumber, pageSize) {
         return __awaiter(this, void 0, void 0, function () {
             var self, model;
             return __generator(this, function (_a) {
                 self = this;
                 model = {
                     body: "",
-                    endPont: self.getUrlWithId(id),
+                    endPont: self.getUrlWithId(id, pageNumber, pageSize),
                     httpMethod: HttpMethod.get,
                     urlParams: {}
                 };
@@ -6204,9 +6204,12 @@ var ProxyBase = /** @class */ (function () {
     function ProxyBase(endPoint) {
         this.endPoint = endPoint;
     }
-    ProxyBase.prototype.getUrlWithId = function (id) {
+    ProxyBase.prototype.getUrlWithId = function (id, pageNumber, pageSize) {
         var self = this;
         if (id === undefined || id === null || $.trim(id).length === 0) {
+            if (pageNumber !== undefined || pageNumber !== null || pageSize !== undefined || pageSize !== null) {
+                return self.endPoint + "/" + pageNumber + "/" + pageSize;
+            }
             return self.endPoint;
         }
         return self.endPoint + "/" + id;
@@ -18309,32 +18312,37 @@ moment.locale('es');
 var ClientesModel = /** @class */ (function () {
     function ClientesModel() {
         var self = this;
+        this.pageSize = 20;
         this.fechaParsed = ko.observable();
+        this.pageNumber = ko.observable(1);
+        this.totalPages = ko.observable(1);
         this.clientes = ko.observableArray();
         this.proxy = new ProxyRest("/api/Clientes");
         self.getAll();
     }
     ClientesModel.prototype.getAll = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var self, resultados, myjson, i, cliente;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var self, resultados, myjson, _i, _a, clientejson, cliente;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         self = this;
-                        return [4 /*yield*/, self.proxy.get()];
+                        return [4 /*yield*/, self.proxy.get("", self.pageNumber(), self.pageSize)];
                     case 1:
-                        resultados = _a.sent();
+                        resultados = _b.sent();
                         myjson = JSON.parse((JSON.parse(JSON.stringify(resultados))));
-                        for (i = 0; i < myjson.length; i++) {
+                        self.totalPages = myjson.totalPages;
+                        for (_i = 0, _a = myjson.clientes; _i < _a.length; _i++) {
+                            clientejson = _a[_i];
                             cliente = new ClienteModel();
-                            cliente.id = myjson[i].id;
-                            cliente.folio = myjson[i].folio;
-                            cliente.contacto = myjson[i].contacto;
-                            cliente.empresa = myjson[i].empresa;
-                            cliente.telefono = myjson[i].telefono;
-                            cliente.email = myjson[i].email;
-                            cliente.fechaCreado = myjson[i].fechaCreado;
-                            cliente.domicilio = myjson[i].domicilio;
+                            cliente.id = clientejson.id;
+                            cliente.folio = clientejson.folio;
+                            cliente.contacto = clientejson.contacto;
+                            cliente.empresa = clientejson.empresa;
+                            cliente.telefono = clientejson.telefono;
+                            cliente.email = clientejson.email;
+                            cliente.fechaCreado = clientejson.fechaCreado;
+                            cliente.domicilio = clientejson.domicilio;
                             self.clientes.push(cliente);
                         }
                         return [2 /*return*/];

@@ -8,11 +8,11 @@ class ProxyRest extends ProxyBase {
         super(endPoint);
     }
 
-    public async get<T>(id?: string): Promise<T> {
+    public async get<T>(id?: string, pageNumber?: number, pageSize?: number): Promise<T> {
         const self = this;
         let model: IModel = {
             body: "",
-            endPont: self.getUrlWithId(id),
+            endPont: self.getUrlWithId(id, pageNumber, pageSize),
             httpMethod: HttpMethod.get,
             urlParams: {}
         };

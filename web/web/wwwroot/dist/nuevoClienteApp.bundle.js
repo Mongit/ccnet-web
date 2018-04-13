@@ -539,9 +539,12 @@ var ProxyBase = /** @class */ (function () {
     function ProxyBase(endPoint) {
         this.endPoint = endPoint;
     }
-    ProxyBase.prototype.getUrlWithId = function (id) {
+    ProxyBase.prototype.getUrlWithId = function (id, pageNumber, pageSize) {
         var self = this;
         if (id === undefined || id === null || $.trim(id).length === 0) {
+            if (pageNumber !== undefined || pageNumber !== null || pageSize !== undefined || pageSize !== null) {
+                return self.endPoint + "/" + pageNumber + "/" + pageSize;
+            }
             return self.endPoint;
         }
         return self.endPoint + "/" + id;
@@ -1010,14 +1013,14 @@ var ProxyRest = /** @class */ (function (_super) {
     function ProxyRest(endPoint) {
         return _super.call(this, endPoint) || this;
     }
-    ProxyRest.prototype.get = function (id) {
+    ProxyRest.prototype.get = function (id, pageNumber, pageSize) {
         return __awaiter(this, void 0, void 0, function () {
             var self, model;
             return __generator(this, function (_a) {
                 self = this;
                 model = {
                     body: "",
-                    endPont: self.getUrlWithId(id),
+                    endPont: self.getUrlWithId(id, pageNumber, pageSize),
                     httpMethod: HttpMethod.get,
                     urlParams: {}
                 };
