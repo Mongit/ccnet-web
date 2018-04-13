@@ -50,6 +50,9 @@ var KoForm = require("./../form/KoForm");
 var ValidatableValidator = require("./../validators/ValidatableValidator");
 var PresupuestoModel = require("./PresupuestoModel");
 var PresupuestoItemModel = require("./PresupuestoItemModel");
+var ConfirmModal = require("./../modals/confirmModal");
+var BindedModal = require("./../modals/BindedModal");
+var Size = require("./../utils/Size");
 var moment = require("moment");
 moment.locale('es');
 var PresupuetosModel = /** @class */ (function (_super) {
@@ -214,16 +217,52 @@ var PresupuetosModel = /** @class */ (function (_super) {
                         self = this;
                         return [4 /*yield*/, presupuesto.validate()];
                     case 1:
-                        if (!_a.sent()) return [3 /*break*/, 3];
+                        if (!_a.sent()) return [3 /*break*/, 4];
+                        if (!!presupuesto.presupuestoId) return [3 /*break*/, 2];
+                        presupuesto.guardar();
+                        return [3 /*break*/, 4];
+                    case 2:
                         model = presupuesto.getModel();
                         return [4 /*yield*/, self.proxy.put(presupuesto.presupuestoId, model)];
-                    case 2:
+                    case 3:
                         serverModel = _a.sent();
                         alert("cotizacion" + JSON.stringify(serverModel));
-                        _a.label = 3;
-                    case 3: return [2 /*return*/];
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
                 }
             });
+        });
+    };
+    PresupuetosModel.prototype.removePresupuesto = function (presupuesto) {
+        var self = this;
+        var modalModel = new ConfirmModal("¿Está seguro de borrar ésta Cotización?");
+        var dialog = new BindedModal({
+            model: modalModel,
+            size: Size.medium,
+            templateBody: "ConfirmDeleteModalBody",
+            templateFooter: "ConfirmDeleteModalFooter",
+            title: "¡Confirmación!",
+            onClose: function (e) {
+                return __awaiter(this, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                if (!(modalModel.result() === true)) return [3 /*break*/, 3];
+                                if (!!presupuesto.presupuestoId) return [3 /*break*/, 1];
+                                self.presupuestos.value.remove(presupuesto);
+                                return [3 /*break*/, 3];
+                            case 1:
+                                self.presupuestos.value.remove(presupuesto);
+                                return [4 /*yield*/, self.proxy.delete(presupuesto.presupuestoId)];
+                            case 2:
+                                _a.sent();
+                                alert("Cotizacion eliminada con éxito.");
+                                _a.label = 3;
+                            case 3: return [2 /*return*/];
+                        }
+                    });
+                });
+            }
         });
     };
     return PresupuetosModel;
