@@ -18309,20 +18309,30 @@ var ClienteModel = __webpack_require__(159);
 var ProxyRest = __webpack_require__(5);
 var moment = __webpack_require__(0);
 moment.locale('es');
+var Page = /** @class */ (function () {
+    function Page(isSelected, pageNumber) {
+        this.isSelected = ko.observable(isSelected);
+        this.pageNumber = ko.observable(pageNumber);
+    }
+    return Page;
+}());
 var ClientesModel = /** @class */ (function () {
     function ClientesModel() {
         var self = this;
-        this.pageSize = 20;
+        this.pageSize = 1;
         this.fechaParsed = ko.observable();
         this.pageNumber = ko.observable(1);
-        this.totalPages = ko.observable(1);
+        this.totalPages = ko.observable();
+        this.lastPage = ko.observable(false);
+        this.firstPage = ko.observable(true);
         this.clientes = ko.observableArray();
+        this.pages = ko.observableArray([]);
         this.proxy = new ProxyRest("/api/Clientes");
         self.getAll();
     }
     ClientesModel.prototype.getAll = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var self, resultados, myjson, _i, _a, clientejson, cliente;
+            var self, resultados, myjson, i, pageNumber, isSelected, page, _i, _a, clientejson, cliente;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -18331,7 +18341,15 @@ var ClientesModel = /** @class */ (function () {
                     case 1:
                         resultados = _b.sent();
                         myjson = JSON.parse((JSON.parse(JSON.stringify(resultados))));
-                        self.totalPages = myjson.totalPages;
+                        self.totalPages(myjson.totalPages);
+                        self.pages.removeAll();
+                        for (i = 0; i < self.totalPages(); i++) {
+                            pageNumber = i + 1;
+                            isSelected = self.pageNumber() === pageNumber;
+                            page = new Page(isSelected, pageNumber);
+                            self.pages.push(page);
+                        }
+                        self.clientes.removeAll();
                         for (_i = 0, _a = myjson.clientes; _i < _a.length; _i++) {
                             clientejson = _a[_i];
                             cliente = new ClienteModel();
@@ -18352,6 +18370,36 @@ var ClientesModel = /** @class */ (function () {
     };
     ClientesModel.prototype.dateFormatter = function (date) {
         return moment(date).format('l');
+    };
+    ClientesModel.prototype.selectedPage = function (page) {
+        var self = this;
+        self.pageNumber(page.pageNumber());
+        page.pageNumber() === self.totalPages() ? self.lastPage(true) : self.lastPage(false);
+        ;
+        page.pageNumber() === 1 ? self.firstPage(true) : self.firstPage(false);
+        self.getAll();
+    };
+    ClientesModel.prototype.next = function () {
+        var self = this;
+        var arrPosition = self.pageNumber() - 1;
+        var lastPage = self.pages()[arrPosition];
+        lastPage.isSelected(false);
+        var nextPage = self.pages()[arrPosition + 1];
+        if (nextPage.pageNumber() <= self.totalPages()) {
+            nextPage.isSelected(true);
+            self.selectedPage(nextPage);
+        }
+    };
+    ClientesModel.prototype.previous = function () {
+        var self = this;
+        var arrPosition = self.pageNumber() - 1;
+        var currentPage = self.pages()[arrPosition];
+        currentPage.isSelected(false);
+        var previousPage = self.pages()[arrPosition - 1];
+        if (previousPage.pageNumber() > 0) {
+            previousPage.isSelected(true);
+            self.selectedPage(previousPage);
+        }
     };
     return ClientesModel;
 }());
