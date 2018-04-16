@@ -51,14 +51,14 @@ var ProxyRest = /** @class */ (function (_super) {
     function ProxyRest(endPoint) {
         return _super.call(this, endPoint) || this;
     }
-    ProxyRest.prototype.get = function (id) {
+    ProxyRest.prototype.get = function (id, pageNumber, pageSize) {
         return __awaiter(this, void 0, void 0, function () {
             var self, model;
             return __generator(this, function (_a) {
                 self = this;
                 model = {
                     body: "",
-                    endPont: self.getUrlWithId(id),
+                    endPont: self.getUrlWithId(id, pageNumber, pageSize),
                     httpMethod: HttpMethod.get,
                     urlParams: {}
                 };
