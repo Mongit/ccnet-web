@@ -9,3 +9,21 @@
 <script type="text/html" id="templatePrice">
     <span data-bind="visible: !isNaN( $data ), text:'$' + $data.toFixed(2)"></span>
 </script>
+
+<script type="text/html" id="pagination">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" data-bind="css: { 'disabled': $data.firstPage() }">
+                <a class="page-link" href="#" tabindex="-1" data-bind="click: $data.previous">Previous</a>
+            </li>
+            <!-- ko foreach: pages -->
+            <li class="page-item" data-bind="css: { 'active' : $data.isSelected() }">
+                <a class="page-link" data-bind="text: pageNumber, click: $parent.selectedPage.bind($parent)"></a>
+            </li>
+            <!-- /ko -->
+            <li class="page-item" data-bind="css: { 'disabled': $data.lastPage() }">
+                <a class="page-link" href="#" data-bind="click: next">Next</a>
+            </li>
+        </ul>
+    </nav>
+</script>

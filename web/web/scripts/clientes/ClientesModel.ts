@@ -21,6 +21,7 @@ class ClientesModel {
     public totalPages: KnockoutObservable<number>;
     public lastPage: KnockoutObservable<boolean>;
     public firstPage: KnockoutObservable<boolean>;
+    public showPagination: KnockoutObservable<boolean>;
 
     public pages: KnockoutObservableArray<Page>;
     public clientes: KnockoutObservableArray<ClienteModel>;
@@ -30,13 +31,14 @@ class ClientesModel {
     constructor() {
         const self = this;
 
-        this.pageSize = 1;
+        this.pageSize = 20;
 
         this.fechaParsed = ko.observable<string>();
         this.pageNumber = ko.observable<number>(1);
         this.totalPages = ko.observable<number>();
         this.lastPage = ko.observable<boolean>(false);
         this.firstPage = ko.observable<boolean>(true);
+        this.showPagination = ko.observable<boolean>(false);
 
         this.clientes = ko.observableArray<ClienteModel>();
         this.pages = ko.observableArray<Page>([]);
@@ -51,6 +53,10 @@ class ClientesModel {
         let resultados = await self.proxy.get("", self.pageNumber(), self.pageSize);
         let myjson = JSON.parse((JSON.parse(JSON.stringify(resultados))));
         self.totalPages(myjson.totalPages);
+
+        if (self.totalPages() > 1) {
+            self.showPagination(true);
+        }
         
         self.pages.removeAll();
         for (let i = 0; i < self.totalPages(); i++) {

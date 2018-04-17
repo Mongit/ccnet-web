@@ -18319,12 +18319,13 @@ var Page = /** @class */ (function () {
 var ClientesModel = /** @class */ (function () {
     function ClientesModel() {
         var self = this;
-        this.pageSize = 1;
+        this.pageSize = 20;
         this.fechaParsed = ko.observable();
         this.pageNumber = ko.observable(1);
         this.totalPages = ko.observable();
         this.lastPage = ko.observable(false);
         this.firstPage = ko.observable(true);
+        this.showPagination = ko.observable(false);
         this.clientes = ko.observableArray();
         this.pages = ko.observableArray([]);
         this.proxy = new ProxyRest("/api/Clientes");
@@ -18342,6 +18343,9 @@ var ClientesModel = /** @class */ (function () {
                         resultados = _b.sent();
                         myjson = JSON.parse((JSON.parse(JSON.stringify(resultados))));
                         self.totalPages(myjson.totalPages);
+                        if (self.totalPages() > 1) {
+                            self.showPagination(true);
+                        }
                         self.pages.removeAll();
                         for (i = 0; i < self.totalPages(); i++) {
                             pageNumber = i + 1;
