@@ -36,15 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var ClienteModel = require("./Cliente");
 var ProxyRest = require("./../api/proxyRest");
+var Page = require("./../pagination/PageModel");
 var moment = require("moment");
 moment.locale('es');
-var Page = /** @class */ (function () {
-    function Page(isSelected, pageNumber) {
-        this.isSelected = ko.observable(isSelected);
-        this.pageNumber = ko.observable(pageNumber);
-    }
-    return Page;
-}());
 var ClientesModel = /** @class */ (function () {
     function ClientesModel() {
         var self = this;

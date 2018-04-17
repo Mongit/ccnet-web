@@ -18307,15 +18307,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var ClienteModel = __webpack_require__(159);
 var ProxyRest = __webpack_require__(5);
+var Page = __webpack_require__(160);
 var moment = __webpack_require__(0);
 moment.locale('es');
-var Page = /** @class */ (function () {
-    function Page(isSelected, pageNumber) {
-        this.isSelected = ko.observable(isSelected);
-        this.pageNumber = ko.observable(pageNumber);
-    }
-    return Page;
-}());
 var ClientesModel = /** @class */ (function () {
     function ClientesModel() {
         var self = this;
@@ -18423,6 +18417,22 @@ var ClienteModel = /** @class */ (function () {
     return ClienteModel;
 }());
 module.exports = ClienteModel;
+
+
+/***/ }),
+/* 160 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var PageModel = /** @class */ (function () {
+    function PageModel(isSelected, pageNumber) {
+        this.isSelected = ko.observable(isSelected);
+        this.pageNumber = ko.observable(pageNumber);
+    }
+    return PageModel;
+}());
+module.exports = PageModel;
 
 
 /***/ })
