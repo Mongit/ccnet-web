@@ -10,6 +10,7 @@
 }
 
 @Html.Partial("_ConfirmDeleteModal")
+@Html.Partial("_KoGlobalTemplates")
 
 <h2>Cotizaciones</h2>
 
@@ -42,4 +43,8 @@
             <!-- /ko -->
         </tbody>
     </table>
+    <div data-bind="if: showPagination">
+        <!-- ko template: { name: "pagination", data: $data } -->
+        <!-- /ko -->
+    </div>
 </div>

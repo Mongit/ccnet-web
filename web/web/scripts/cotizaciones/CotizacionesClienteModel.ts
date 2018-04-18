@@ -4,6 +4,7 @@ import UrlUtils = require("./../utils/UrlUtils");
 import ConfirmModal = require("./../modals/confirmModal");
 import BindedModal = require("./../modals/BindedModal");
 import Size = require("./../utils/Size");
+import Page = require("./../pagination/PageModel");
 import * as moment from 'moment';
 
 moment.locale('es');
@@ -16,8 +17,12 @@ class CotizacionesClienteModel {
     public fechaParsed: KnockoutObservable<string>;
     public pageNumber: KnockoutObservable<number>;
     public totalPages: KnockoutObservable<number>;
+    public lastPage: KnockoutObservable<boolean>;
+    public firstPage: KnockoutObservable<boolean>;
+    public showPagination: KnockoutObservable<boolean>;
 
     public cotizacionesArray: KnockoutObservableArray<CotizacionesModel>;
+    public pages: KnockoutObservableArray<Page>;
 
     public proxy: ProxyRest;
 
@@ -31,8 +36,12 @@ class CotizacionesClienteModel {
         this.fechaParsed = ko.observable<string>();
         this.pageNumber = ko.observable<number>(1);
         this.totalPages = ko.observable<number>();
+        this.lastPage = ko.observable<boolean>(false);
+        this.firstPage = ko.observable<boolean>(true);
+        this.showPagination = ko.observable<boolean>(false);
 
         this.cotizacionesArray = ko.observableArray<CotizacionesModel>();
+        this.pages = ko.observableArray<Page>([]);
 
         this.proxy = new ProxyRest("/api/Cotizaciones");
         this.clienteIdUrlParam = UrlUtils.getParameterByName('id', window.location);
@@ -48,6 +57,17 @@ class CotizacionesClienteModel {
         let cotizaciones = await self.proxy.get(self.clienteIdUrlParam, self.pageNumber(), self.pageSize);
         let cotizacionesJson = JSON.parse((JSON.parse(JSON.stringify(cotizaciones))));
         self.totalPages(cotizacionesJson.totalPages);
+
+        if (self.totalPages() > 1) {
+            self.showPagination(true);
+        }
+        self.pages.removeAll();
+        for (let i = 0; i < self.totalPages(); i++) {
+            let pageNumber = i + 1;
+            let isSelected = self.pageNumber() === pageNumber;
+            let page = new Page(isSelected, pageNumber);
+            self.pages.push(page);
+        }
 
         self.cotizacionesArray.removeAll();
         for (let cotizacionjson of cotizacionesJson.cotizaciones) {
@@ -110,6 +130,42 @@ class CotizacionesClienteModel {
                 }
             }
         });
+    }
+
+    public selectedPage(page: Page): void {
+        const self = this;
+        self.pageNumber(page.pageNumber());
+
+        page.pageNumber() === self.totalPages() ? self.lastPage(true) : self.lastPage(false);;
+        page.pageNumber() === 1 ? self.firstPage(true) : self.firstPage(false);
+
+        self.getCotizaciones();
+    }
+
+    public next(): void {
+        const self = this;
+        let arrPosition = self.pageNumber() - 1;
+        let lastPage = self.pages()[arrPosition];
+        lastPage.isSelected(false);
+
+        let nextPage = self.pages()[arrPosition + 1];
+        if (nextPage.pageNumber() <= self.totalPages()) {
+            nextPage.isSelected(true);
+            self.selectedPage(nextPage);
+        }
+    }
+
+    public previous(): void {
+        const self = this;
+        let arrPosition = self.pageNumber() - 1;
+        let currentPage = self.pages()[arrPosition];
+        currentPage.isSelected(false);
+
+        let previousPage = self.pages()[arrPosition - 1];
+        if (previousPage.pageNumber() > 0) {
+            previousPage.isSelected(true);
+            self.selectedPage(previousPage);
+        }
     }
 }
 

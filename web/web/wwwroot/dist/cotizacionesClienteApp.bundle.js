@@ -18337,7 +18337,22 @@ webpackContext.id = 145;
 /* 146 */,
 /* 147 */,
 /* 148 */,
-/* 149 */,
+/* 149 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var PageModel = /** @class */ (function () {
+    function PageModel(isSelected, pageNumber) {
+        this.isSelected = ko.observable(isSelected);
+        this.pageNumber = ko.observable(pageNumber);
+    }
+    return PageModel;
+}());
+module.exports = PageModel;
+
+
+/***/ }),
 /* 150 */,
 /* 151 */,
 /* 152 */,
@@ -18457,6 +18472,7 @@ var UrlUtils = __webpack_require__(137);
 var ConfirmModal = __webpack_require__(143);
 var BindedModal = __webpack_require__(142);
 var Size = __webpack_require__(134);
+var Page = __webpack_require__(149);
 var moment = __webpack_require__(0);
 moment.locale('es');
 var CotizacionesClienteModel = /** @class */ (function () {
@@ -18467,14 +18483,18 @@ var CotizacionesClienteModel = /** @class */ (function () {
         this.fechaParsed = ko.observable();
         this.pageNumber = ko.observable(1);
         this.totalPages = ko.observable();
+        this.lastPage = ko.observable(false);
+        this.firstPage = ko.observable(true);
+        this.showPagination = ko.observable(false);
         this.cotizacionesArray = ko.observableArray();
+        this.pages = ko.observableArray([]);
         this.proxy = new ProxyRest("/api/Cotizaciones");
         this.clienteIdUrlParam = UrlUtils.getParameterByName('id', window.location);
         this.getCotizaciones();
     }
     CotizacionesClienteModel.prototype.getCotizaciones = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var self, cotizaciones, cotizacionesJson, _i, _a, cotizacionjson, cotizacion;
+            var self, cotizaciones, cotizacionesJson, i, pageNumber, isSelected, page, _i, _a, cotizacionjson, cotizacion;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -18485,6 +18505,16 @@ var CotizacionesClienteModel = /** @class */ (function () {
                         cotizaciones = _b.sent();
                         cotizacionesJson = JSON.parse((JSON.parse(JSON.stringify(cotizaciones))));
                         self.totalPages(cotizacionesJson.totalPages);
+                        if (self.totalPages() > 1) {
+                            self.showPagination(true);
+                        }
+                        self.pages.removeAll();
+                        for (i = 0; i < self.totalPages(); i++) {
+                            pageNumber = i + 1;
+                            isSelected = self.pageNumber() === pageNumber;
+                            page = new Page(isSelected, pageNumber);
+                            self.pages.push(page);
+                        }
                         self.cotizacionesArray.removeAll();
                         for (_i = 0, _a = cotizacionesJson.cotizaciones; _i < _a.length; _i++) {
                             cotizacionjson = _a[_i];
@@ -18575,6 +18605,36 @@ var CotizacionesClienteModel = /** @class */ (function () {
                 });
             }
         });
+    };
+    CotizacionesClienteModel.prototype.selectedPage = function (page) {
+        var self = this;
+        self.pageNumber(page.pageNumber());
+        page.pageNumber() === self.totalPages() ? self.lastPage(true) : self.lastPage(false);
+        ;
+        page.pageNumber() === 1 ? self.firstPage(true) : self.firstPage(false);
+        self.getCotizaciones();
+    };
+    CotizacionesClienteModel.prototype.next = function () {
+        var self = this;
+        var arrPosition = self.pageNumber() - 1;
+        var lastPage = self.pages()[arrPosition];
+        lastPage.isSelected(false);
+        var nextPage = self.pages()[arrPosition + 1];
+        if (nextPage.pageNumber() <= self.totalPages()) {
+            nextPage.isSelected(true);
+            self.selectedPage(nextPage);
+        }
+    };
+    CotizacionesClienteModel.prototype.previous = function () {
+        var self = this;
+        var arrPosition = self.pageNumber() - 1;
+        var currentPage = self.pages()[arrPosition];
+        currentPage.isSelected(false);
+        var previousPage = self.pages()[arrPosition - 1];
+        if (previousPage.pageNumber() > 0) {
+            previousPage.isSelected(true);
+            self.selectedPage(previousPage);
+        }
     };
     return CotizacionesClienteModel;
 }());
