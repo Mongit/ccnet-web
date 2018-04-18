@@ -46,7 +46,10 @@ var ProxyBase = /** @class */ (function () {
             }
             return self.endPoint;
         }
-        return self.endPoint + "/" + id;
+        if (pageNumber === undefined || pageNumber === null || pageSize === undefined || pageSize === null) {
+            return self.endPoint + "/" + id;
+        }
+        return self.endPoint + "/" + id + "/" + pageNumber + "/" + pageSize;
     };
     ProxyBase.prototype.serverCall = function (model) {
         return __awaiter(this, void 0, void 0, function () {

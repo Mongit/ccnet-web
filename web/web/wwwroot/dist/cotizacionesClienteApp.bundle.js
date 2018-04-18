@@ -6212,7 +6212,10 @@ var ProxyBase = /** @class */ (function () {
             }
             return self.endPoint;
         }
-        return self.endPoint + "/" + id;
+        if (pageNumber === undefined || pageNumber === null || pageSize === undefined || pageSize === null) {
+            return self.endPoint + "/" + id;
+        }
+        return self.endPoint + "/" + id + "/" + pageNumber + "/" + pageSize;
     };
     ProxyBase.prototype.serverCall = function (model) {
         return __awaiter(this, void 0, void 0, function () {
@@ -18458,9 +18461,12 @@ var moment = __webpack_require__(0);
 moment.locale('es');
 var CotizacionesClienteModel = /** @class */ (function () {
     function CotizacionesClienteModel() {
+        this.pageSize = 20;
         this.folio = ko.observable();
         this.contacto = ko.observable();
         this.fechaParsed = ko.observable();
+        this.pageNumber = ko.observable(1);
+        this.totalPages = ko.observable();
         this.cotizacionesArray = ko.observableArray();
         this.proxy = new ProxyRest("/api/Cotizaciones");
         this.clienteIdUrlParam = UrlUtils.getParameterByName('id', window.location);
@@ -18468,22 +18474,25 @@ var CotizacionesClienteModel = /** @class */ (function () {
     }
     CotizacionesClienteModel.prototype.getCotizaciones = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var self, cotizaciones, cotizacionesJson, i, cotizacion;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var self, cotizaciones, cotizacionesJson, _i, _a, cotizacionjson, cotizacion;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         this.getCliente();
                         self = this;
-                        return [4 /*yield*/, self.proxy.get(self.clienteIdUrlParam)];
+                        return [4 /*yield*/, self.proxy.get(self.clienteIdUrlParam, self.pageNumber(), self.pageSize)];
                     case 1:
-                        cotizaciones = _a.sent();
+                        cotizaciones = _b.sent();
                         cotizacionesJson = JSON.parse((JSON.parse(JSON.stringify(cotizaciones))));
-                        for (i = 0; i < cotizacionesJson.length; i++) {
+                        self.totalPages(cotizacionesJson.totalPages);
+                        self.cotizacionesArray.removeAll();
+                        for (_i = 0, _a = cotizacionesJson.cotizaciones; _i < _a.length; _i++) {
+                            cotizacionjson = _a[_i];
                             cotizacion = new CotizacionesModel();
-                            cotizacion.id = cotizacionesJson[i].id;
-                            cotizacion.folio = cotizacionesJson[i].folio;
-                            cotizacion.clienteId = cotizacionesJson[i].clienteId;
-                            cotizacion.fecha = cotizacionesJson[i].fecha;
+                            cotizacion.id = cotizacionjson.id;
+                            cotizacion.folio = cotizacionjson.folio;
+                            cotizacion.clienteId = cotizacionjson.clienteId;
+                            cotizacion.fecha = cotizacionjson.fecha;
                             self.cotizacionesArray.push(cotizacion);
                         }
                         return [2 /*return*/];
@@ -18499,7 +18508,7 @@ var CotizacionesClienteModel = /** @class */ (function () {
                     case 0:
                         self = this;
                         proxyCliente = new ProxyRest("/api/Clientes");
-                        return [4 /*yield*/, proxyCliente.get(self.clienteIdUrlParam)];
+                        return [4 /*yield*/, proxyCliente.get(self.clienteIdUrlParam, null, null)];
                     case 1:
                         cliente = _a.sent();
                         clienteJson = JSON.parse((JSON.parse(JSON.stringify(cliente))));

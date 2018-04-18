@@ -9,9 +9,13 @@ import * as moment from 'moment';
 moment.locale('es');
 
 class CotizacionesClienteModel {
+    public pageSize: number;
+
     public folio: KnockoutObservable<number>;
     public contacto: KnockoutObservable<string>;
     public fechaParsed: KnockoutObservable<string>;
+    public pageNumber: KnockoutObservable<number>;
+    public totalPages: KnockoutObservable<number>;
 
     public cotizacionesArray: KnockoutObservableArray<CotizacionesModel>;
 
@@ -20,9 +24,13 @@ class CotizacionesClienteModel {
     public clienteIdUrlParam: string;
 
     constructor() {
+        this.pageSize = 20;
+        
         this.folio = ko.observable<number>();
         this.contacto = ko.observable<string>();
         this.fechaParsed = ko.observable<string>();
+        this.pageNumber = ko.observable<number>(1);
+        this.totalPages = ko.observable<number>();
 
         this.cotizacionesArray = ko.observableArray<CotizacionesModel>();
 
@@ -37,15 +45,17 @@ class CotizacionesClienteModel {
         this.getCliente();
 
         const self = this;
-        let cotizaciones = await self.proxy.get(self.clienteIdUrlParam);
+        let cotizaciones = await self.proxy.get(self.clienteIdUrlParam, self.pageNumber(), self.pageSize);
         let cotizacionesJson = JSON.parse((JSON.parse(JSON.stringify(cotizaciones))));
+        self.totalPages(cotizacionesJson.totalPages);
 
-        for (let i = 0; i < cotizacionesJson.length; i++) {
+        self.cotizacionesArray.removeAll();
+        for (let cotizacionjson of cotizacionesJson.cotizaciones) {
             let cotizacion = new CotizacionesModel();
-            cotizacion.id = cotizacionesJson[i].id;
-            cotizacion.folio = cotizacionesJson[i].folio;
-            cotizacion.clienteId = cotizacionesJson[i].clienteId;
-            cotizacion.fecha = cotizacionesJson[i].fecha;
+            cotizacion.id = cotizacionjson.id;
+            cotizacion.folio = cotizacionjson.folio;
+            cotizacion.clienteId = cotizacionjson.clienteId;
+            cotizacion.fecha = cotizacionjson.fecha;
             self.cotizacionesArray.push(cotizacion);
         }
     }
@@ -53,7 +63,7 @@ class CotizacionesClienteModel {
     public async getCliente() {
         const self = this;
         let proxyCliente = new ProxyRest("/api/Clientes");
-        let cliente = await proxyCliente.get(self.clienteIdUrlParam);
+        let cliente = await proxyCliente.get(self.clienteIdUrlParam, null, null);
         let clienteJson = JSON.parse((JSON.parse(JSON.stringify(cliente))));
 
         self.contacto(clienteJson.contacto);
