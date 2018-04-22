@@ -1,0 +1,45 @@
+﻿@page
+@model web.Pages.InventarioModel
+@{
+    ViewData["Title"] = "Inventario";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+
+<h2>Inventario</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Color</th>
+            <th scope="col">Proveedor</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Precio</th>
+            <th scope="col"><a class="btn btn-light btn-block" href="NuevoInventario">Nuevo inventario</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Tela zander</td>
+            <td>Naranja</td>
+            <td>Parisina</td>
+            <td>100 metros</td>
+            <td>50</td>
+            <td>
+                <a class="btn btn-light btn-block" href="EditarInventario">Editar</a>
+                <a class="btn btn-secondary btn-block">Borrar</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Tela zander</td>
+            <td>Naranja</td>
+            <td>Parisina</td>
+            <td>100 metros</td>
+            <td>50</td>
+            <td>
+                <a class="btn btn-light btn-block" href="EditarInventario">Editar</a>
+                <a class="btn btn-secondary btn-block">Borrar</a>
+            </td>
+        </tr>
+    </tbody>
+</table>

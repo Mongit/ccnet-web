@@ -1,0 +1,51 @@
+﻿@page
+@model web.Pages.Models.NuevoInventarioModel
+@{
+    ViewData["Title"] = "NuevoInventario";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+
+<h2>NuevoInventario</h2>
+
+<form data-bind="submit: guardar" novalidate>
+    <div class="form-group">
+        <label><strong>Nombre</strong></label>
+        <input type="text" class="form-control" placeholder="Nombre" />
+    </div>
+    <div class="form-group">
+        <label><strong>Color</strong></label>
+        <input type="text" class="form-control" placeholder="Color" />
+    </div>
+    <div class="form-group">
+        <label><strong>Proveedor</strong></label>
+        <input class="form-control" rows="3" placeholder="Proveedor"/>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label><strong>Cantidad</strong></label>
+            <input type="text" class="form-control" placeholder="Cantidad" />
+        </div>
+        <div class="form-group col-md-4">
+            <label>Medida</label>
+            <select class="form-control">
+                <option selected>Metros</option>
+                <option>Centímetros</option>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <div class="col-auto">
+                <label>Precio</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">$</div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Precio">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group text-right">
+        <button class="btn btn-default">Cancelar</button>
+        <input class="btn btn-primary" type="submit" value="Guardar">
+    </div>
+</form>

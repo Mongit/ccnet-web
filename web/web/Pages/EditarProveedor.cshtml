@@ -1,0 +1,39 @@
+﻿@page
+@model web.Pages.EditarProveedorModel
+@{
+    ViewData["Title"] = "EditarProveedor";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+
+<h2>EditarProveedor</h2>
+
+<form data-bind="submit: guardar" novalidate>
+    <div class="form-group">
+        <label><strong>Empresa</strong></label>
+        <input type="text" class="form-control" placeholder="Empresa" value="Parisina"/>
+    </div>
+    <div class="form-group">
+        <label><strong>Contacto</strong></label>
+        <input type="text" class="form-control" placeholder="Contacto" value="Maria Lopez"/>
+    </div>
+    <div class="form-group">
+        <label><strong>Domicilio</strong></label>
+        <textarea class="form-control" rows="3" placeholder="Domicilio"> Col centro 38</textarea>
+    </div>
+    <div class="form-group">
+        <label><strong>Teléfono</strong></label>
+        <input type="text" class="form-control" placeholder="Teléfono" value="452123456"/>
+    </div>
+    <div class="form-group">
+        <label><strong>Email</strong></label>
+        <input type="text" class="form-control" placeholder="Email" value="parisina@centro.com"/>
+    </div>
+    <div class="form-group">
+        <label><strong>Horario de atención</strong></label>
+        <input type="text" class="form-control" placeholder="Horario de atención" value="9:00 - 9:00"/>
+    </div>
+    <div class="form-group text-right">
+        <button class="btn btn-default">Cancelar</button>
+        <input class="btn btn-primary" type="submit" value="Guardar">
+    </div>
+</form>
