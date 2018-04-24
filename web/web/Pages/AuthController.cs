@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -10,6 +11,13 @@ namespace web.Pages
 {
     public class AuthController : Controller
     {
+        private IConfiguration _config;
+
+        public AuthController(IConfiguration Configuration)
+        {
+            this._config = Configuration;
+        }
+
         public IActionResult Login()
         {
             ViewData["Message"] = "Login Page.";
@@ -20,11 +28,14 @@ namespace web.Pages
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginUser(string returnUrl, string email, string password)
         {
+            var self = this;
+            var Issuer = self._config.GetValue<string>("Webapi");
+
             if (email == "jon@mail.com" && password == "jon")
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, "jon", ClaimValueTypes.String, "https://yourdomain.com")
+                    new Claim(ClaimTypes.Name, "jon", ClaimValueTypes.String, Issuer)
                 };
                 var userIdentity = new ClaimsIdentity(claims, "SecureLogin");
                 var userPrincipal = new ClaimsPrincipal(userIdentity);
