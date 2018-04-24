@@ -1,0 +1,26 @@
+﻿@page
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <link href="~/lib/bootstrap4/css/bootstrap.css" rel="stylesheet">
+    <link href="~/css/signin.css" rel="stylesheet">
+</head>
+<body class="text-center">
+    <form asp-controller="Auth" asp-action="LoginUser" method="post" class="form-signin">
+        <img class="mb-4" src="~/images/logo-transparente.png" alt="" width="122" height="142">
+        <label for="email" class="sr-only">Email</label><!--Email instead of Username-->
+        <input id="email" name="email" type="email" class="form-control" placeholder="Email address" required autofocus />
+        <label for="password" class="sr-only">Password</label>
+        <input id="password" name="password" type="password" class="form-control" placeholder="Password" required />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Log me in</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+    </form>
+</body>
+</html>
