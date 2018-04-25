@@ -2,20 +2,26 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using web.Pages.Auth;
+using web.Pages.Models;
 
 namespace web.Pages
 {
     public class AuthController : Controller
     {
         private IConfiguration _config;
+        private IApiProxy Proxy { get; set; }
 
-        public AuthController(IConfiguration Configuration)
+        public AuthController(IConfiguration Configuration, IApiProxy proxy)
         {
             this._config = Configuration;
+            this.Proxy = proxy;
         }
 
         public IActionResult Login()
@@ -28,31 +34,27 @@ namespace web.Pages
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginUser(string returnUrl, string email, string password)
         {
-            var self = this;
-            var Issuer = self._config.GetValue<string>("Webapi");
+            var userModel = new LoginModel();
+            userModel.Email = email;
+            userModel.Password = password;
 
-            if (email == "jon@mail.com" && password == "jon")
+            var model = new ApiProxyModel();
+            model.HttpMethod = Models.HttpMethod.Post;
+            model.EndPont = "/api/Token";
+            model.UrlParams = null;
+            model.Body = JsonConvert.SerializeObject(userModel);
+
+
+            try
             {
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, "jon", ClaimValueTypes.String, Issuer)
-                };
-                var userIdentity = new ClaimsIdentity(claims, "SecureLogin");
-                var userPrincipal = new ClaimsPrincipal(userIdentity);
-
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                    userPrincipal,
-                    new AuthenticationProperties
-                    {
-                        ExpiresUtc = DateTime.UtcNow.AddMinutes(20),
-                        IsPersistent = false,
-                        AllowRefresh = false
-                    });
-
-                return GoToReturnUrl(returnUrl);
+                HttpResponseMessage response = await Proxy.ServerCall(model);
+                var token = Content(await response.Content.ReadAsStringAsync());
+                return token;
             }
-
-            return RedirectToAction(nameof(Denied));
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private IActionResult GoToReturnUrl(string returnUrl)
