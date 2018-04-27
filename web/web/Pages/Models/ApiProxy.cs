@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,10 +21,12 @@ namespace web.Pages.Models
             this.Client.BaseAddress = new Uri(apiUrl);
         }
 
-        public async Task<HttpResponseMessage> ServerCall(ApiProxyModel model)
+        public async Task<HttpResponseMessage> ServerCall(ApiProxyModel model, string token = "")
         {
             HttpContent content = null;
             HttpResponseMessage response = null;
+                
+            this.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             switch (model.HttpMethod)
             {
                 case HttpMethod.Get:

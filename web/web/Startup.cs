@@ -44,11 +44,13 @@ namespace web
             services.AddSingleton(typeof(IApiProxy), new ApiProxy(Configuration.GetValue<string>("Webapi")));
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddMvc();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseSession();
             app.UseAuthentication();
 
             app.UseDefaultFiles();

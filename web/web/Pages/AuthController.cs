@@ -3,17 +3,19 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using web.Pages.Auth;
 using web.Pages.Models;
 
 namespace web.Pages
 {
-    public class AuthController : Controller
+    public class AuthController : BaseController
     {
         private IConfiguration _config;
         private IApiProxy Proxy { get; set; }
@@ -34,22 +36,52 @@ namespace web.Pages
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginUser(string returnUrl, string email, string password)
         {
-            var userModel = new LoginModel();
-            userModel.Email = email;
-            userModel.Password = password;
-
-            var model = new ApiProxyModel();
-            model.HttpMethod = Models.HttpMethod.Post;
-            model.EndPont = "/api/Token";
-            model.UrlParams = null;
-            model.Body = JsonConvert.SerializeObject(userModel);
-
+            var self = this;
+            var userModel = new LoginModel
+            {
+                Email = email,
+                Password = password
+            };
+            var model = new ApiProxyModel
+            {
+                HttpMethod = Models.HttpMethod.Post,
+                EndPont = "/api/Token",
+                UrlParams = null,
+                Body = JsonConvert.SerializeObject(userModel)
+            };
 
             try
             {
-                HttpResponseMessage response = await Proxy.ServerCall(model);
-                var token = Content(await response.Content.ReadAsStringAsync());
-                return token;
+                HttpResponseMessage response = await Proxy.ServerCall(model, base.Token);
+                var tokenjson = Content(await response.Content.ReadAsStringAsync());
+                var token = JObject.Parse(tokenjson.Content);
+                
+                var Issuer = self._config.GetValue<string>("Webapi");
+                if ((string)token["token"] != null || (string)token["token"] != "")
+                {
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, "jon", ClaimValueTypes.String, Issuer)
+                    };
+                    var userIdentity = new ClaimsIdentity(claims, "Bearer");
+                    var userPrincipal = new ClaimsPrincipal(userIdentity);
+
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                        userPrincipal,
+                        new AuthenticationProperties
+                        {
+                            ExpiresUtc = DateTime.UtcNow.AddMinutes(20),
+                            IsPersistent = false,
+                            AllowRefresh = false
+                        });
+                    
+                    base.Token = Convert.ToString(token["token"]);
+
+                    return GoToReturnUrl(returnUrl);
+                }
+
+                return RedirectToAction(nameof(Denied));
+
             }
             catch (Exception ex)
             {

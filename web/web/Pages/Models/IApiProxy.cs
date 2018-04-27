@@ -5,6 +5,6 @@ namespace web.Pages.Models
 {
     public interface IApiProxy
     {
-        Task<HttpResponseMessage> ServerCall(ApiProxyModel model);
+        Task<HttpResponseMessage> ServerCall(ApiProxyModel model, string token);
     }
 }

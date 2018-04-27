@@ -8,7 +8,7 @@ using web.Pages.Models;
 namespace web.Pages
 {
     [Authorize]
-    public class ApiProxyController : Controller
+    public class ApiProxyController : BaseController
     {
         private IApiProxy Proxy { get; set; }
 
@@ -23,7 +23,7 @@ namespace web.Pages
         {
             try
             {
-                HttpResponseMessage response = await Proxy.ServerCall(model);
+                HttpResponseMessage response = await Proxy.ServerCall(model, base.Token);
                 return Content(await response.Content.ReadAsStringAsync());
             }
             catch (Exception ex)
