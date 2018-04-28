@@ -34,13 +34,13 @@ namespace web.Pages
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> LoginUser(string returnUrl, string email, string password)
+        public async Task<IActionResult> LoginUser(string returnUrl, string email, string contrasena)
         {
             var self = this;
             var userModel = new LoginModel
             {
                 Email = email,
-                Password = password
+                Contrasena = contrasena
             };
             var model = new ApiProxyModel
             {
@@ -61,7 +61,7 @@ namespace web.Pages
                 {
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, "jon", ClaimValueTypes.String, Issuer)
+                        new Claim(ClaimTypes.Name, email, ClaimValueTypes.String, Issuer)
                     };
                     var userIdentity = new ClaimsIdentity(claims, "Bearer");
                     var userPrincipal = new ClaimsPrincipal(userIdentity);
