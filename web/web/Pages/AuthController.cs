@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
-using System.Threading;
 using System.Threading.Tasks;
 using web.Pages.Auth;
 using web.Pages.Models;
@@ -85,7 +84,14 @@ namespace web.Pages
             }
             catch (Exception ex)
             {
-                throw ex;
+                if(ex.Message == "Response status code does not indicate success: 401 (Unauthorized).")
+                {
+                    return RedirectToAction(nameof(Denied));
+                }
+                else
+                {
+                    throw ex;
+                }
             }
         }
 
