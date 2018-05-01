@@ -7,6 +7,9 @@
     <None Remove="scripts\cotizaciones\appPresupuestos.ts" />
     <None Remove="scripts\cotizaciones\PresupuestosModel.ts" />
     <None Remove="scripts\pagination\PageModel.ts" />
+    <None Remove="scripts\proveedores\appProveedores.ts" />
+    <None Remove="scripts\proveedores\IProveedorModel.ts" />
+    <None Remove="scripts\proveedores\ProveedoresModel.ts" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
@@ -20,5 +23,8 @@
     <TypeScriptCompile Include="scripts\cotizaciones\appPresupuestos.ts" />
     <TypeScriptCompile Include="scripts\cotizaciones\PresupuestosModel.ts" />
     <TypeScriptCompile Include="scripts\pagination\PageModel.ts" />
+    <TypeScriptCompile Include="scripts\proveedores\appProveedores.ts" />
+    <TypeScriptCompile Include="scripts\proveedores\IProveedorModel.ts" />
+    <TypeScriptCompile Include="scripts\proveedores\ProveedoresModel.ts" />
   </ItemGroup>
 </Project>

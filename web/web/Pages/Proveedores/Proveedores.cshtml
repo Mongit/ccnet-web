@@ -1,0 +1,50 @@
+﻿@page
+@model web.Pages.Proveedores.ProveedoresModel
+@{
+    ViewData["Title"] = "Proveedores";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+
+@section Scripts {
+    <script src="~/dist/proveedoresApp.bundle.js" type="text/javascript"></script>
+}
+
+@Html.Partial("_KoGlobalTemplates")
+
+<h2>Proveedores</h2>
+
+<div class="mt-5" id="proveedoresForm">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Empresa</th>
+                <th scope="col">Contacto</th>
+                <th scope="col">Domicilio</th>
+                <th scope="col">Teléfono</th>
+                <th scope="col">Email</th>
+                <th scope="col">Horario de atención</th>
+                <th scope="col"><a class="btn btn-light btn-block" data-bind="attr: { href: 'NuevoProveedor' }">Nuevo proveedor</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- ko foreach: proveedores -->
+            <tr>
+                <td data-bind="text: empresa"></td>
+                <td data-bind="text: contacto"></td>
+                <td data-bind="text: domicilio"></td>
+                <td data-bind="text: telefono"></td>
+                <td data-bind="text: email"></td>
+                <td data-bind="text: horarioAtencion"></td>
+                <td>
+                    <a class="btn btn-light btn-block" data-bind="attr: { href: 'EditarProveedor?id=' + id }">Editar</a>
+                    <a class="btn btn-secondary btn-block" data-bind="attr: { href: 'CuentasProveedor?id=' + id }">Cuentas</a>
+                </td>
+            </tr>
+            <!-- /ko -->
+        </tbody>
+    </table>
+    <div data-bind="if: showPagination">
+        <!-- ko template: { name: "pagination", data: $data} -->
+        <!-- /ko -->
+    </div>
+</div>

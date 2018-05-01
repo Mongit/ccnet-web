@@ -1,13 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using web.Pages.Models;
 
 namespace web.Pages
 {
     public class BaseController: Controller
     {
+        private IApiProxy Proxy { get; set; }
+
+        public BaseController(IApiProxy proxy)
+        {
+            this.Proxy = proxy;
+        }
+
 
         public string TokenKey
         {
@@ -27,6 +34,23 @@ namespace web.Pages
             {
                 HttpContext.Session.Set<string>(this.TokenKey, value);
             }
+        }
+
+        
+
+        [HttpPost]
+        public async Task<IActionResult> ServerCall(ApiProxyModel model)
+        {
+            try
+            {
+                HttpResponseMessage response = await Proxy.ServerCall(model, this.Token);
+                return Content(await response.Content.ReadAsStringAsync());
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
     }
 }

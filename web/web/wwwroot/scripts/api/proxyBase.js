@@ -56,7 +56,7 @@ var ProxyBase = /** @class */ (function () {
             var promise;
             return __generator(this, function (_a) {
                 promise = $.ajax({
-                    url: 'ApiProxy/ServerCall',
+                    url: 'ServerCall',
                     method: 'POST',
                     data: model
                 });

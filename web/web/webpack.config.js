@@ -20,6 +20,9 @@ module.exports = {
         ],
         presupuestosApp: [
             './scripts/cotizaciones/appPresupuestos.ts'
+        ],
+        proveedoresApp: [
+            './scripts/proveedores/appProveedores.ts'
         ]
     },
     module: {

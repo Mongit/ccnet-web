@@ -25,7 +25,7 @@ abstract class ProxyBase {
     protected async serverCall<T>(model: IModel): Promise<T> {
 
         let promise = $.ajax({
-            url: 'ApiProxy/ServerCall',
+            url: 'ServerCall',
             method: 'POST',
             data: model
         });
