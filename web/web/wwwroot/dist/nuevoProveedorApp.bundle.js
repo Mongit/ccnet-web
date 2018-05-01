@@ -871,6 +871,28 @@ var NuevoProveedorModel = /** @class */ (function (_super) {
             });
         });
     };
+    NuevoProveedorModel.prototype.update = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, model, proveedorUpdated;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        self = this;
+                        return [4 /*yield*/, self.validate()];
+                    case 1:
+                        if (!_a.sent()) return [3 /*break*/, 3];
+                        model = self.getModel();
+                        return [4 /*yield*/, self.proxy.put(self.proveedorIdUrlParam, model)];
+                    case 2:
+                        proveedorUpdated = _a.sent();
+                        alert(JSON.stringify(proveedorUpdated));
+                        window.location.href = "Proveedores";
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return NuevoProveedorModel;
 }(KoForm));
 module.exports = NuevoProveedorModel;

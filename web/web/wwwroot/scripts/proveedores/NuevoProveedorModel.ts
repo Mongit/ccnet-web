@@ -79,6 +79,16 @@ class NuevoProveedorModel extends KoForm {
         self.email.value(proveedorJson.email);
         self.horarioAtencion.value(proveedorJson.horarioAtencion);
     }
+
+    public async update(): Promise<void> {
+        const self = this;
+        if (await self.validate()) {
+            let model = self.getModel();
+            let proveedorUpdated = await self.proxy.put<IProveedorModel>(self.proveedorIdUrlParam, model);
+            alert(JSON.stringify(proveedorUpdated));
+            window.location.href = "Proveedores";
+        }
+    }
 }
 
 export = NuevoProveedorModel;
