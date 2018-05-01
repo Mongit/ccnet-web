@@ -11,45 +11,62 @@
 
 @Html.Partial("_KoGlobalTemplates")
 
-<h2>Nuevo Proveedor</h2>
 
 <div id="nuevoProveedorForm">
-    <form data-bind="submit: save" novalidate>
-        <div class="form-group">
-            <label><strong>Empresa *</strong></label>
-            <input type="text" class="form-control" placeholder="Empresa" data-bind="value: empresa.value, css: { 'is-invalid': empresa.hasError() }, hasFocus: true" />
-            <!-- ko template: { name: "Validation", data: empresa } -->
-            <!-- /ko -->
-        </div>
-        <div class="form-group">
-            <label><strong>Contacto *</strong></label>
-            <input type="text" class="form-control" placeholder="Contacto" data-bind="value: contacto.value, css: { 'is-invalid': contacto.hasError() }" />
-            <!-- ko template: { name: "Validation", data: contacto } -->
-            <!-- /ko -->
-        </div>
-        <div class="form-group">
-            <label><strong>Domicilio</strong></label>
-            <textarea class="form-control" rows="3" placeholder="Domicilio" data-bind="value: domicilio.value, css: { 'is-invalid': domicilio.hasError() }"></textarea>
-            <!-- ko template: { name: "Validation", data: domicilio } -->
-            <!-- /ko -->
-        </div>
-        <div class="form-group">
-            <label><strong>Teléfono</strong></label>
-            <input type="text" class="form-control" placeholder="Teléfono" data-bind="value: telefono.value" />
-        </div>
-        <div class="form-group">
-            <label><strong>Email</strong></label>
-            <input type="text" class="form-control" placeholder="Email" data-bind="value: email.value" />
-        </div>
-        <div class="form-group">
-            <label><strong>Horario de atención</strong></label>
-            <textarea class="form-control" rows="3" placeholder="Horario de atención" data-bind="value: horarioAtencion.value, css: { 'is-invalid': horarioAtencion.hasError() }"></textarea>
-            <!-- ko template: { name: "Validation", data: horarioAtencion } -->
-            <!-- /ko -->
-        </div>
-        <div class="form-group text-right">
-            <a class="btn btn-light" data-bind="attr: { href: 'Proveedores' }">Cancelar</a>
-            <input class="btn btn-primary" type="submit" value="Guardar">
-        </div>
-    </form>
+    <div data-bind="template: { name: currentTemplate() }"></div>
 </div>
+
+<script id="proveedorForm" type="text/html">
+    <div class="form-group">
+        <label><strong>Empresa *</strong></label>
+        <input type="text" class="form-control" placeholder="Empresa" data-bind="value: empresa.value, css: { 'is-invalid': empresa.hasError() }, hasFocus: true" />
+        <!-- ko template: { name: "Validation", data: empresa } -->
+        <!-- /ko -->
+    </div>
+    <div class="form-group">
+        <label><strong>Contacto *</strong></label>
+        <input type="text" class="form-control" placeholder="Contacto" data-bind="value: contacto.value, css: { 'is-invalid': contacto.hasError() }" />
+        <!-- ko template: { name: "Validation", data: contacto } -->
+        <!-- /ko -->
+    </div>
+    <div class="form-group">
+        <label><strong>Domicilio</strong></label>
+        <textarea class="form-control" rows="3" placeholder="Domicilio" data-bind="value: domicilio.value, css: { 'is-invalid': domicilio.hasError() }"></textarea>
+        <!-- ko template: { name: "Validation", data: domicilio } -->
+        <!-- /ko -->
+    </div>
+    <div class="form-group">
+        <label><strong>Teléfono</strong></label>
+        <input type="text" class="form-control" placeholder="Teléfono" data-bind="value: telefono.value" />
+    </div>
+    <div class="form-group">
+        <label><strong>Email</strong></label>
+        <input type="text" class="form-control" placeholder="Email" data-bind="value: email.value" />
+    </div>
+    <div class="form-group">
+        <label><strong>Horario de atención</strong></label>
+        <textarea class="form-control" rows="3" placeholder="Horario de atención" data-bind="value: horarioAtencion.value, css: { 'is-invalid': horarioAtencion.hasError() }"></textarea>
+        <!-- ko template: { name: "Validation", data: horarioAtencion } -->
+        <!-- /ko -->
+    </div>
+    <div class="form-group text-right">
+        <a class="btn btn-light" data-bind="attr: { href: 'Proveedores' }">Cancelar</a>
+        <input class="btn btn-primary" type="submit" value="Guardar">
+    </div>
+</script>
+
+<script id="nuevo" type="text/html">
+    <h2>Nuevo Proveedor</h2>
+    <form data-bind="submit: save" novalidate>
+        <!-- ko template: { name: "proveedorForm" } -->
+        <!-- /ko  -->
+    </form>
+</script>
+
+<script id="editar" type="text/html">
+    <h2>Editar Proveedor</h2>
+    <form data-bind="submit: save" novalidate>
+        <!-- ko template: { name: "proveedorForm" } -->
+        <!-- /ko  -->
+    </form>
+</script>

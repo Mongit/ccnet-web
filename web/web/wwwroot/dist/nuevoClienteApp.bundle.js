@@ -172,8 +172,8 @@ module.exports = ProxyBase;
 /***/ (function(module, exports, __webpack_require__) {
 
 var pSlice = Array.prototype.slice;
-var objectKeys = __webpack_require__(138);
-var isArguments = __webpack_require__(139);
+var objectKeys = __webpack_require__(139);
+var isArguments = __webpack_require__(140);
 
 var deepEqual = module.exports = function (actual, expected, opts) {
   if (!opts) opts = {};
@@ -291,7 +291,7 @@ module.exports = PromiseUtils;
 
 /***/ }),
 
-/***/ 137:
+/***/ 138:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -336,7 +336,7 @@ module.exports = Field;
 
 /***/ }),
 
-/***/ 138:
+/***/ 139:
 /***/ (function(module, exports) {
 
 exports = module.exports = typeof Object.keys === 'function'
@@ -348,33 +348,6 @@ function shim (obj) {
   for (var key in obj) keys.push(key);
   return keys;
 }
-
-
-/***/ }),
-
-/***/ 139:
-/***/ (function(module, exports) {
-
-var supportsArgumentsClass = (function(){
-  return Object.prototype.toString.call(arguments)
-})() == '[object Arguments]';
-
-exports = module.exports = supportsArgumentsClass ? supported : unsupported;
-
-exports.supported = supported;
-function supported(object) {
-  return Object.prototype.toString.call(object) == '[object Arguments]';
-};
-
-exports.unsupported = unsupported;
-function unsupported(object){
-  return object &&
-    typeof object == 'object' &&
-    typeof object.length == 'number' &&
-    Object.prototype.hasOwnProperty.call(object, 'callee') &&
-    !Object.prototype.propertyIsEnumerable.call(object, 'callee') ||
-    false;
-};
 
 
 /***/ }),
@@ -394,9 +367,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var Field = __webpack_require__(137);
+var Field = __webpack_require__(138);
 var FieldBase = __webpack_require__(2);
-var FieldArray = __webpack_require__(140);
+var FieldArray = __webpack_require__(141);
 var ValidatableValidator = __webpack_require__(15);
 var KoForm = /** @class */ (function (_super) {
     __extends(KoForm, _super);
@@ -445,6 +418,33 @@ module.exports = KoForm;
 /***/ }),
 
 /***/ 140:
+/***/ (function(module, exports) {
+
+var supportsArgumentsClass = (function(){
+  return Object.prototype.toString.call(arguments)
+})() == '[object Arguments]';
+
+exports = module.exports = supportsArgumentsClass ? supported : unsupported;
+
+exports.supported = supported;
+function supported(object) {
+  return Object.prototype.toString.call(object) == '[object Arguments]';
+};
+
+exports.unsupported = unsupported;
+function unsupported(object){
+  return object &&
+    typeof object == 'object' &&
+    typeof object.length == 'number' &&
+    Object.prototype.hasOwnProperty.call(object, 'callee') &&
+    !Object.prototype.propertyIsEnumerable.call(object, 'callee') ||
+    false;
+};
+
+
+/***/ }),
+
+/***/ 141:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

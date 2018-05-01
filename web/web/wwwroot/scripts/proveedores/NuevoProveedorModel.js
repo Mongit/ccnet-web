@@ -46,6 +46,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var KoForm = require("./../form/KoForm");
 var ProxyRest = require("./../api/proxyRest");
+var UrlUtils = require("./../utils/UrlUtils");
 var stringValidators = require("./../validators/stringValidators");
 var NuevoProveedorModel = /** @class */ (function (_super) {
     __extends(NuevoProveedorModel, _super);
@@ -59,12 +60,20 @@ var NuevoProveedorModel = /** @class */ (function (_super) {
         _this.email = self.addField([]);
         _this.horarioAtencion = self.addField([]);
         _this.proxy = new ProxyRest("/api/Proveedores");
+        _this.proveedorIdUrlParam = UrlUtils.getParameterByName("id", window.location);
+        _this.currentTemplate = ko.observable("nuevo");
+        self.proveedorIdUrlParam ? self.editarTemplate() : self.currentTemplate('nuevo');
         return _this;
     }
+    NuevoProveedorModel.prototype.editarTemplate = function () {
+        var self = this;
+        self.getOne();
+        self.currentTemplate("editar");
+    };
     NuevoProveedorModel.prototype.getModel = function () {
         var self = this;
         return {
-            id: "",
+            id: self.proveedorIdUrlParam ? self.proveedorIdUrlParam : "00000000-0000-0000-0000-000000000000",
             empresa: self.empresa.value(),
             contacto: self.contacto.value(),
             domicilio: self.domicilio.value(),
@@ -91,6 +100,28 @@ var NuevoProveedorModel = /** @class */ (function (_super) {
                         window.location.href = "Proveedores";
                         _a.label = 3;
                     case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    NuevoProveedorModel.prototype.getOne = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, response, proveedorJson;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        self = this;
+                        return [4 /*yield*/, self.proxy.get(self.proveedorIdUrlParam)];
+                    case 1:
+                        response = _a.sent();
+                        proveedorJson = JSON.parse(JSON.parse(JSON.stringify(response)));
+                        self.empresa.value(proveedorJson.empresa);
+                        self.contacto.value(proveedorJson.contacto);
+                        self.domicilio.value(proveedorJson.domicilio);
+                        self.telefono.value(proveedorJson.telefono);
+                        self.email.value(proveedorJson.email);
+                        self.horarioAtencion.value(proveedorJson.horarioAtencion);
+                        return [2 /*return*/];
                 }
             });
         });
