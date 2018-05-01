@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 165);
+/******/ 	return __webpack_require__(__webpack_require__.s = 174);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -493,32 +493,6 @@ module.exports = FieldArray;
 
 /***/ }),
 
-/***/ 141:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var UrlUtils = /** @class */ (function () {
-    function UrlUtils() {
-    }
-    UrlUtils.getParameterByName = function (name, url) {
-        if (!url)
-            url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
-        if (!results)
-            return null;
-        if (!results[2])
-            return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-    };
-    return UrlUtils;
-}());
-module.exports = UrlUtils;
-
-
-/***/ }),
-
 /***/ 15:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -675,15 +649,15 @@ exports.RequiredStringValidator = RequiredStringValidator;
 
 /***/ }),
 
-/***/ 165:
+/***/ 174:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(166);
+module.exports = __webpack_require__(175);
 
 
 /***/ }),
 
-/***/ 166:
+/***/ 175:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -725,11 +699,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var KoBinder = __webpack_require__(3);
-var EditarClienteModel = __webpack_require__(167);
+var NuevoProveedorModel = __webpack_require__(176);
 $(function () {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            KoBinder.bind($("#editarCliente"), new EditarClienteModel());
+            KoBinder.bind($("#nuevoProveedorForm"), new NuevoProveedorModel());
             return [2 /*return*/];
         });
     });
@@ -739,7 +713,7 @@ $(function () {
 
 /***/ }),
 
-/***/ 167:
+/***/ 176:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -791,63 +765,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var KoForm = __webpack_require__(14);
 var ProxyRest = __webpack_require__(4);
-var UrlUtils = __webpack_require__(141);
-var validators = __webpack_require__(16);
-var EditarClienteModel = /** @class */ (function (_super) {
-    __extends(EditarClienteModel, _super);
-    function EditarClienteModel() {
+var stringValidators = __webpack_require__(16);
+var NuevoProveedorModel = /** @class */ (function (_super) {
+    __extends(NuevoProveedorModel, _super);
+    function NuevoProveedorModel() {
         var _this = _super.call(this) || this;
         var self = _this;
-        _this.contacto = self.addField([new validators.RequiredStringValidator()]);
-        _this.empresa = self.addField([new validators.RequiredStringValidator()]);
+        _this.empresa = self.addField([new stringValidators.RequiredStringValidator()]);
+        _this.contacto = self.addField([new stringValidators.RequiredStringValidator()]);
+        _this.domicilio = self.addField([]);
         _this.telefono = self.addField([]);
         _this.email = self.addField([]);
-        _this.domicilio = self.addField([new validators.RequiredStringValidator()]);
-        _this.fechaCreado = new Date();
-        _this.proxy = new ProxyRest("/api/Clientes");
-        _this.clienteIdUrlParam = UrlUtils.getParameterByName("id", window.location);
-        _this.folio = 0;
-        _this.getCliente();
+        _this.horarioAtencion = self.addField([]);
+        _this.proxy = new ProxyRest("/api/Proveedores");
         return _this;
     }
-    EditarClienteModel.prototype.getCliente = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var self, cliente, clienteJson;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        self = this;
-                        return [4 /*yield*/, self.proxy.get(self.clienteIdUrlParam)];
-                    case 1:
-                        cliente = _a.sent();
-                        clienteJson = JSON.parse(JSON.parse(JSON.stringify(cliente)));
-                        self.folio = clienteJson.folio;
-                        self.contacto.value(clienteJson.contacto);
-                        self.empresa.value(clienteJson.empresa);
-                        self.telefono.value(clienteJson.telefono);
-                        self.email.value(clienteJson.email);
-                        self.domicilio.value(clienteJson.domicilio);
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    EditarClienteModel.prototype.getModel = function () {
+    NuevoProveedorModel.prototype.getModel = function () {
         var self = this;
         return {
-            id: self.clienteIdUrlParam,
-            folio: self.folio,
-            contacto: self.contacto.value(),
+            id: "",
             empresa: self.empresa.value(),
+            contacto: self.contacto.value(),
+            domicilio: self.domicilio.value(),
             telefono: self.telefono.value(),
             email: self.email.value(),
-            fechaCreado: self.fechaCreado,
-            domicilio: self.domicilio.value()
+            horarioAtencion: self.horarioAtencion.value()
         };
     };
-    EditarClienteModel.prototype.modificar = function () {
+    NuevoProveedorModel.prototype.save = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var self, model, clienteModificado;
+            var self, model, serverModel;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -856,19 +803,20 @@ var EditarClienteModel = /** @class */ (function (_super) {
                     case 1:
                         if (!_a.sent()) return [3 /*break*/, 3];
                         model = self.getModel();
-                        return [4 /*yield*/, self.proxy.put(self.clienteIdUrlParam, model)];
+                        return [4 /*yield*/, self.proxy.post(model)];
                     case 2:
-                        clienteModificado = _a.sent();
-                        alert(JSON.stringify(clienteModificado));
+                        serverModel = _a.sent();
+                        alert("Proveedor guardado exitosamente.");
+                        window.location.href = "Proveedores";
                         _a.label = 3;
                     case 3: return [2 /*return*/];
                 }
             });
         });
     };
-    return EditarClienteModel;
+    return NuevoProveedorModel;
 }(KoForm));
-module.exports = EditarClienteModel;
+module.exports = NuevoProveedorModel;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 

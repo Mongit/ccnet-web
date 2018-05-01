@@ -68,7 +68,7 @@
 /***/ 1:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(5).Promise;
+module.exports = __webpack_require__(6).Promise;
 
 
 /***/ }),
@@ -171,74 +171,9 @@ module.exports = ProxyBase;
 /***/ 12:
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var Field = __webpack_require__(138);
-var FieldBase = __webpack_require__(3);
-var FieldArray = __webpack_require__(141);
-var ValidatableValidator = __webpack_require__(135);
-var KoForm = /** @class */ (function (_super) {
-    __extends(KoForm, _super);
-    function KoForm(validators) {
-        if (validators === void 0) { validators = [new ValidatableValidator("Encontramos un error en alguno de sus campos.")]; }
-        var _this = _super.call(this, validators, true, []) || this;
-        _this.value = ko.observableArray();
-        return _this;
-    }
-    KoForm.prototype.resetHasChanged = function () {
-        var self = this;
-        for (var _i = 0, _a = self.value(); _i < _a.length; _i++) {
-            var field = _a[_i];
-            field.resetHasChanged();
-        }
-    };
-    KoForm.prototype.getHasChanged = function () {
-        var self = this;
-        for (var _i = 0, _a = self.value(); _i < _a.length; _i++) {
-            var field = _a[_i];
-            if (field.hasChanged()) {
-                return true;
-            }
-        }
-        return false;
-    };
-    KoForm.prototype.addField = function (validators, useStrictForComparations, value) {
-        if (useStrictForComparations === void 0) { useStrictForComparations = true; }
-        var self = this;
-        var field = new Field(validators, useStrictForComparations, value);
-        self.value.push(field);
-        return field;
-    };
-    KoForm.prototype.addFieldArray = function (validators, useStrictForComparations, value) {
-        if (useStrictForComparations === void 0) { useStrictForComparations = true; }
-        var self = this;
-        var field = new FieldArray(validators, useStrictForComparations, value);
-        self.value.push(field);
-        return field;
-    };
-    return KoForm;
-}(FieldBase));
-module.exports = KoForm;
-
-
-/***/ }),
-
-/***/ 13:
-/***/ (function(module, exports, __webpack_require__) {
-
 var pSlice = Array.prototype.slice;
-var objectKeys = __webpack_require__(139);
-var isArguments = __webpack_require__(140);
+var objectKeys = __webpack_require__(138);
+var isArguments = __webpack_require__(139);
 
 var deepEqual = module.exports = function (actual, expected, opts) {
   if (!opts) opts = {};
@@ -334,7 +269,231 @@ function objEquiv(a, b, opts) {
 
 /***/ }),
 
-/***/ 135:
+/***/ 13:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Promise) {
+var PromiseUtils = /** @class */ (function () {
+    function PromiseUtils() {
+    }
+    PromiseUtils.toPromise = function (value) {
+        var promise = new Promise(function (resolve, reject) {
+            resolve(value);
+        });
+        return promise;
+    };
+    return PromiseUtils;
+}());
+module.exports = PromiseUtils;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+
+/***/ 137:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var equal = __webpack_require__(12);
+var FieldBase = __webpack_require__(2);
+var Field = /** @class */ (function (_super) {
+    __extends(Field, _super);
+    function Field(validators, useStrictForComparations, value) {
+        if (useStrictForComparations === void 0) { useStrictForComparations = true; }
+        var _this = _super.call(this, validators, useStrictForComparations, value) || this;
+        _this.value = ko.observable(value);
+        var self = _this;
+        _this.value.subscribe(function (newValue) {
+            self.validate();
+        });
+        return _this;
+    }
+    Field.prototype.getHasChanged = function () {
+        var self = this;
+        var areEqual = equal(self.initialValue, self.value(), { strict: self.useStrictForComparations });
+        return areEqual === false;
+    };
+    Field.prototype.resetHasChanged = function () {
+        var self = this;
+        self.initialValue = self.value();
+    };
+    return Field;
+}(FieldBase));
+module.exports = Field;
+
+
+/***/ }),
+
+/***/ 138:
+/***/ (function(module, exports) {
+
+exports = module.exports = typeof Object.keys === 'function'
+  ? Object.keys : shim;
+
+exports.shim = shim;
+function shim (obj) {
+  var keys = [];
+  for (var key in obj) keys.push(key);
+  return keys;
+}
+
+
+/***/ }),
+
+/***/ 139:
+/***/ (function(module, exports) {
+
+var supportsArgumentsClass = (function(){
+  return Object.prototype.toString.call(arguments)
+})() == '[object Arguments]';
+
+exports = module.exports = supportsArgumentsClass ? supported : unsupported;
+
+exports.supported = supported;
+function supported(object) {
+  return Object.prototype.toString.call(object) == '[object Arguments]';
+};
+
+exports.unsupported = unsupported;
+function unsupported(object){
+  return object &&
+    typeof object == 'object' &&
+    typeof object.length == 'number' &&
+    Object.prototype.hasOwnProperty.call(object, 'callee') &&
+    !Object.prototype.propertyIsEnumerable.call(object, 'callee') ||
+    false;
+};
+
+
+/***/ }),
+
+/***/ 14:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var Field = __webpack_require__(137);
+var FieldBase = __webpack_require__(2);
+var FieldArray = __webpack_require__(140);
+var ValidatableValidator = __webpack_require__(15);
+var KoForm = /** @class */ (function (_super) {
+    __extends(KoForm, _super);
+    function KoForm(validators) {
+        if (validators === void 0) { validators = [new ValidatableValidator("Encontramos un error en alguno de sus campos.")]; }
+        var _this = _super.call(this, validators, true, []) || this;
+        _this.value = ko.observableArray();
+        return _this;
+    }
+    KoForm.prototype.resetHasChanged = function () {
+        var self = this;
+        for (var _i = 0, _a = self.value(); _i < _a.length; _i++) {
+            var field = _a[_i];
+            field.resetHasChanged();
+        }
+    };
+    KoForm.prototype.getHasChanged = function () {
+        var self = this;
+        for (var _i = 0, _a = self.value(); _i < _a.length; _i++) {
+            var field = _a[_i];
+            if (field.hasChanged()) {
+                return true;
+            }
+        }
+        return false;
+    };
+    KoForm.prototype.addField = function (validators, useStrictForComparations, value) {
+        if (useStrictForComparations === void 0) { useStrictForComparations = true; }
+        var self = this;
+        var field = new Field(validators, useStrictForComparations, value);
+        self.value.push(field);
+        return field;
+    };
+    KoForm.prototype.addFieldArray = function (validators, useStrictForComparations, value) {
+        if (useStrictForComparations === void 0) { useStrictForComparations = true; }
+        var self = this;
+        var field = new FieldArray(validators, useStrictForComparations, value);
+        self.value.push(field);
+        return field;
+    };
+    return KoForm;
+}(FieldBase));
+module.exports = KoForm;
+
+
+/***/ }),
+
+/***/ 140:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var equal = __webpack_require__(12);
+var FieldBase = __webpack_require__(2);
+var FieldArray = /** @class */ (function (_super) {
+    __extends(FieldArray, _super);
+    function FieldArray(validators, useStrictForComparations, value) {
+        if (useStrictForComparations === void 0) { useStrictForComparations = true; }
+        var _this = _super.call(this, validators, useStrictForComparations, value) || this;
+        _this.value = ko.observableArray(value);
+        return _this;
+        // =========================================================================
+        // "arrayChange": Please subscribe on the cosumer class.
+        // =========================================================================        
+        // const self = this;
+        // this.value.subscribe(function (changes: KnockoutArrayChange<T>): void {
+        //     //self.validate();
+        // }, self, "arrayChange");
+        // =========================================================================
+    }
+    FieldArray.prototype.getHasChanged = function () {
+        var self = this;
+        var areEqual = equal(self.initialValue, self.value(), { strict: self.useStrictForComparations });
+        return areEqual === false;
+    };
+    FieldArray.prototype.resetHasChanged = function () {
+        var self = this;
+        self.initialValue = self.value();
+    };
+    return FieldArray;
+}(FieldBase));
+module.exports = FieldArray;
+
+
+/***/ }),
+
+/***/ 15:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -384,7 +543,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var ValidatorBase = __webpack_require__(9);
+var ValidatorBase = __webpack_require__(5);
 var ValidatableValidator = /** @class */ (function (_super) {
     __extends(ValidatableValidator, _super);
     function ValidatableValidator(message) {
@@ -427,225 +586,6 @@ var ValidatableValidator = /** @class */ (function (_super) {
 module.exports = ValidatableValidator;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-
-/***/ 136:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var ValidatorBase = __webpack_require__(9);
-var StringValidatorBase = /** @class */ (function (_super) {
-    __extends(StringValidatorBase, _super);
-    function StringValidatorBase() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    StringValidatorBase.prototype.hasValue = function (value) {
-        if (value === null || value === undefined || $.trim(value).length === 0) {
-            return false;
-        }
-        return true;
-    };
-    return StringValidatorBase;
-}(ValidatorBase));
-var StartsByRStringValidator = /** @class */ (function (_super) {
-    __extends(StartsByRStringValidator, _super);
-    function StartsByRStringValidator() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    StartsByRStringValidator.prototype.check = function (value) {
-        var self = this;
-        var isValid = !self.hasValue(value) || value[0].toUpperCase() === "R";
-        return self.toPromise(isValid, "Éste campo debe comenzar con la letra R.");
-    };
-    return StartsByRStringValidator;
-}(StringValidatorBase));
-exports.StartsByRStringValidator = StartsByRStringValidator;
-var RequiredStringValidator = /** @class */ (function (_super) {
-    __extends(RequiredStringValidator, _super);
-    function RequiredStringValidator() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    RequiredStringValidator.prototype.check = function (value) {
-        var self = this;
-        var isValid = self.hasValue(value);
-        return self.toPromise(isValid, "Éste campo no puede estar vacío.");
-    };
-    return RequiredStringValidator;
-}(StringValidatorBase));
-exports.RequiredStringValidator = RequiredStringValidator;
-
-
-/***/ }),
-
-/***/ 138:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var equal = __webpack_require__(13);
-var FieldBase = __webpack_require__(3);
-var Field = /** @class */ (function (_super) {
-    __extends(Field, _super);
-    function Field(validators, useStrictForComparations, value) {
-        if (useStrictForComparations === void 0) { useStrictForComparations = true; }
-        var _this = _super.call(this, validators, useStrictForComparations, value) || this;
-        _this.value = ko.observable(value);
-        var self = _this;
-        _this.value.subscribe(function (newValue) {
-            self.validate();
-        });
-        return _this;
-    }
-    Field.prototype.getHasChanged = function () {
-        var self = this;
-        var areEqual = equal(self.initialValue, self.value(), { strict: self.useStrictForComparations });
-        return areEqual === false;
-    };
-    Field.prototype.resetHasChanged = function () {
-        var self = this;
-        self.initialValue = self.value();
-    };
-    return Field;
-}(FieldBase));
-module.exports = Field;
-
-
-/***/ }),
-
-/***/ 139:
-/***/ (function(module, exports) {
-
-exports = module.exports = typeof Object.keys === 'function'
-  ? Object.keys : shim;
-
-exports.shim = shim;
-function shim (obj) {
-  var keys = [];
-  for (var key in obj) keys.push(key);
-  return keys;
-}
-
-
-/***/ }),
-
-/***/ 14:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(Promise) {
-var PromiseUtils = /** @class */ (function () {
-    function PromiseUtils() {
-    }
-    PromiseUtils.toPromise = function (value) {
-        var promise = new Promise(function (resolve, reject) {
-            resolve(value);
-        });
-        return promise;
-    };
-    return PromiseUtils;
-}());
-module.exports = PromiseUtils;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-
-/***/ 140:
-/***/ (function(module, exports) {
-
-var supportsArgumentsClass = (function(){
-  return Object.prototype.toString.call(arguments)
-})() == '[object Arguments]';
-
-exports = module.exports = supportsArgumentsClass ? supported : unsupported;
-
-exports.supported = supported;
-function supported(object) {
-  return Object.prototype.toString.call(object) == '[object Arguments]';
-};
-
-exports.unsupported = unsupported;
-function unsupported(object){
-  return object &&
-    typeof object == 'object' &&
-    typeof object.length == 'number' &&
-    Object.prototype.hasOwnProperty.call(object, 'callee') &&
-    !Object.prototype.propertyIsEnumerable.call(object, 'callee') ||
-    false;
-};
-
-
-/***/ }),
-
-/***/ 141:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var equal = __webpack_require__(13);
-var FieldBase = __webpack_require__(3);
-var FieldArray = /** @class */ (function (_super) {
-    __extends(FieldArray, _super);
-    function FieldArray(validators, useStrictForComparations, value) {
-        if (useStrictForComparations === void 0) { useStrictForComparations = true; }
-        var _this = _super.call(this, validators, useStrictForComparations, value) || this;
-        _this.value = ko.observableArray(value);
-        return _this;
-        // =========================================================================
-        // "arrayChange": Please subscribe on the cosumer class.
-        // =========================================================================        
-        // const self = this;
-        // this.value.subscribe(function (changes: KnockoutArrayChange<T>): void {
-        //     //self.validate();
-        // }, self, "arrayChange");
-        // =========================================================================
-    }
-    FieldArray.prototype.getHasChanged = function () {
-        var self = this;
-        var areEqual = equal(self.initialValue, self.value(), { strict: self.useStrictForComparations });
-        return areEqual === false;
-    };
-    FieldArray.prototype.resetHasChanged = function () {
-        var self = this;
-        self.initialValue = self.value();
-    };
-    return FieldArray;
-}(FieldBase));
-module.exports = FieldArray;
-
 
 /***/ }),
 
@@ -698,7 +638,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var KoBinder = __webpack_require__(2);
+var KoBinder = __webpack_require__(3);
 var ClienteModel = __webpack_require__(156);
 $(function () {
     return __awaiter(this, void 0, void 0, function () {
@@ -763,9 +703,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var KoForm = __webpack_require__(12);
+var KoForm = __webpack_require__(14);
 var ProxyRest = __webpack_require__(4);
-var validators = __webpack_require__(136);
+var validators = __webpack_require__(16);
 var ClienteModel = /** @class */ (function (_super) {
     __extends(ClienteModel, _super);
     function ClienteModel() {
@@ -822,27 +762,67 @@ module.exports = ClienteModel;
 
 /***/ }),
 
-/***/ 2:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var KoBinder = /** @class */ (function () {
-    function KoBinder() {
-    }
-    KoBinder.bind = function (view, model) {
-        var domObj = view.get()[0];
-        ko.cleanNode(domObj);
-        ko.applyBindings(model, domObj);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
-    return KoBinder;
-}());
-module.exports = KoBinder;
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ValidatorBase = __webpack_require__(5);
+var StringValidatorBase = /** @class */ (function (_super) {
+    __extends(StringValidatorBase, _super);
+    function StringValidatorBase() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    StringValidatorBase.prototype.hasValue = function (value) {
+        if (value === null || value === undefined || $.trim(value).length === 0) {
+            return false;
+        }
+        return true;
+    };
+    return StringValidatorBase;
+}(ValidatorBase));
+var StartsByRStringValidator = /** @class */ (function (_super) {
+    __extends(StartsByRStringValidator, _super);
+    function StartsByRStringValidator() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    StartsByRStringValidator.prototype.check = function (value) {
+        var self = this;
+        var isValid = !self.hasValue(value) || value[0].toUpperCase() === "R";
+        return self.toPromise(isValid, "Éste campo debe comenzar con la letra R.");
+    };
+    return StartsByRStringValidator;
+}(StringValidatorBase));
+exports.StartsByRStringValidator = StartsByRStringValidator;
+var RequiredStringValidator = /** @class */ (function (_super) {
+    __extends(RequiredStringValidator, _super);
+    function RequiredStringValidator() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    RequiredStringValidator.prototype.check = function (value) {
+        var self = this;
+        var isValid = self.hasValue(value);
+        return self.toPromise(isValid, "Éste campo no puede estar vacío.");
+    };
+    return RequiredStringValidator;
+}(StringValidatorBase));
+exports.RequiredStringValidator = RequiredStringValidator;
 
 
 /***/ }),
 
-/***/ 3:
+/***/ 2:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -882,7 +862,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var PromiseUtils = __webpack_require__(14);
+var PromiseUtils = __webpack_require__(13);
 var FieldBase = /** @class */ (function () {
     function FieldBase(validators, useStrictForComparations, value) {
         this.validators = validators;
@@ -932,6 +912,26 @@ var FieldBase = /** @class */ (function () {
 module.exports = FieldBase;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+
+/***/ 3:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var KoBinder = /** @class */ (function () {
+    function KoBinder() {
+    }
+    KoBinder.bind = function (view, model) {
+        var domObj = view.get()[0];
+        ko.cleanNode(domObj);
+        ko.applyBindings(model, domObj);
+    };
+    return KoBinder;
+}());
+module.exports = KoBinder;
+
 
 /***/ }),
 
@@ -1061,6 +1061,30 @@ module.exports = ProxyRest;
 /***/ }),
 
 /***/ 5:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var PromiseUtils = __webpack_require__(13);
+var ValidatorBase = /** @class */ (function () {
+    function ValidatorBase() {
+    }
+    ValidatorBase.prototype.toPromise = function (isValid, message) {
+        if (message === void 0) { message = ""; }
+        var result = {
+            isValid: isValid,
+            message: isValid ? "" : message
+        };
+        return PromiseUtils.toPromise(result);
+    };
+    return ValidatorBase;
+}());
+module.exports = ValidatorBase;
+
+
+/***/ }),
+
+/***/ 6:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, global) {var require;/*!
@@ -1195,7 +1219,7 @@ function flush() {
 function attemptVertx() {
   try {
     var r = require;
-    var vertx = __webpack_require__(8);
+    var vertx = __webpack_require__(9);
     vertxNext = vertx.runOnLoop || vertx.runOnContext;
     return useVertxTimer();
   } catch (e) {
@@ -2217,11 +2241,11 @@ return Promise;
 
 })));
 //# sourceMappingURL=es6-promise.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(8)))
 
 /***/ }),
 
-/***/ 6:
+/***/ 7:
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -2412,7 +2436,7 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ 7:
+/***/ 8:
 /***/ (function(module, exports) {
 
 var g;
@@ -2440,34 +2464,10 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 8:
+/***/ 9:
 /***/ (function(module, exports) {
 
 /* (ignored) */
-
-/***/ }),
-
-/***/ 9:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var PromiseUtils = __webpack_require__(14);
-var ValidatorBase = /** @class */ (function () {
-    function ValidatorBase() {
-    }
-    ValidatorBase.prototype.toPromise = function (isValid, message) {
-        if (message === void 0) { message = ""; }
-        var result = {
-            isValid: isValid,
-            message: isValid ? "" : message
-        };
-        return PromiseUtils.toPromise(result);
-    };
-    return ValidatorBase;
-}());
-module.exports = ValidatorBase;
-
 
 /***/ })
 

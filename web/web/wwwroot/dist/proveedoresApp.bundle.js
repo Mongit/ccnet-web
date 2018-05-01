@@ -68,7 +68,7 @@
 /***/ 1:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(5).Promise;
+module.exports = __webpack_require__(6).Promise;
 
 
 /***/ }),
@@ -234,7 +234,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var KoBinder = __webpack_require__(2);
+var KoBinder = __webpack_require__(3);
 var ProveedoresModel = __webpack_require__(173);
 $(function () {
     return __awaiter(this, void 0, void 0, function () {
@@ -385,7 +385,7 @@ module.exports = ProveedoresModel;
 
 /***/ }),
 
-/***/ 2:
+/***/ 3:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -530,7 +530,7 @@ module.exports = ProxyRest;
 
 /***/ }),
 
-/***/ 5:
+/***/ 6:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, global) {var require;/*!
@@ -665,7 +665,7 @@ function flush() {
 function attemptVertx() {
   try {
     var r = require;
-    var vertx = __webpack_require__(8);
+    var vertx = __webpack_require__(9);
     vertxNext = vertx.runOnLoop || vertx.runOnContext;
     return useVertxTimer();
   } catch (e) {
@@ -1687,11 +1687,11 @@ return Promise;
 
 })));
 //# sourceMappingURL=es6-promise.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(8)))
 
 /***/ }),
 
-/***/ 6:
+/***/ 7:
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -1882,7 +1882,7 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ 7:
+/***/ 8:
 /***/ (function(module, exports) {
 
 var g;
@@ -1910,7 +1910,7 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 8:
+/***/ 9:
 /***/ (function(module, exports) {
 
 /* (ignored) */
