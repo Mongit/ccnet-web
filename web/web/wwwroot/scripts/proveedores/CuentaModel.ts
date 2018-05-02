@@ -5,7 +5,6 @@ import ICuentaModel = require("./ICuentaModel");
 import UrlUtils = require("./../utils/UrlUtils");
 import * as stringValidators from './../validators/stringValidators';
 
-
 class CuentaModel extends KoForm {
     public banco: IField<string>;
     public titular: IField<string>;
@@ -13,7 +12,8 @@ class CuentaModel extends KoForm {
     public noCuenta: IField<string>;
 
     public proxy: ProxyRest;
-    public proveedorIdUrlParam: string;
+    public proveedorId: string;
+    public cuentaIdUrlParam: string;
 
     public currentTemplate: KnockoutObservable<string>;
 
@@ -27,9 +27,17 @@ class CuentaModel extends KoForm {
         this.noCuenta = self.addField<string>([]);
         
         this.proxy = new ProxyRest("/api/Cuentas");
-        this.proveedorIdUrlParam = UrlUtils.getParameterByName("provId", window.location);
+        this.proveedorId = "";
+        this.cuentaIdUrlParam = UrlUtils.getParameterByName("id", window.location);
 
         this.currentTemplate = ko.observable<string>("nuevo");
+        self.cuentaIdUrlParam ? self.editarTemplate() : self.currentTemplate('nuevo');
+    }
+
+    public editarTemplate(): void {
+        const self = this;
+        self.getOne();
+        self.currentTemplate("editar");
     }
 
     public async save(): Promise<void> {
@@ -46,13 +54,36 @@ class CuentaModel extends KoForm {
         const self = this;
 
         return {
-            id: "00000000-0000-0000-0000-000000000000",
-            proveedorId: self.proveedorIdUrlParam,
+            id: self.cuentaIdUrlParam ? self.cuentaIdUrlParam : "00000000-0000-0000-0000-000000000000",
+            proveedorId: self.proveedorId,
             banco: self.banco.value(),
             titular: self.titular.value(),
             clabe: self.clabe.value(),
             noCuenta: self.noCuenta.value()
         };
+    }
+
+    public async getOne(): Promise<void> {
+        const self = this;
+
+        let response = await self.proxy.get<ICuentaModel>(self.cuentaIdUrlParam);
+        let cuentaJson = JSON.parse(JSON.parse(JSON.stringify(response)));
+
+        self.proveedorId = cuentaJson.proveedorId;
+        self.banco.value(cuentaJson.banco);
+        self.titular.value(cuentaJson.titular);
+        self.clabe.value(cuentaJson.clabe);
+        self.noCuenta.value(cuentaJson.noCuenta);
+    }
+
+    public async update(): Promise<void> {
+        const self = this;
+        if (await self.validate()) {
+            let model = self.getModel();
+            let cuentaUpdated = await self.proxy.put<ICuentaModel>(self.cuentaIdUrlParam, model);
+            alert(JSON.stringify(cuentaUpdated));
+            window.location.href = "Cuentas";
+        }
     }
 }
 
