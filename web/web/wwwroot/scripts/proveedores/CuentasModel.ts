@@ -1,15 +1,18 @@
 import iCuentaModel = require("./ICuentaModel");
 import ProxyRest = require("./../api/proxyRest");
+import UrlUtils = require("./../utils/UrlUtils");
 
 class CuentasModel {
     public cuentas: KnockoutObservableArray<iCuentaModel>;
 
     public proxy: ProxyRest;
+    public proveedorIdUrlParam: string;
 
     constructor() {
         this.cuentas = ko.observableArray<iCuentaModel>();
 
         this.proxy = new ProxyRest("/api/Cuentas");
+        this.proveedorIdUrlParam = UrlUtils.getParameterByName("id", window.location);
 
         this.getAll();
     }

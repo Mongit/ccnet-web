@@ -29,6 +29,9 @@ module.exports = {
         ],
         cuentasApp: [
             './scripts/proveedores/appCuentas.ts'
+        ],
+        cuentaApp: [
+            './scripts/proveedores/appCuenta.ts'
         ]
     },
     module: {

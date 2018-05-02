@@ -1,4 +1,14 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -34,47 +44,58 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var KoForm = require("./../form/KoForm");
 var ProxyRest = require("./../api/proxyRest");
 var UrlUtils = require("./../utils/UrlUtils");
-var CuentasModel = /** @class */ (function () {
-    function CuentasModel() {
-        this.cuentas = ko.observableArray();
-        this.proxy = new ProxyRest("/api/Cuentas");
-        this.proveedorIdUrlParam = UrlUtils.getParameterByName("id", window.location);
-        this.getAll();
+var stringValidators = require("./../validators/stringValidators");
+var CuentaModel = /** @class */ (function (_super) {
+    __extends(CuentaModel, _super);
+    function CuentaModel() {
+        var _this = _super.call(this) || this;
+        var self = _this;
+        _this.banco = self.addField([new stringValidators.RequiredStringValidator()]);
+        _this.titular = self.addField([new stringValidators.RequiredStringValidator()]);
+        _this.clabe = self.addField([]);
+        _this.noCuenta = self.addField([]);
+        _this.proxy = new ProxyRest("/api/Cuentas");
+        _this.proveedorIdUrlParam = UrlUtils.getParameterByName("provId", window.location);
+        _this.currentTemplate = ko.observable("nuevo");
+        return _this;
     }
-    CuentasModel.prototype.getAll = function () {
+    CuentaModel.prototype.save = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var self, response, cuentasjson, _i, cuentasjson_1, cuenta;
+            var self, model, serverModel;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         self = this;
-                        return [4 /*yield*/, self.proxy.get("", null, null)];
+                        return [4 /*yield*/, self.validate()];
                     case 1:
-                        response = _a.sent();
-                        cuentasjson = JSON.parse((JSON.parse(JSON.stringify(response))));
-                        self.cuentas.removeAll();
-                        for (_i = 0, cuentasjson_1 = cuentasjson; _i < cuentasjson_1.length; _i++) {
-                            cuenta = cuentasjson_1[_i];
-                            self.cuentas.push(self.getModel(cuenta));
-                        }
-                        return [2 /*return*/];
+                        if (!_a.sent()) return [3 /*break*/, 3];
+                        model = self.getModel();
+                        return [4 /*yield*/, self.proxy.post(model)];
+                    case 2:
+                        serverModel = _a.sent();
+                        alert("Cuenta guardada exitosamente.");
+                        window.location.href = "Cuentas";
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
                 }
             });
         });
     };
-    CuentasModel.prototype.getModel = function (cuenta) {
+    CuentaModel.prototype.getModel = function () {
+        var self = this;
         return {
-            id: cuenta.id,
-            proveedorId: cuenta.proveedorId,
-            banco: cuenta.banco,
-            titular: cuenta.titular,
-            clabe: cuenta.clabe,
-            noCuenta: cuenta.noCuenta
+            id: "00000000-0000-0000-0000-000000000000",
+            proveedorId: self.proveedorIdUrlParam,
+            banco: self.banco.value(),
+            titular: self.titular.value(),
+            clabe: self.clabe.value(),
+            noCuenta: self.noCuenta.value()
         };
     };
-    return CuentasModel;
-}());
-module.exports = CuentasModel;
-//# sourceMappingURL=CuentasModel.js.map
+    return CuentaModel;
+}(KoForm));
+module.exports = CuentaModel;
+//# sourceMappingURL=CuentaModel.js.map

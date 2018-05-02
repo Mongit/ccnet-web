@@ -34,47 +34,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var ProxyRest = require("./../api/proxyRest");
-var UrlUtils = require("./../utils/UrlUtils");
-var CuentasModel = /** @class */ (function () {
-    function CuentasModel() {
-        this.cuentas = ko.observableArray();
-        this.proxy = new ProxyRest("/api/Cuentas");
-        this.proveedorIdUrlParam = UrlUtils.getParameterByName("id", window.location);
-        this.getAll();
-    }
-    CuentasModel.prototype.getAll = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var self, response, cuentasjson, _i, cuentasjson_1, cuenta;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        self = this;
-                        return [4 /*yield*/, self.proxy.get("", null, null)];
-                    case 1:
-                        response = _a.sent();
-                        cuentasjson = JSON.parse((JSON.parse(JSON.stringify(response))));
-                        self.cuentas.removeAll();
-                        for (_i = 0, cuentasjson_1 = cuentasjson; _i < cuentasjson_1.length; _i++) {
-                            cuenta = cuentasjson_1[_i];
-                            self.cuentas.push(self.getModel(cuenta));
-                        }
-                        return [2 /*return*/];
-                }
-            });
+Object.defineProperty(exports, "__esModule", { value: true });
+var KoBinder = require("./../utils/KoBinder");
+var CuentaModel = require("./CuentaModel");
+$(function () {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            KoBinder.bind($("#cuentaForm"), new CuentaModel());
+            return [2 /*return*/];
         });
-    };
-    CuentasModel.prototype.getModel = function (cuenta) {
-        return {
-            id: cuenta.id,
-            proveedorId: cuenta.proveedorId,
-            banco: cuenta.banco,
-            titular: cuenta.titular,
-            clabe: cuenta.clabe,
-            noCuenta: cuenta.noCuenta
-        };
-    };
-    return CuentasModel;
-}());
-module.exports = CuentasModel;
-//# sourceMappingURL=CuentasModel.js.map
+    });
+});
+//# sourceMappingURL=appCuenta.js.map

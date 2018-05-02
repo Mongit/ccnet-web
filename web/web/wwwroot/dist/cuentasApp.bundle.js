@@ -77,6 +77,23 @@ module.exports = __webpack_require__(5).Promise;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+var HttpMethod;
+(function (HttpMethod) {
+    HttpMethod[HttpMethod["get"] = 0] = "get";
+    HttpMethod[HttpMethod["post"] = 1] = "post";
+    HttpMethod[HttpMethod["put"] = 2] = "put";
+    HttpMethod[HttpMethod["delete"] = 3] = "delete";
+})(HttpMethod || (HttpMethod = {}));
+module.exports = HttpMethod;
+
+
+/***/ }),
+
+/***/ 11:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(Promise) {
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -151,6 +168,32 @@ module.exports = ProxyBase;
 
 /***/ }),
 
+/***/ 15:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var UrlUtils = /** @class */ (function () {
+    function UrlUtils() {
+    }
+    UrlUtils.getParameterByName = function (name, url) {
+        if (!url)
+            url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
+        if (!results)
+            return null;
+        if (!results[2])
+            return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    };
+    return UrlUtils;
+}());
+module.exports = UrlUtils;
+
+
+/***/ }),
+
 /***/ 177:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -200,7 +243,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var KoBinder = __webpack_require__(2);
+var KoBinder = __webpack_require__(3);
 var CuentasModel = __webpack_require__(179);
 $(function () {
     return __awaiter(this, void 0, void 0, function () {
@@ -256,10 +299,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var ProxyRest = __webpack_require__(4);
+var UrlUtils = __webpack_require__(15);
 var CuentasModel = /** @class */ (function () {
     function CuentasModel() {
         this.cuentas = ko.observableArray();
         this.proxy = new ProxyRest("/api/Cuentas");
+        this.proveedorIdUrlParam = UrlUtils.getParameterByName("id", window.location);
         this.getAll();
     }
     CuentasModel.prototype.getAll = function () {
@@ -301,7 +346,7 @@ module.exports = CuentasModel;
 
 /***/ }),
 
-/***/ 2:
+/***/ 3:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -371,8 +416,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var HttpMethod = __webpack_require__(9);
-var ProxyBase = __webpack_require__(10);
+var HttpMethod = __webpack_require__(10);
+var ProxyBase = __webpack_require__(11);
 var ProxyRest = /** @class */ (function (_super) {
     __extends(ProxyRest, _super);
     function ProxyRest(endPoint) {
@@ -1830,23 +1875,6 @@ module.exports = g;
 /***/ (function(module, exports) {
 
 /* (ignored) */
-
-/***/ }),
-
-/***/ 9:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var HttpMethod;
-(function (HttpMethod) {
-    HttpMethod[HttpMethod["get"] = 0] = "get";
-    HttpMethod[HttpMethod["post"] = 1] = "post";
-    HttpMethod[HttpMethod["put"] = 2] = "put";
-    HttpMethod[HttpMethod["delete"] = 3] = "delete";
-})(HttpMethod || (HttpMethod = {}));
-module.exports = HttpMethod;
-
 
 /***/ })
 

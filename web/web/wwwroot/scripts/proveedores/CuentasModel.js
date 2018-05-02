@@ -35,10 +35,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var ProxyRest = require("./../api/proxyRest");
+var UrlUtils = require("./../utils/UrlUtils");
 var CuentasModel = /** @class */ (function () {
     function CuentasModel() {
         this.cuentas = ko.observableArray();
         this.proxy = new ProxyRest("/api/Cuentas");
+        this.proveedorIdUrlParam = UrlUtils.getParameterByName("id", window.location);
         this.getAll();
     }
     CuentasModel.prototype.getAll = function () {
