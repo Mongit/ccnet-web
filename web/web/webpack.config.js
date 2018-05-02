@@ -26,6 +26,9 @@ module.exports = {
         ],
         nuevoProveedorApp: [
             './scripts/proveedores/appNuevo.ts'
+        ],
+        cuentasApp: [
+            './scripts/proveedores/appCuentas.ts'
         ]
     },
     module: {

@@ -34,37 +34,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var ProxyBase = /** @class */ (function () {
-    function ProxyBase(endPoint) {
-        this.endPoint = endPoint;
-    }
-    ProxyBase.prototype.getUrlWithId = function (id, pageNumber, pageSize) {
-        var self = this;
-        if (id === undefined || id === null || $.trim(id).length === 0) {
-            if (pageNumber === undefined && pageSize === undefined || pageNumber === null && pageSize === null) {
-                return self.endPoint;
-            }
-            return self.endPoint + "/" + pageNumber + "/" + pageSize;
-        }
-        if (pageNumber === undefined || pageNumber === null || pageSize === undefined || pageSize === null) {
-            return self.endPoint + "/" + id;
-        }
-        return self.endPoint + "/" + id + "/" + pageNumber + "/" + pageSize;
-    };
-    ProxyBase.prototype.serverCall = function (model) {
-        return __awaiter(this, void 0, void 0, function () {
-            var promise;
-            return __generator(this, function (_a) {
-                promise = $.ajax({
-                    url: 'ServerCall',
-                    method: 'POST',
-                    data: model
-                });
-                return [2 /*return*/, Promise.resolve(promise)];
-            });
+Object.defineProperty(exports, "__esModule", { value: true });
+var KoBinder = require("./../utils/KoBinder");
+var CuentasModel = require("./CuentasModel");
+$(function () {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            KoBinder.bind($("#cuentasForm"), new CuentasModel());
+            return [2 /*return*/];
         });
-    };
-    return ProxyBase;
-}());
-module.exports = ProxyBase;
-//# sourceMappingURL=proxyBase.js.map
+    });
+});
+//# sourceMappingURL=appCuentas.js.map

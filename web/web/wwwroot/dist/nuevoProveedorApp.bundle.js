@@ -68,29 +68,12 @@
 /***/ 1:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(6).Promise;
+module.exports = __webpack_require__(5).Promise;
 
 
 /***/ }),
 
 /***/ 10:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var HttpMethod;
-(function (HttpMethod) {
-    HttpMethod[HttpMethod["get"] = 0] = "get";
-    HttpMethod[HttpMethod["post"] = 1] = "post";
-    HttpMethod[HttpMethod["put"] = 2] = "put";
-    HttpMethod[HttpMethod["delete"] = 3] = "delete";
-})(HttpMethod || (HttpMethod = {}));
-module.exports = HttpMethod;
-
-
-/***/ }),
-
-/***/ 11:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -137,10 +120,10 @@ var ProxyBase = /** @class */ (function () {
     ProxyBase.prototype.getUrlWithId = function (id, pageNumber, pageSize) {
         var self = this;
         if (id === undefined || id === null || $.trim(id).length === 0) {
-            if (pageNumber !== undefined || pageNumber !== null || pageSize !== undefined || pageSize !== null) {
-                return self.endPoint + "/" + pageNumber + "/" + pageSize;
+            if (pageNumber === undefined && pageSize === undefined || pageNumber === null && pageSize === null) {
+                return self.endPoint;
             }
-            return self.endPoint;
+            return self.endPoint + "/" + pageNumber + "/" + pageSize;
         }
         if (pageNumber === undefined || pageNumber === null || pageSize === undefined || pageSize === null) {
             return self.endPoint + "/" + id;
@@ -165,6 +148,30 @@ var ProxyBase = /** @class */ (function () {
 module.exports = ProxyBase;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+
+/***/ 11:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var PromiseUtils = __webpack_require__(13);
+var ValidatorBase = /** @class */ (function () {
+    function ValidatorBase() {
+    }
+    ValidatorBase.prototype.toPromise = function (isValid, message) {
+        if (message === void 0) { message = ""; }
+        var result = {
+            isValid: isValid,
+            message: isValid ? "" : message
+        };
+        return PromiseUtils.toPromise(result);
+    };
+    return ValidatorBase;
+}());
+module.exports = ValidatorBase;
+
 
 /***/ }),
 
@@ -307,7 +314,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var equal = __webpack_require__(12);
-var FieldBase = __webpack_require__(2);
+var FieldBase = __webpack_require__(3);
 var Field = /** @class */ (function (_super) {
     __extends(Field, _super);
     function Field(validators, useStrictForComparations, value) {
@@ -368,7 +375,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var Field = __webpack_require__(138);
-var FieldBase = __webpack_require__(2);
+var FieldBase = __webpack_require__(3);
 var FieldArray = __webpack_require__(141);
 var ValidatableValidator = __webpack_require__(15);
 var KoForm = /** @class */ (function (_super) {
@@ -460,7 +467,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var equal = __webpack_require__(12);
-var FieldBase = __webpack_require__(2);
+var FieldBase = __webpack_require__(3);
 var FieldArray = /** @class */ (function (_super) {
     __extends(FieldArray, _super);
     function FieldArray(validators, useStrictForComparations, value) {
@@ -543,7 +550,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var ValidatorBase = __webpack_require__(5);
+var ValidatorBase = __webpack_require__(11);
 var ValidatableValidator = /** @class */ (function (_super) {
     __extends(ValidatableValidator, _super);
     function ValidatableValidator(message) {
@@ -605,7 +612,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ValidatorBase = __webpack_require__(5);
+var ValidatorBase = __webpack_require__(11);
 var StringValidatorBase = /** @class */ (function (_super) {
     __extends(StringValidatorBase, _super);
     function StringValidatorBase() {
@@ -724,7 +731,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var KoBinder = __webpack_require__(3);
+var KoBinder = __webpack_require__(2);
 var NuevoProveedorModel = __webpack_require__(176);
 $(function () {
     return __awaiter(this, void 0, void 0, function () {
@@ -905,6 +912,26 @@ module.exports = NuevoProveedorModel;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+var KoBinder = /** @class */ (function () {
+    function KoBinder() {
+    }
+    KoBinder.bind = function (view, model) {
+        var domObj = view.get()[0];
+        ko.cleanNode(domObj);
+        ko.applyBindings(model, domObj);
+    };
+    return KoBinder;
+}());
+module.exports = KoBinder;
+
+
+/***/ }),
+
+/***/ 3:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(Promise) {
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -994,26 +1021,6 @@ module.exports = FieldBase;
 
 /***/ }),
 
-/***/ 3:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var KoBinder = /** @class */ (function () {
-    function KoBinder() {
-    }
-    KoBinder.bind = function (view, model) {
-        var domObj = view.get()[0];
-        ko.cleanNode(domObj);
-        ko.applyBindings(model, domObj);
-    };
-    return KoBinder;
-}());
-module.exports = KoBinder;
-
-
-/***/ }),
-
 /***/ 4:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1064,8 +1071,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var HttpMethod = __webpack_require__(10);
-var ProxyBase = __webpack_require__(11);
+var HttpMethod = __webpack_require__(9);
+var ProxyBase = __webpack_require__(10);
 var ProxyRest = /** @class */ (function (_super) {
     __extends(ProxyRest, _super);
     function ProxyRest(endPoint) {
@@ -1140,30 +1147,6 @@ module.exports = ProxyRest;
 /***/ }),
 
 /***/ 5:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var PromiseUtils = __webpack_require__(13);
-var ValidatorBase = /** @class */ (function () {
-    function ValidatorBase() {
-    }
-    ValidatorBase.prototype.toPromise = function (isValid, message) {
-        if (message === void 0) { message = ""; }
-        var result = {
-            isValid: isValid,
-            message: isValid ? "" : message
-        };
-        return PromiseUtils.toPromise(result);
-    };
-    return ValidatorBase;
-}());
-module.exports = ValidatorBase;
-
-
-/***/ }),
-
-/***/ 6:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, global) {var require;/*!
@@ -1298,7 +1281,7 @@ function flush() {
 function attemptVertx() {
   try {
     var r = require;
-    var vertx = __webpack_require__(9);
+    var vertx = __webpack_require__(8);
     vertxNext = vertx.runOnLoop || vertx.runOnContext;
     return useVertxTimer();
   } catch (e) {
@@ -2320,11 +2303,11 @@ return Promise;
 
 })));
 //# sourceMappingURL=es6-promise.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(7)))
 
 /***/ }),
 
-/***/ 7:
+/***/ 6:
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -2515,7 +2498,7 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ 8:
+/***/ 7:
 /***/ (function(module, exports) {
 
 var g;
@@ -2543,10 +2526,27 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 9:
+/***/ 8:
 /***/ (function(module, exports) {
 
 /* (ignored) */
+
+/***/ }),
+
+/***/ 9:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var HttpMethod;
+(function (HttpMethod) {
+    HttpMethod[HttpMethod["get"] = 0] = "get";
+    HttpMethod[HttpMethod["post"] = 1] = "post";
+    HttpMethod[HttpMethod["put"] = 2] = "put";
+    HttpMethod[HttpMethod["delete"] = 3] = "delete";
+})(HttpMethod || (HttpMethod = {}));
+module.exports = HttpMethod;
+
 
 /***/ })
 

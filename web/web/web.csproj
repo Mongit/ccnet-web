@@ -7,8 +7,11 @@
     <None Remove="scripts\cotizaciones\appPresupuestos.ts" />
     <None Remove="scripts\cotizaciones\PresupuestosModel.ts" />
     <None Remove="scripts\pagination\PageModel.ts" />
+    <None Remove="scripts\proveedores\appCuentas.ts" />
     <None Remove="scripts\proveedores\appNuevo.ts" />
     <None Remove="scripts\proveedores\appProveedores.ts" />
+    <None Remove="scripts\proveedores\CuentasModel.ts" />
+    <None Remove="scripts\proveedores\ICuentaModel.ts" />
     <None Remove="scripts\proveedores\IProveedorModel.ts" />
     <None Remove="scripts\proveedores\NuevoProveedorModel.ts" />
     <None Remove="scripts\proveedores\ProveedoresModel.ts" />
@@ -25,8 +28,11 @@
     <TypeScriptCompile Include="scripts\cotizaciones\appPresupuestos.ts" />
     <TypeScriptCompile Include="scripts\cotizaciones\PresupuestosModel.ts" />
     <TypeScriptCompile Include="scripts\pagination\PageModel.ts" />
+    <TypeScriptCompile Include="scripts\proveedores\appCuentas.ts" />
     <TypeScriptCompile Include="scripts\proveedores\appNuevo.ts" />
     <TypeScriptCompile Include="scripts\proveedores\appProveedores.ts" />
+    <TypeScriptCompile Include="scripts\proveedores\CuentasModel.ts" />
+    <TypeScriptCompile Include="scripts\proveedores\ICuentaModel.ts" />
     <TypeScriptCompile Include="scripts\proveedores\IProveedorModel.ts" />
     <TypeScriptCompile Include="scripts\proveedores\NuevoProveedorModel.ts" />
     <TypeScriptCompile Include="scripts\proveedores\ProveedoresModel.ts" />

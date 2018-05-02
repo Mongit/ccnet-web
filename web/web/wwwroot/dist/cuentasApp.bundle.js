@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 171);
+/******/ 	return __webpack_require__(__webpack_require__.s = 177);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -151,32 +151,15 @@ module.exports = ProxyBase;
 
 /***/ }),
 
-/***/ 147:
+/***/ 177:
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-var PageModel = /** @class */ (function () {
-    function PageModel(isSelected, pageNumber) {
-        this.isSelected = ko.observable(isSelected);
-        this.pageNumber = ko.observable(pageNumber);
-    }
-    return PageModel;
-}());
-module.exports = PageModel;
+module.exports = __webpack_require__(178);
 
 
 /***/ }),
 
-/***/ 171:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(172);
-
-
-/***/ }),
-
-/***/ 172:
+/***/ 178:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -218,11 +201,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var KoBinder = __webpack_require__(2);
-var ProveedoresModel = __webpack_require__(173);
+var CuentasModel = __webpack_require__(179);
 $(function () {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            KoBinder.bind($("#proveedoresForm"), new ProveedoresModel());
+            KoBinder.bind($("#cuentasForm"), new CuentasModel());
             return [2 /*return*/];
         });
     });
@@ -232,7 +215,7 @@ $(function () {
 
 /***/ }),
 
-/***/ 173:
+/***/ 179:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -272,97 +255,47 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var Page = __webpack_require__(147);
 var ProxyRest = __webpack_require__(4);
-var ProveedoresModel = /** @class */ (function () {
-    function ProveedoresModel() {
-        this.pageSize = 20;
-        this.pageNumber = ko.observable(1);
-        this.totalPages = ko.observable();
-        this.lastPage = ko.observable(false);
-        this.firstPage = ko.observable(true);
-        this.showPagination = ko.observable(false);
-        this.pages = ko.observableArray([]);
-        this.proveedores = ko.observableArray();
-        this.proxy = new ProxyRest("/api/Proveedores");
+var CuentasModel = /** @class */ (function () {
+    function CuentasModel() {
+        this.cuentas = ko.observableArray();
+        this.proxy = new ProxyRest("/api/Cuentas");
         this.getAll();
     }
-    ProveedoresModel.prototype.getAll = function () {
+    CuentasModel.prototype.getAll = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var self, response, proveedoresjson, i, pageNumber, isSelected, page, _i, _a, proveedorjson;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var self, response, cuentasjson, _i, cuentasjson_1, cuenta;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         self = this;
-                        return [4 /*yield*/, self.proxy.get("", self.pageNumber(), self.pageSize)];
+                        return [4 /*yield*/, self.proxy.get("", null, null)];
                     case 1:
-                        response = _b.sent();
-                        proveedoresjson = JSON.parse((JSON.parse(JSON.stringify(response))));
-                        self.totalPages(proveedoresjson.totalPages);
-                        if (self.totalPages() > 1) {
-                            self.showPagination(true);
-                        }
-                        self.pages.removeAll();
-                        for (i = 0; i < self.totalPages(); i++) {
-                            pageNumber = i + 1;
-                            isSelected = self.pageNumber() === pageNumber;
-                            page = new Page(isSelected, pageNumber);
-                            self.pages.push(page);
-                        }
-                        self.proveedores.removeAll();
-                        for (_i = 0, _a = proveedoresjson.proveedores; _i < _a.length; _i++) {
-                            proveedorjson = _a[_i];
-                            self.proveedores.push(self.getModel(proveedorjson));
+                        response = _a.sent();
+                        cuentasjson = JSON.parse((JSON.parse(JSON.stringify(response))));
+                        self.cuentas.removeAll();
+                        for (_i = 0, cuentasjson_1 = cuentasjson; _i < cuentasjson_1.length; _i++) {
+                            cuenta = cuentasjson_1[_i];
+                            self.cuentas.push(self.getModel(cuenta));
                         }
                         return [2 /*return*/];
                 }
             });
         });
     };
-    ProveedoresModel.prototype.getModel = function (proveedor) {
+    CuentasModel.prototype.getModel = function (cuenta) {
         return {
-            id: proveedor.id,
-            empresa: proveedor.empresa,
-            contacto: proveedor.contacto,
-            domicilio: proveedor.domicilio,
-            telefono: proveedor.telefono,
-            email: proveedor.email,
-            horarioAtencion: proveedor.horarioAtencion
+            id: cuenta.id,
+            proveedorId: cuenta.proveedorId,
+            banco: cuenta.banco,
+            titular: cuenta.titular,
+            clabe: cuenta.clabe,
+            noCuenta: cuenta.noCuenta
         };
     };
-    ProveedoresModel.prototype.selectedPage = function (page) {
-        var self = this;
-        self.pageNumber(page.pageNumber());
-        page.pageNumber() === self.totalPages() ? self.lastPage(true) : self.lastPage(false);
-        ;
-        page.pageNumber() === 1 ? self.firstPage(true) : self.firstPage(false);
-        self.getAll();
-    };
-    ProveedoresModel.prototype.next = function () {
-        var self = this;
-        var arrPosition = self.pageNumber() - 1;
-        var lastPage = self.pages()[arrPosition];
-        lastPage.isSelected(false);
-        var nextPage = self.pages()[arrPosition + 1];
-        if (nextPage.pageNumber() <= self.totalPages()) {
-            nextPage.isSelected(true);
-            self.selectedPage(nextPage);
-        }
-    };
-    ProveedoresModel.prototype.previous = function () {
-        var self = this;
-        var arrPosition = self.pageNumber() - 1;
-        var currentPage = self.pages()[arrPosition];
-        currentPage.isSelected(false);
-        var previousPage = self.pages()[arrPosition - 1];
-        if (previousPage.pageNumber() > 0) {
-            previousPage.isSelected(true);
-            self.selectedPage(previousPage);
-        }
-    };
-    return ProveedoresModel;
+    return CuentasModel;
 }());
-module.exports = ProveedoresModel;
+module.exports = CuentasModel;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
