@@ -19,7 +19,7 @@ class CuentasModel {
 
     public async getAll(): Promise<void> {
         const self = this;
-        let response = await self.proxy.get("", null, null);
+        let response = await self.proxy.get(self.proveedorIdUrlParam, 1, 20);
         let cuentasjson = JSON.parse((JSON.parse(JSON.stringify(response))));
         
         self.cuentas.removeAll();

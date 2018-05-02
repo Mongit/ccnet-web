@@ -58,7 +58,7 @@ var CuentaModel = /** @class */ (function (_super) {
         _this.clabe = self.addField([]);
         _this.noCuenta = self.addField([]);
         _this.proxy = new ProxyRest("/api/Cuentas");
-        _this.proveedorId = "";
+        _this.proveedorId = UrlUtils.getParameterByName("provId", window.location);
         _this.cuentaIdUrlParam = UrlUtils.getParameterByName("id", window.location);
         _this.currentTemplate = ko.observable("nuevo");
         self.cuentaIdUrlParam ? self.editarTemplate() : self.currentTemplate('nuevo');
@@ -84,7 +84,7 @@ var CuentaModel = /** @class */ (function (_super) {
                     case 2:
                         serverModel = _a.sent();
                         alert("Cuenta guardada exitosamente.");
-                        window.location.href = "Cuentas";
+                        window.location.href = "Cuentas?id=" + self.proveedorId;
                         _a.label = 3;
                     case 3: return [2 /*return*/];
                 }
@@ -138,7 +138,7 @@ var CuentaModel = /** @class */ (function (_super) {
                     case 2:
                         cuentaUpdated = _a.sent();
                         alert(JSON.stringify(cuentaUpdated));
-                        window.location.href = "Cuentas";
+                        window.location.href = "Cuentas?id=" + self.proveedorId;
                         _a.label = 3;
                     case 3: return [2 /*return*/];
                 }

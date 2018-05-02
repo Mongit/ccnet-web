@@ -314,7 +314,7 @@ var CuentasModel = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         self = this;
-                        return [4 /*yield*/, self.proxy.get("", null, null)];
+                        return [4 /*yield*/, self.proxy.get(self.proveedorIdUrlParam, 1, 20)];
                     case 1:
                         response = _a.sent();
                         cuentasjson = JSON.parse((JSON.parse(JSON.stringify(response))));

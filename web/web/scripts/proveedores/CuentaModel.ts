@@ -25,9 +25,9 @@ class CuentaModel extends KoForm {
         this.titular = self.addField<string>([new stringValidators.RequiredStringValidator()]);
         this.clabe = self.addField<string>([]);
         this.noCuenta = self.addField<string>([]);
-        
+
         this.proxy = new ProxyRest("/api/Cuentas");
-        this.proveedorId = "";
+        this.proveedorId = UrlUtils.getParameterByName("provId", window.location);
         this.cuentaIdUrlParam = UrlUtils.getParameterByName("id", window.location);
 
         this.currentTemplate = ko.observable<string>("nuevo");
@@ -46,7 +46,7 @@ class CuentaModel extends KoForm {
             let model = self.getModel();
             let serverModel = await self.proxy.post<ICuentaModel>(model);
             alert("Cuenta guardada exitosamente.");
-            window.location.href = "Cuentas";
+            window.location.href = "Cuentas?id=" + self.proveedorId;
         }
     }
 
@@ -82,7 +82,7 @@ class CuentaModel extends KoForm {
             let model = self.getModel();
             let cuentaUpdated = await self.proxy.put<ICuentaModel>(self.cuentaIdUrlParam, model);
             alert(JSON.stringify(cuentaUpdated));
-            window.location.href = "Cuentas";
+            window.location.href = "Cuentas?id=" + self.proveedorId;
         }
     }
 }
