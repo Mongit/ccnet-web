@@ -32,6 +32,9 @@ module.exports = {
         ],
         cuentaApp: [
             './scripts/proveedores/appCuenta.ts'
+        ],
+        productosApp: [
+            './scripts/productos/appProductos.ts'
         ]
     },
     module: {
