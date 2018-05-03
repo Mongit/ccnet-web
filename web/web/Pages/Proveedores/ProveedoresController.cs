@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
 using web.Pages.Models;
 
 namespace web.Pages.Proveedores
 {
+    [Authorize]
     public class ProveedoresController : BaseController
     {
         private IConfiguration _config;

@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using web.Pages.Models;
 
 namespace web.Pages
 {
+    [Authorize]
     public class CotizacionesController : BaseController
     {
         private IConfiguration _config;
