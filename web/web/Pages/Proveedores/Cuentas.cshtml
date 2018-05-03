@@ -9,6 +9,8 @@
     <script src="~/dist/cuentasApp.bundle.js" type="text/javascript"></script>
 }
 
+@Html.Partial("_ConfirmDeleteModal")
+
 <h2>Cuentas</h2>
 
 <div class="mt-5" id="cuentasForm">
@@ -31,7 +33,7 @@
                 <td data-bind="text: noCuenta"></td>
                 <td>
                     <a class="btn btn-light btn-block" data-bind="attr: { href: 'Cuenta?id=' + id }">Editar</a>
-                    <a class="btn btn-secondary btn-block">Borrar</a>
+                    <button class="btn btn-secondary btn-block" data-bind="click: $parent.delete.bind($parent)">Borrar</button>
                 </td>
             </tr>
             <!-- /ko -->

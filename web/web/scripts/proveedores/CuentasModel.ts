@@ -1,6 +1,9 @@
 ﻿import iCuentaModel = require("./ICuentaModel");
 import ProxyRest = require("./../api/proxyRest");
 import UrlUtils = require("./../utils/UrlUtils");
+import ConfirmModal = require("./../modals/confirmModal");
+import BindedModal = require("./../modals/BindedModal");
+import Size = require("./../utils/Size");
 
 class CuentasModel {
     public cuentas: KnockoutObservableArray<iCuentaModel>;
@@ -37,6 +40,28 @@ class CuentasModel {
             clabe: cuenta.clabe,
             noCuenta: cuenta.noCuenta
         };
+    }
+
+    public delete(cuenta: iCuentaModel): void {
+        const self = this;
+        let modalModel = new ConfirmModal("¿Está seguro de borrar ésta cuenta?");
+
+        let dialog = new BindedModal({
+            model: modalModel,
+            size: Size.medium,
+            templateBody: "ConfirmDeleteModalBody",
+            templateFooter: "ConfirmDeleteModalFooter",
+            title: "¡Confirmación!",
+            onClose: async function (e: JQuery.Event<HTMLElement, null>): Promise<void> {
+
+                if (modalModel.result() === true) {
+                    self.cuentas.remove(cuenta);
+                    let deleted = await self.proxy.delete<iCuentaModel>(cuenta.id);
+                    alert(deleted);
+                }
+
+            }
+        });     
     }
 }
 

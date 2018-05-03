@@ -234,7 +234,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var KoBinder = __webpack_require__(3);
+var KoBinder = __webpack_require__(2);
 var ProveedoresModel = __webpack_require__(173);
 $(function () {
     return __awaiter(this, void 0, void 0, function () {
@@ -385,7 +385,7 @@ module.exports = ProveedoresModel;
 
 /***/ }),
 
-/***/ 3:
+/***/ 2:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

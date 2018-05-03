@@ -36,6 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var ProxyRest = require("./../api/proxyRest");
 var UrlUtils = require("./../utils/UrlUtils");
+var ConfirmModal = require("./../modals/confirmModal");
+var BindedModal = require("./../modals/BindedModal");
+var Size = require("./../utils/Size");
 var CuentasModel = /** @class */ (function () {
     function CuentasModel() {
         this.cuentas = ko.observableArray();
@@ -73,6 +76,35 @@ var CuentasModel = /** @class */ (function () {
             clabe: cuenta.clabe,
             noCuenta: cuenta.noCuenta
         };
+    };
+    CuentasModel.prototype.delete = function (cuenta) {
+        var self = this;
+        var modalModel = new ConfirmModal("¿Está seguro de borrar ésta cuenta?");
+        var dialog = new BindedModal({
+            model: modalModel,
+            size: Size.medium,
+            templateBody: "ConfirmDeleteModalBody",
+            templateFooter: "ConfirmDeleteModalFooter",
+            title: "¡Confirmación!",
+            onClose: function (e) {
+                return __awaiter(this, void 0, void 0, function () {
+                    var deleted;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                if (!(modalModel.result() === true)) return [3 /*break*/, 2];
+                                self.cuentas.remove(cuenta);
+                                return [4 /*yield*/, self.proxy.delete(cuenta.id)];
+                            case 1:
+                                deleted = _a.sent();
+                                alert(deleted);
+                                _a.label = 2;
+                            case 2: return [2 /*return*/];
+                        }
+                    });
+                });
+            }
+        });
     };
     return CuentasModel;
 }());
