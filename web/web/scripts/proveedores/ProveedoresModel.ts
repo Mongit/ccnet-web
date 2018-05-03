@@ -1,6 +1,9 @@
 ﻿import Page = require("./../pagination/PageModel");
 import ProxyRest = require("./../api/proxyRest");
 import iProveedorModel = require("./IProveedorModel");
+import ConfirmModal = require("./../modals/confirmModal");
+import BindedModal = require("./../modals/BindedModal");
+import Size = require("./../utils/Size");
 
 class ProveedoresModel {
     public pageSize: number;
@@ -103,6 +106,28 @@ class ProveedoresModel {
             previousPage.isSelected(true);
             self.selectedPage(previousPage);
         }
+    }
+
+    public delete(proveedor: iProveedorModel): void {
+        const self = this;
+        let modalModel = new ConfirmModal("¿Está seguro de borrar éste proveedor?");
+
+        let dialog = new BindedModal({
+            model: modalModel,
+            size: Size.medium,
+            templateBody: "ConfirmDeleteModalBody",
+            templateFooter: "ConfirmDeleteModalFooter",
+            title: "¡Confirmación!",
+            onClose: async function (e: JQuery.Event<HTMLElement, null>): Promise<void> {
+
+                if (modalModel.result() === true) {
+                    self.proveedores.remove(proveedor);
+                    let deleted = await self.proxy.delete<iProveedorModel>(proveedor.id);
+                    alert(deleted);
+                }
+
+            }
+        });
     }
 }
 

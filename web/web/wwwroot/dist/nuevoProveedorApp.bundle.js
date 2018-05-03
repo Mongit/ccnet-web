@@ -291,7 +291,7 @@ module.exports = PromiseUtils;
 
 /***/ }),
 
-/***/ 14:
+/***/ 15:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -309,7 +309,7 @@ var __extends = (this && this.__extends) || (function () {
 var Field = __webpack_require__(19);
 var FieldBase = __webpack_require__(3);
 var FieldArray = __webpack_require__(22);
-var ValidatableValidator = __webpack_require__(16);
+var ValidatableValidator = __webpack_require__(17);
 var KoForm = /** @class */ (function (_super) {
     __extends(KoForm, _super);
     function KoForm(validators) {
@@ -356,7 +356,7 @@ module.exports = KoForm;
 
 /***/ }),
 
-/***/ 15:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -382,7 +382,7 @@ module.exports = UrlUtils;
 
 /***/ }),
 
-/***/ 16:
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -475,66 +475,6 @@ var ValidatableValidator = /** @class */ (function (_super) {
 module.exports = ValidatableValidator;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-
-/***/ 17:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var ValidatorBase = __webpack_require__(9);
-var StringValidatorBase = /** @class */ (function (_super) {
-    __extends(StringValidatorBase, _super);
-    function StringValidatorBase() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    StringValidatorBase.prototype.hasValue = function (value) {
-        if (value === null || value === undefined || $.trim(value).length === 0) {
-            return false;
-        }
-        return true;
-    };
-    return StringValidatorBase;
-}(ValidatorBase));
-var StartsByRStringValidator = /** @class */ (function (_super) {
-    __extends(StartsByRStringValidator, _super);
-    function StartsByRStringValidator() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    StartsByRStringValidator.prototype.check = function (value) {
-        var self = this;
-        var isValid = !self.hasValue(value) || value[0].toUpperCase() === "R";
-        return self.toPromise(isValid, "Éste campo debe comenzar con la letra R.");
-    };
-    return StartsByRStringValidator;
-}(StringValidatorBase));
-exports.StartsByRStringValidator = StartsByRStringValidator;
-var RequiredStringValidator = /** @class */ (function (_super) {
-    __extends(RequiredStringValidator, _super);
-    function RequiredStringValidator() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    RequiredStringValidator.prototype.check = function (value) {
-        var self = this;
-        var isValid = self.hasValue(value);
-        return self.toPromise(isValid, "Éste campo no puede estar vacío.");
-    };
-    return RequiredStringValidator;
-}(StringValidatorBase));
-exports.RequiredStringValidator = RequiredStringValidator;
-
 
 /***/ }),
 
@@ -652,10 +592,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var KoForm = __webpack_require__(14);
+var KoForm = __webpack_require__(15);
 var ProxyRest = __webpack_require__(4);
-var UrlUtils = __webpack_require__(15);
-var stringValidators = __webpack_require__(17);
+var UrlUtils = __webpack_require__(16);
+var stringValidators = __webpack_require__(18);
 var NuevoProveedorModel = /** @class */ (function (_super) {
     __extends(NuevoProveedorModel, _super);
     function NuevoProveedorModel() {
@@ -761,6 +701,66 @@ var NuevoProveedorModel = /** @class */ (function (_super) {
 module.exports = NuevoProveedorModel;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+
+/***/ 18:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ValidatorBase = __webpack_require__(9);
+var StringValidatorBase = /** @class */ (function (_super) {
+    __extends(StringValidatorBase, _super);
+    function StringValidatorBase() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    StringValidatorBase.prototype.hasValue = function (value) {
+        if (value === null || value === undefined || $.trim(value).length === 0) {
+            return false;
+        }
+        return true;
+    };
+    return StringValidatorBase;
+}(ValidatorBase));
+var StartsByRStringValidator = /** @class */ (function (_super) {
+    __extends(StartsByRStringValidator, _super);
+    function StartsByRStringValidator() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    StartsByRStringValidator.prototype.check = function (value) {
+        var self = this;
+        var isValid = !self.hasValue(value) || value[0].toUpperCase() === "R";
+        return self.toPromise(isValid, "Éste campo debe comenzar con la letra R.");
+    };
+    return StartsByRStringValidator;
+}(StringValidatorBase));
+exports.StartsByRStringValidator = StartsByRStringValidator;
+var RequiredStringValidator = /** @class */ (function (_super) {
+    __extends(RequiredStringValidator, _super);
+    function RequiredStringValidator() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    RequiredStringValidator.prototype.check = function (value) {
+        var self = this;
+        var isValid = self.hasValue(value);
+        return self.toPromise(isValid, "Éste campo no puede estar vacío.");
+    };
+    return RequiredStringValidator;
+}(StringValidatorBase));
+exports.RequiredStringValidator = RequiredStringValidator;
+
 
 /***/ }),
 

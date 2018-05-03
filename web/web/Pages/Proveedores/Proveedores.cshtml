@@ -10,6 +10,7 @@
 }
 
 @Html.Partial("_KoGlobalTemplates")
+@Html.Partial("_ConfirmDeleteModal")
 
 <h2>Proveedores</h2>
 
@@ -37,7 +38,8 @@
                 <td data-bind="text: horarioAtencion"></td>
                 <td>
                     <a class="btn btn-light btn-block" data-bind="attr: { href: 'NuevoProveedor?id=' + id }">Editar</a>
-                    <a class="btn btn-secondary btn-block" data-bind="attr: { href: 'Cuentas?id=' + id }">Cuentas</a>
+                    <a class="btn btn-light btn-block" data-bind="attr: { href: 'Cuentas?id=' + id }">Cuentas</a>
+                    <button class="btn btn-secondary btn-block" data-bind="click: $parent.delete.bind($parent)">Borrar</button>
                 </td>
             </tr>
             <!-- /ko -->
