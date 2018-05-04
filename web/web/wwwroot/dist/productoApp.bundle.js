@@ -263,7 +263,7 @@ var ProductoModel = /** @class */ (function () {
     }
     ProductoModel.prototype.remoteHandler = function (term, callback) {
         return __awaiter(this, void 0, void 0, function () {
-            var self, response, proveedoresjson, arr, i, _i, proveedoresjson_1, proveedor;
+            var self, response, proveedoresjson;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -272,16 +272,7 @@ var ProductoModel = /** @class */ (function () {
                     case 1:
                         response = _a.sent();
                         proveedoresjson = JSON.parse((JSON.parse(JSON.stringify(response))));
-                        arr = new Array();
-                        i = 0;
-                        for (_i = 0, proveedoresjson_1 = proveedoresjson; _i < proveedoresjson_1.length; _i++) {
-                            proveedor = proveedoresjson_1[_i];
-                            i++;
-                            arr.push({ test: proveedor.empresa, val: i });
-                        }
-                        setTimeout(function () {
-                            callback(arr);
-                        });
+                        callback(proveedoresjson);
                         return [2 /*return*/];
                 }
             });

@@ -14,19 +14,8 @@ class ProductoModel {
         const self = this;
         let response = await self.proxy.get(term, null, null);
         let proveedoresjson = JSON.parse((JSON.parse(JSON.stringify(response))));
-        let arr = new Array();
-        let i = 0;
-
-        for (let proveedor of proveedoresjson) {
-            i++;
-            arr.push({ test: proveedor.empresa, val: i });
-        }
-
-        setTimeout( function () {
-            callback(arr)
-        });
+        callback(proveedoresjson);
     }
-    
 }
 
 export = ProductoModel;
