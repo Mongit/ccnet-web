@@ -7,8 +7,10 @@
     <None Remove="scripts\cotizaciones\appPresupuestos.ts" />
     <None Remove="scripts\cotizaciones\PresupuestosModel.ts" />
     <None Remove="scripts\pagination\PageModel.ts" />
+    <None Remove="scripts\productos\appProducto.ts" />
     <None Remove="scripts\productos\appProductos.ts" />
     <None Remove="scripts\productos\IProductoModel.ts" />
+    <None Remove="scripts\productos\ProductoModel.ts" />
     <None Remove="scripts\productos\ProductosModel.ts" />
     <None Remove="scripts\proveedores\appCuenta.ts" />
     <None Remove="scripts\proveedores\appCuentas.ts" />
@@ -33,8 +35,10 @@
     <TypeScriptCompile Include="scripts\cotizaciones\appPresupuestos.ts" />
     <TypeScriptCompile Include="scripts\cotizaciones\PresupuestosModel.ts" />
     <TypeScriptCompile Include="scripts\pagination\PageModel.ts" />
+    <TypeScriptCompile Include="scripts\productos\appProducto.ts" />
     <TypeScriptCompile Include="scripts\productos\appProductos.ts" />
     <TypeScriptCompile Include="scripts\productos\IProductoModel.ts" />
+    <TypeScriptCompile Include="scripts\productos\ProductoModel.ts" />
     <TypeScriptCompile Include="scripts\productos\ProductosModel.ts" />
     <TypeScriptCompile Include="scripts\proveedores\appCuenta.ts" />
     <TypeScriptCompile Include="scripts\proveedores\appCuentas.ts" />
