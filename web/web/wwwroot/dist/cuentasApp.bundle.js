@@ -68,7 +68,7 @@
 /***/ 1:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(4).Promise;
+module.exports = __webpack_require__(5).Promise;
 
 
 /***/ }),
@@ -151,7 +151,7 @@ module.exports = ProxyBase;
 
 /***/ }),
 
-/***/ 14:
+/***/ 15:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -163,32 +163,6 @@ var Size;
     Size[Size["large"] = 2] = "large";
 })(Size || (Size = {}));
 module.exports = Size;
-
-
-/***/ }),
-
-/***/ 16:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var UrlUtils = /** @class */ (function () {
-    function UrlUtils() {
-    }
-    UrlUtils.getParameterByName = function (name, url) {
-        if (!url)
-            url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
-        if (!results)
-            return null;
-        if (!results[2])
-            return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-    };
-    return UrlUtils;
-}());
-module.exports = UrlUtils;
 
 
 /***/ }),
@@ -297,11 +271,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var ProxyRest = __webpack_require__(3);
-var UrlUtils = __webpack_require__(16);
+var ProxyRest = __webpack_require__(4);
+var UrlUtils = __webpack_require__(18);
 var ConfirmModal = __webpack_require__(24);
 var BindedModal = __webpack_require__(23);
-var Size = __webpack_require__(14);
+var Size = __webpack_require__(15);
 var CuentasModel = /** @class */ (function () {
     function CuentasModel() {
         this.cuentas = ko.observableArray();
@@ -377,6 +351,32 @@ module.exports = CuentasModel;
 
 /***/ }),
 
+/***/ 18:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var UrlUtils = /** @class */ (function () {
+    function UrlUtils() {
+    }
+    UrlUtils.getParameterByName = function (name, url) {
+        if (!url)
+            url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
+        if (!results)
+            return null;
+        if (!results[2])
+            return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    };
+    return UrlUtils;
+}());
+module.exports = UrlUtils;
+
+
+/***/ }),
+
 /***/ 2:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -402,7 +402,7 @@ module.exports = KoBinder;
 
 "use strict";
 
-var Size = __webpack_require__(14);
+var Size = __webpack_require__(15);
 var KoBinder = __webpack_require__(2);
 var BindedModal = /** @class */ (function () {
     function BindedModal(info) {
@@ -501,7 +501,7 @@ module.exports = ConfirmModel;
 
 /***/ }),
 
-/***/ 3:
+/***/ 4:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -626,7 +626,7 @@ module.exports = ProxyRest;
 
 /***/ }),
 
-/***/ 4:
+/***/ 5:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, global) {var require;/*!
@@ -761,7 +761,7 @@ function flush() {
 function attemptVertx() {
   try {
     var r = require;
-    var vertx = __webpack_require__(7);
+    var vertx = __webpack_require__(8);
     vertxNext = vertx.runOnLoop || vertx.runOnContext;
     return useVertxTimer();
   } catch (e) {
@@ -1783,11 +1783,11 @@ return Promise;
 
 })));
 //# sourceMappingURL=es6-promise.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(7)))
 
 /***/ }),
 
-/***/ 5:
+/***/ 6:
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -1978,7 +1978,7 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ 6:
+/***/ 7:
 /***/ (function(module, exports) {
 
 var g;
@@ -2006,7 +2006,7 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 7:
+/***/ 8:
 /***/ (function(module, exports) {
 
 /* (ignored) */

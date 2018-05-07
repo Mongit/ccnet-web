@@ -10,11 +10,54 @@
     <script src="~/lib/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
     <script src="~/lib/knockout/knockout-jqAutocomplete.js"></script>
 }
+
 @Html.Partial("_KoGlobalTemplates")
 
+<div id="productoModel">
+    <div data-bind="template: { name: currentTemplate() }"></div>
+</div>
 
+<script id="nuevo" type="text/html">
+    <h2>Nuevo Producto</h2>
+    <form data-bind="submit: save" novalidate>
+        <!-- ko template: { name: "form" } -->
+        <!-- /ko  -->
+    </form>
+</script>
 
-    <div id="productoModel">
-        <input type="text" class="form-control" placeholder="Color" data-bind="jqAuto: { source: remoteHandler, value: remoteValue, inputProp: 'empresa', labelProp: 'empresa', valueProp: 'id' }" />
-        <pre data-bind="text: remoteValue"></pre>
+<script id="editar" type="text/html">
+    <h2>Editar Producto</h2>
+    <form data-bind="submit: update" novalidate>
+        <!-- ko template: { name: "form" } -->
+        <!-- /ko  -->
+    </form>
+</script>
+
+<script id="form" type="text/html">
+    <div class="form-group">
+        <label><strong>Nombre del producto *</strong></label>
+        <input type="text" class="form-control" placeholder="Nombre del producto" data-bind="value: nombre.value, css: { 'is-invalid': nombre.hasError() }, hasFocus: true" />
+        <!-- ko template: { name: "Validation", data: nombre } -->
+        <!-- /ko -->
     </div>
+    <div class="form-group">
+        <label><strong>Color *</strong></label>
+        <input type="text" class="form-control" placeholder="Color" data-bind="value: color.value, css: { 'is-invalid': color.hasError() }" />
+        <!-- ko template: { name: "Validation", data: color } -->
+        <!-- /ko -->
+    </div>
+    <div class="form-group">
+        <label><strong>Unidad *</strong></label>
+        <input type="text" class="form-control" placeholder="Unidad" data-bind="value: unidad.value, css: { 'is-invalid': unidad.hasError() }" />
+        <!-- ko template: { name: "Validation", data: unidad } -->
+        <!-- /ko -->
+    </div>
+    <div class="form-group">
+        <label><strong>Proveedor *</strong></label>
+        <input type="text" class="form-control" placeholder="Proveedor" data-bind="jqAuto: { source: remoteHandler, value: remoteValue, inputProp: 'empresa', labelProp: 'empresa', valueProp: 'id' }" />
+    </div>
+    <div class="form-group text-right">
+        <a class="btn btn-light" data-bind="attr: { href: 'Productos' }">Cancelar</a>
+        <input class="btn btn-primary" type="submit" value="Guardar">
+    </div>
+</script>

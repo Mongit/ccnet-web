@@ -1,4 +1,14 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -35,19 +45,29 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var ProxyRest = require("./../api/proxyRest");
-var ProductoModel = /** @class */ (function () {
+var KoForm = require("./../form/KoForm");
+var stringValidators = require("./../validators/stringValidators");
+var ProductoModel = /** @class */ (function (_super) {
+    __extends(ProductoModel, _super);
     function ProductoModel() {
-        this.remoteValue = ko.observable();
-        this.proxy = new ProxyRest("/api/Proveedores/search/term");
+        var _this = _super.call(this) || this;
+        var self = _this;
+        _this.nombre = self.addField([new stringValidators.RequiredStringValidator()]);
+        _this.color = self.addField([new stringValidators.RequiredStringValidator()]);
+        _this.unidad = self.addField([new stringValidators.RequiredStringValidator()]);
+        _this.remoteValue = ko.observable();
+        _this.proxy = new ProxyRest("/api/Productos");
+        _this.currentTemplate = ko.observable("nuevo");
+        return _this;
     }
     ProductoModel.prototype.remoteHandler = function (term, callback) {
         return __awaiter(this, void 0, void 0, function () {
-            var self, response, proveedoresjson;
+            var proveedorProxy, response, proveedoresjson;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        self = this;
-                        return [4 /*yield*/, self.proxy.get(term, null, null)];
+                        proveedorProxy = new ProxyRest("/api/Proveedores/search/term");
+                        return [4 /*yield*/, proveedorProxy.get(term, null, null)];
                     case 1:
                         response = _a.sent();
                         proveedoresjson = JSON.parse((JSON.parse(JSON.stringify(response))));
@@ -57,7 +77,45 @@ var ProductoModel = /** @class */ (function () {
             });
         });
     };
+    ProductoModel.prototype.save = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, model, serverModel;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        self = this;
+                        return [4 /*yield*/, self.validate()];
+                    case 1:
+                        if (!((_a.sent()) && self.remoteValue())) return [3 /*break*/, 3];
+                        model = self.getModel();
+                        return [4 /*yield*/, self.proxy.post(model)];
+                    case 2:
+                        serverModel = _a.sent();
+                        alert(serverModel);
+                        window.location.href = "Productos";
+                        return [3 /*break*/, 4];
+                    case 3:
+                        alert("Lo sentimos, ningun campo debe estar vacío.");
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ProductoModel.prototype.getModel = function () {
+        var self = this;
+        return {
+            id: "00000000-0000-0000-0000-000000000000",
+            nombre: self.nombre.value(),
+            color: self.color.value(),
+            unidad: self.unidad.value(),
+            proveedorId: self.remoteValue()
+        };
+    };
+    ProductoModel.prototype.update = function () {
+        alert("Hello Im update");
+    };
     return ProductoModel;
-}());
+}(KoForm));
 module.exports = ProductoModel;
 //# sourceMappingURL=ProductoModel.js.map
