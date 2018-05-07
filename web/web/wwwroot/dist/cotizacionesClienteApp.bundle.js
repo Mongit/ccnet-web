@@ -6242,23 +6242,6 @@ module.exports = ProxyBase;
 
 "use strict";
 
-var Size;
-(function (Size) {
-    Size[Size["small"] = 0] = "small";
-    Size[Size["medium"] = 1] = "medium";
-    Size[Size["large"] = 2] = "large";
-})(Size || (Size = {}));
-module.exports = Size;
-
-
-/***/ }),
-/* 16 */,
-/* 17 */,
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 var UrlUtils = /** @class */ (function () {
     function UrlUtils() {
     }
@@ -6279,6 +6262,23 @@ module.exports = UrlUtils;
 
 
 /***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Size;
+(function (Size) {
+    Size[Size["small"] = 0] = "small";
+    Size[Size["medium"] = 1] = "medium";
+    Size[Size["large"] = 2] = "large";
+})(Size || (Size = {}));
+module.exports = Size;
+
+
+/***/ }),
+/* 17 */,
+/* 18 */,
 /* 19 */,
 /* 20 */,
 /* 21 */,
@@ -6288,7 +6288,7 @@ module.exports = UrlUtils;
 
 "use strict";
 
-var Size = __webpack_require__(15);
+var Size = __webpack_require__(16);
 var KoBinder = __webpack_require__(2);
 var BindedModal = /** @class */ (function () {
     function BindedModal(info) {
@@ -18468,10 +18468,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var CotizacionesModel = __webpack_require__(164);
 var ProxyRest = __webpack_require__(4);
-var UrlUtils = __webpack_require__(18);
+var UrlUtils = __webpack_require__(15);
 var ConfirmModal = __webpack_require__(24);
 var BindedModal = __webpack_require__(23);
-var Size = __webpack_require__(15);
+var Size = __webpack_require__(16);
 var Page = __webpack_require__(146);
 var moment = __webpack_require__(0);
 moment.locale('es');

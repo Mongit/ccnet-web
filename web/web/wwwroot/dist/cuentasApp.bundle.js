@@ -156,6 +156,32 @@ module.exports = ProxyBase;
 
 "use strict";
 
+var UrlUtils = /** @class */ (function () {
+    function UrlUtils() {
+    }
+    UrlUtils.getParameterByName = function (name, url) {
+        if (!url)
+            url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
+        if (!results)
+            return null;
+        if (!results[2])
+            return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    };
+    return UrlUtils;
+}());
+module.exports = UrlUtils;
+
+
+/***/ }),
+
+/***/ 16:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 var Size;
 (function (Size) {
     Size[Size["small"] = 0] = "small";
@@ -272,10 +298,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var ProxyRest = __webpack_require__(4);
-var UrlUtils = __webpack_require__(18);
+var UrlUtils = __webpack_require__(15);
 var ConfirmModal = __webpack_require__(24);
 var BindedModal = __webpack_require__(23);
-var Size = __webpack_require__(15);
+var Size = __webpack_require__(16);
 var CuentasModel = /** @class */ (function () {
     function CuentasModel() {
         this.cuentas = ko.observableArray();
@@ -351,32 +377,6 @@ module.exports = CuentasModel;
 
 /***/ }),
 
-/***/ 18:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var UrlUtils = /** @class */ (function () {
-    function UrlUtils() {
-    }
-    UrlUtils.getParameterByName = function (name, url) {
-        if (!url)
-            url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
-        if (!results)
-            return null;
-        if (!results[2])
-            return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-    };
-    return UrlUtils;
-}());
-module.exports = UrlUtils;
-
-
-/***/ }),
-
 /***/ 2:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -402,7 +402,7 @@ module.exports = KoBinder;
 
 "use strict";
 
-var Size = __webpack_require__(15);
+var Size = __webpack_require__(16);
 var KoBinder = __webpack_require__(2);
 var BindedModal = /** @class */ (function () {
     function BindedModal(info) {

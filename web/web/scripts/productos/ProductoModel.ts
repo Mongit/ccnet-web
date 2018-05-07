@@ -2,18 +2,21 @@
 import KoForm = require("./../form/KoForm");
 import IField = require("./../field/iField");
 import IProductoModel = require("./IProductoModel");
+import IProveedorModel = require("./../proveedores/IProveedorModel");
+import UrlUtils = require("./../utils/UrlUtils");
 import * as stringValidators from './../validators/stringValidators';
 
 class ProductoModel extends KoForm {
     public remoteValue: KnockoutObservable<string>;
-    public proxy: ProxyRest;
+    public currentTemplate: KnockoutObservable<string>;
 
+    public proxy: ProxyRest;
+    public productoIdUrlParam: string;
+    
     public nombre: IField<string>;
     public color: IField<string>;
     public unidad: IField<string>;
-
-    public currentTemplate: KnockoutObservable<string>;
-
+    
     constructor() {
         super();
 
@@ -23,9 +26,39 @@ class ProductoModel extends KoForm {
         this.unidad = self.addField<string>([new stringValidators.RequiredStringValidator()]);
 
         this.remoteValue = ko.observable();
-
-        this.proxy = new ProxyRest("/api/Productos")
         this.currentTemplate = ko.observable<string>("nuevo");
+        
+        this.proxy = new ProxyRest("/api/Productos")
+        this.productoIdUrlParam = UrlUtils.getParameterByName("id", window.location);
+
+        self.productoIdUrlParam ? self.editarTemplate() : self.currentTemplate('nuevo');
+    }
+
+    public editarTemplate(): void {
+        const self = this;
+        self.getOne();
+        self.currentTemplate("editar");
+    }
+
+    public async getOne(): Promise<void> {
+        const self = this;
+
+        let response = await self.proxy.get<IProductoModel>(self.productoIdUrlParam);
+        let productoJson = JSON.parse(JSON.parse(JSON.stringify(response)));
+        
+        self.nombre.value(productoJson.nombre);
+        self.color.value(productoJson.color);
+        self.unidad.value(productoJson.unidad);
+        self.getProveedorName(productoJson.proveedorId);
+    }
+
+    public async getProveedorName(proveedorId: string): Promise<void> {
+        const self = this;
+        let proveedorProxy = new ProxyRest("/api/Proveedores")
+        let response = await proveedorProxy.get<IProveedorModel>(proveedorId);
+        let proveedorJson = JSON.parse(JSON.parse(JSON.stringify(response)));
+
+        self.remoteValue(proveedorJson.empresa);
     }
 
     public async remoteHandler(term: string, callback): Promise<void> {
@@ -51,7 +84,7 @@ class ProductoModel extends KoForm {
         const self = this;
 
         return {
-            id: "00000000-0000-0000-0000-000000000000",
+            id: self.productoIdUrlParam ? self.productoIdUrlParam : "00000000-0000-0000-0000-000000000000",
             nombre: self.nombre.value(),
             color: self.color.value(),
             unidad: self.unidad.value(),
