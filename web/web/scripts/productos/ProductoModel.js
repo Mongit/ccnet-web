@@ -159,7 +159,26 @@ var ProductoModel = /** @class */ (function (_super) {
         };
     };
     ProductoModel.prototype.update = function () {
-        alert("Hello Im update");
+        return __awaiter(this, void 0, void 0, function () {
+            var self, model, productoUpdated;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        self = this;
+                        return [4 /*yield*/, self.validate()];
+                    case 1:
+                        if (!((_a.sent()) && self.remoteValue())) return [3 /*break*/, 3];
+                        model = self.getModel();
+                        return [4 /*yield*/, self.proxy.put(self.productoIdUrlParam, model)];
+                    case 2:
+                        productoUpdated = _a.sent();
+                        alert(productoUpdated);
+                        window.location.href = "Productos";
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
     };
     return ProductoModel;
 }(KoForm));

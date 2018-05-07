@@ -92,8 +92,14 @@ class ProductoModel extends KoForm {
         };
     }
 
-    public update(): void {
-        alert("Hello Im update");
+    public async update(): Promise<void> {
+        const self = this;
+        if (await self.validate() && self.remoteValue()) {
+            let model = self.getModel();
+            let productoUpdated = await self.proxy.put<IProductoModel>(self.productoIdUrlParam, model);
+            alert(productoUpdated);
+            window.location.href = "Productos";
+        }
     }
 }
 
