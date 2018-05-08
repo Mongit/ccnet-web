@@ -298,7 +298,7 @@ module.exports = PromiseUtils;
 
 /***/ }),
 
-/***/ 14:
+/***/ 15:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -363,7 +363,7 @@ module.exports = KoForm;
 
 /***/ }),
 
-/***/ 15:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -599,9 +599,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var KoForm = __webpack_require__(14);
+var KoForm = __webpack_require__(15);
 var ProxyRest = __webpack_require__(4);
-var UrlUtils = __webpack_require__(15);
+var UrlUtils = __webpack_require__(16);
 var stringValidators = __webpack_require__(18);
 var NuevoProveedorModel = /** @class */ (function (_super) {
     __extends(NuevoProveedorModel, _super);

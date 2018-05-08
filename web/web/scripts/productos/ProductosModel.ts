@@ -1,6 +1,9 @@
 ﻿import Page = require("./../pagination/PageModel");
 import ProxyRest = require("./../api/proxyRest");
 import iProductoModel = require("./IProductoModel");
+import ConfirmModal = require("./../modals/confirmModal");
+import BindedModal = require("./../modals/BindedModal");
+import Size = require("./../utils/Size");
 
 class ProductosModel {
     public pageSize: number;
@@ -101,6 +104,28 @@ class ProductosModel {
             previousPage.isSelected(true);
             self.selectedPage(previousPage);
         }
+    }
+
+    public delete(producto: iProductoModel): void {
+        const self = this;
+        let modalModel = new ConfirmModal("¿Está seguro de borrar éste producto?");
+
+        let dialog = new BindedModal({
+            model: modalModel,
+            size: Size.medium,
+            templateBody: "ConfirmDeleteModalBody",
+            templateFooter: "ConfirmDeleteModalFooter",
+            title: "¡Confirmación!",
+            onClose: async function (e: JQuery.Event<HTMLElement, null>): Promise<void> {
+
+                if (modalModel.result() === true) {
+                    self.productos.remove(producto);
+                    let deleted = await self.proxy.delete<iProductoModel>(producto.id);
+                    alert(deleted);
+                }
+
+            }
+        });
     }
 }
 

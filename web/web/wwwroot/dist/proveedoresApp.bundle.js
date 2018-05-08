@@ -151,6 +151,22 @@ module.exports = ProxyBase;
 
 /***/ }),
 
+/***/ 14:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Size;
+(function (Size) {
+    Size[Size["small"] = 0] = "small";
+    Size[Size["medium"] = 1] = "medium";
+    Size[Size["large"] = 2] = "large";
+})(Size || (Size = {}));
+module.exports = Size;
+
+
+/***/ }),
+
 /***/ 146:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -164,22 +180,6 @@ var PageModel = /** @class */ (function () {
     return PageModel;
 }());
 module.exports = PageModel;
-
-
-/***/ }),
-
-/***/ 16:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Size;
-(function (Size) {
-    Size[Size["small"] = 0] = "small";
-    Size[Size["medium"] = 1] = "medium";
-    Size[Size["large"] = 2] = "large";
-})(Size || (Size = {}));
-module.exports = Size;
 
 
 /***/ }),
@@ -292,7 +292,7 @@ var Page = __webpack_require__(146);
 var ProxyRest = __webpack_require__(4);
 var ConfirmModal = __webpack_require__(24);
 var BindedModal = __webpack_require__(23);
-var Size = __webpack_require__(16);
+var Size = __webpack_require__(14);
 var ProveedoresModel = /** @class */ (function () {
     function ProveedoresModel() {
         this.pageSize = 20;
@@ -441,7 +441,7 @@ module.exports = KoBinder;
 
 "use strict";
 
-var Size = __webpack_require__(16);
+var Size = __webpack_require__(14);
 var KoBinder = __webpack_require__(2);
 var BindedModal = /** @class */ (function () {
     function BindedModal(info) {

@@ -6473,6 +6473,21 @@ module.exports = PromiseUtils;
 
 "use strict";
 
+var Size;
+(function (Size) {
+    Size[Size["small"] = 0] = "small";
+    Size[Size["medium"] = 1] = "medium";
+    Size[Size["large"] = 2] = "large";
+})(Size || (Size = {}));
+module.exports = Size;
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -6532,7 +6547,7 @@ module.exports = KoForm;
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6554,21 +6569,6 @@ var UrlUtils = /** @class */ (function () {
     return UrlUtils;
 }());
 module.exports = UrlUtils;
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Size;
-(function (Size) {
-    Size[Size["small"] = 0] = "small";
-    Size[Size["medium"] = 1] = "medium";
-    Size[Size["large"] = 2] = "large";
-})(Size || (Size = {}));
-module.exports = Size;
 
 
 /***/ }),
@@ -6864,7 +6864,7 @@ module.exports = FieldArray;
 
 "use strict";
 
-var Size = __webpack_require__(16);
+var Size = __webpack_require__(14);
 var KoBinder = __webpack_require__(2);
 var BindedModal = /** @class */ (function () {
     function BindedModal(info) {
@@ -18985,7 +18985,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var KoForm = __webpack_require__(14);
+var KoForm = __webpack_require__(15);
 var stringValidator = __webpack_require__(18);
 var numberValidator = __webpack_require__(147);
 var PresupuestoItemModel = /** @class */ (function (_super) {
@@ -19070,13 +19070,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var PresupuestoItemModel = __webpack_require__(148);
-var Size = __webpack_require__(16);
+var Size = __webpack_require__(14);
 var BindedModal = __webpack_require__(23);
 var ConfirmModal = __webpack_require__(24);
-var KoForm = __webpack_require__(14);
+var KoForm = __webpack_require__(15);
 var numberValidator = __webpack_require__(147);
 var stringValidator = __webpack_require__(18);
-var UrlUtils = __webpack_require__(15);
+var UrlUtils = __webpack_require__(16);
 var ProxyRest = __webpack_require__(4);
 var PresupuestoModel = /** @class */ (function (_super) {
     __extends(PresupuestoModel, _super);
@@ -19346,14 +19346,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var ProxyRest = __webpack_require__(4);
-var UrlUtils = __webpack_require__(15);
-var KoForm = __webpack_require__(14);
+var UrlUtils = __webpack_require__(16);
+var KoForm = __webpack_require__(15);
 var ValidatableValidator = __webpack_require__(17);
 var PresupuestoModel = __webpack_require__(149);
 var PresupuestoItemModel = __webpack_require__(148);
 var ConfirmModal = __webpack_require__(24);
 var BindedModal = __webpack_require__(23);
-var Size = __webpack_require__(16);
+var Size = __webpack_require__(14);
 var moment = __webpack_require__(0);
 moment.locale('es');
 var PresupuetosModel = /** @class */ (function (_super) {
