@@ -9,9 +9,11 @@ import * as stringValidators from './../validators/stringValidators';
 class ProductoModel extends KoForm {
     public remoteValue: KnockoutObservable<string>;
     public currentTemplate: KnockoutObservable<string>;
+    public proveedorId: KnockoutObservable<string>;
 
     public proxy: ProxyRest;
     public productoIdUrlParam: string;
+    public proveedorName: string;
     
     public nombre: IField<string>;
     public color: IField<string>;
@@ -25,8 +27,9 @@ class ProductoModel extends KoForm {
         this.color = self.addField<string>([new stringValidators.RequiredStringValidator()]);
         this.unidad = self.addField<string>([new stringValidators.RequiredStringValidator()]);
 
-        this.remoteValue = ko.observable();
+        this.remoteValue = ko.observable<string>();
         this.currentTemplate = ko.observable<string>("nuevo");
+        this.proveedorId = ko.observable<string>();
         
         this.proxy = new ProxyRest("/api/Productos")
         this.productoIdUrlParam = UrlUtils.getParameterByName("id", window.location);
@@ -59,6 +62,8 @@ class ProductoModel extends KoForm {
         let proveedorJson = JSON.parse(JSON.parse(JSON.stringify(response)));
 
         self.remoteValue(proveedorJson.empresa);
+        self.proveedorName = proveedorJson.empresa;
+        self.proveedorId(proveedorJson.id);
     }
 
     public async remoteHandler(term: string, callback): Promise<void> {
@@ -94,6 +99,9 @@ class ProductoModel extends KoForm {
 
     public async update(): Promise<void> {
         const self = this;
+        if (self.remoteValue() === self.proveedorName) {
+            self.remoteValue(self.proveedorId());
+        }
         if (await self.validate() && self.remoteValue()) {
             let model = self.getModel();
             let productoUpdated = await self.proxy.put<IProductoModel>(self.productoIdUrlParam, model);

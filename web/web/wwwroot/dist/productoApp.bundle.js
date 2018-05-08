@@ -673,6 +673,7 @@ var ProductoModel = /** @class */ (function (_super) {
         _this.unidad = self.addField([new stringValidators.RequiredStringValidator()]);
         _this.remoteValue = ko.observable();
         _this.currentTemplate = ko.observable("nuevo");
+        _this.proveedorId = ko.observable();
         _this.proxy = new ProxyRest("/api/Productos");
         _this.productoIdUrlParam = UrlUtils.getParameterByName("id", window.location);
         self.productoIdUrlParam ? self.editarTemplate() : self.currentTemplate('nuevo');
@@ -716,6 +717,8 @@ var ProductoModel = /** @class */ (function (_super) {
                         response = _a.sent();
                         proveedorJson = JSON.parse(JSON.parse(JSON.stringify(response)));
                         self.remoteValue(proveedorJson.empresa);
+                        self.proveedorName = proveedorJson.empresa;
+                        self.proveedorId(proveedorJson.id);
                         return [2 /*return*/];
                 }
             });
@@ -780,6 +783,9 @@ var ProductoModel = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         self = this;
+                        if (self.remoteValue() === self.proveedorName) {
+                            self.remoteValue(self.proveedorId());
+                        }
                         return [4 /*yield*/, self.validate()];
                     case 1:
                         if (!((_a.sent()) && self.remoteValue())) return [3 /*break*/, 3];
