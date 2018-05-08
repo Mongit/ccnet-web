@@ -38,6 +38,9 @@ module.exports = {
         ],
         productoApp: [
             './scripts/productos/appProducto.ts'
+        ],
+        recibosApp: [
+            './scripts/recibos/appRecibos.ts'
         ]
     },
     module: {

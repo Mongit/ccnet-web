@@ -167,6 +167,110 @@ module.exports = Size;
 
 /***/ }),
 
+/***/ 142:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Size = __webpack_require__(14);
+var KoBinder = __webpack_require__(2);
+var BindedModal = /** @class */ (function () {
+    function BindedModal(info) {
+        this.title = ko.observable(info.title);
+        this.templateBody = ko.observable(info.templateBody);
+        this.templateFooter = ko.observable(info.templateFooter);
+        this.model = info.model;
+        this.size = info.size;
+        this.selector = "GlobalModalContainer";
+        this.info = info;
+        this.modal = this.create();
+        var self = this;
+        info.model.setModal(self.modal);
+    }
+    BindedModal.prototype.getContainer = function () {
+        var self = this;
+        var container = $("#" + self.selector);
+        if (container.length === 0) {
+            $("<div id='" + self.selector + "'></div>").prependTo("body");
+        }
+        else {
+            container.empty();
+        }
+        return container;
+    };
+    BindedModal.prototype.create = function () {
+        var self = this;
+        var myModal = $('<div class="modal" tabindex="-1" role="dialog">' +
+            '    <div class="modal-dialog" role="document">' +
+            '        <div class="modal-content">' +
+            '            <div class="modal-header">   ' +
+            '                <h5 class="modal-title" data-bind="text: title"></h5>' +
+            '                <button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+            '                    <span aria-hidden="true">&times;</span>' +
+            '                 </button>' +
+            '            </div>' +
+            '            <div class="modal-body" data-bind="template: { name: templateBody(), data: model }">' +
+            '            ' +
+            '            </div>' +
+            '            <div class="modal-footer" data-bind="template: { name: templateFooter(), data: model }">' +
+            '         ' +
+            '            </div>' +
+            '        </div>' +
+            '    </div>' +
+            '</div>');
+        var modal = myModal.find('div.modal-dialog');
+        switch (self.size) {
+            case Size.small:
+                modal.addClass('modal-sm');
+                break;
+            case Size.medium:
+                modal.addClass('modal-md');
+                break;
+            case Size.large:
+                modal.addClass('modal-lg');
+                break;
+        }
+        self.getContainer().append(myModal);
+        KoBinder.bind(myModal, self);
+        myModal.modal();
+        if (self.info.onClose !== undefined) {
+            myModal.on('hidden.bs.modal', self.info.onClose);
+        }
+        return myModal;
+    };
+    return BindedModal;
+}());
+module.exports = BindedModal;
+
+
+/***/ }),
+
+/***/ 143:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var ConfirmModel = /** @class */ (function () {
+    function ConfirmModel(message) {
+        this.message = ko.observable(message);
+        this.result = ko.observable(false);
+    }
+    ConfirmModel.prototype.setToTrue = function () {
+        var self = this;
+        self.result(true);
+        self.dialog.modal('hide');
+    };
+    ConfirmModel.prototype.setModal = function (modal) {
+        var self = this;
+        this.dialog = modal;
+    };
+    return ConfirmModel;
+}());
+module.exports = ConfirmModel;
+
+
+/***/ }),
+
 /***/ 146:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -290,8 +394,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var Page = __webpack_require__(146);
 var ProxyRest = __webpack_require__(4);
-var ConfirmModal = __webpack_require__(24);
-var BindedModal = __webpack_require__(23);
+var ConfirmModal = __webpack_require__(143);
+var BindedModal = __webpack_require__(142);
 var Size = __webpack_require__(14);
 var ProductosModel = /** @class */ (function () {
     function ProductosModel() {
@@ -430,110 +534,6 @@ var KoBinder = /** @class */ (function () {
     return KoBinder;
 }());
 module.exports = KoBinder;
-
-
-/***/ }),
-
-/***/ 23:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Size = __webpack_require__(14);
-var KoBinder = __webpack_require__(2);
-var BindedModal = /** @class */ (function () {
-    function BindedModal(info) {
-        this.title = ko.observable(info.title);
-        this.templateBody = ko.observable(info.templateBody);
-        this.templateFooter = ko.observable(info.templateFooter);
-        this.model = info.model;
-        this.size = info.size;
-        this.selector = "GlobalModalContainer";
-        this.info = info;
-        this.modal = this.create();
-        var self = this;
-        info.model.setModal(self.modal);
-    }
-    BindedModal.prototype.getContainer = function () {
-        var self = this;
-        var container = $("#" + self.selector);
-        if (container.length === 0) {
-            $("<div id='" + self.selector + "'></div>").prependTo("body");
-        }
-        else {
-            container.empty();
-        }
-        return container;
-    };
-    BindedModal.prototype.create = function () {
-        var self = this;
-        var myModal = $('<div class="modal" tabindex="-1" role="dialog">' +
-            '    <div class="modal-dialog" role="document">' +
-            '        <div class="modal-content">' +
-            '            <div class="modal-header">   ' +
-            '                <h5 class="modal-title" data-bind="text: title"></h5>' +
-            '                <button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
-            '                    <span aria-hidden="true">&times;</span>' +
-            '                 </button>' +
-            '            </div>' +
-            '            <div class="modal-body" data-bind="template: { name: templateBody(), data: model }">' +
-            '            ' +
-            '            </div>' +
-            '            <div class="modal-footer" data-bind="template: { name: templateFooter(), data: model }">' +
-            '         ' +
-            '            </div>' +
-            '        </div>' +
-            '    </div>' +
-            '</div>');
-        var modal = myModal.find('div.modal-dialog');
-        switch (self.size) {
-            case Size.small:
-                modal.addClass('modal-sm');
-                break;
-            case Size.medium:
-                modal.addClass('modal-md');
-                break;
-            case Size.large:
-                modal.addClass('modal-lg');
-                break;
-        }
-        self.getContainer().append(myModal);
-        KoBinder.bind(myModal, self);
-        myModal.modal();
-        if (self.info.onClose !== undefined) {
-            myModal.on('hidden.bs.modal', self.info.onClose);
-        }
-        return myModal;
-    };
-    return BindedModal;
-}());
-module.exports = BindedModal;
-
-
-/***/ }),
-
-/***/ 24:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var ConfirmModel = /** @class */ (function () {
-    function ConfirmModel(message) {
-        this.message = ko.observable(message);
-        this.result = ko.observable(false);
-    }
-    ConfirmModel.prototype.setToTrue = function () {
-        var self = this;
-        self.result(true);
-        self.dialog.modal('hide');
-    };
-    ConfirmModel.prototype.setModal = function (modal) {
-        var self = this;
-        this.dialog = modal;
-    };
-    return ConfirmModel;
-}());
-module.exports = ConfirmModel;
 
 
 /***/ }),

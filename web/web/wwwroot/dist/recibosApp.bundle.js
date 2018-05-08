@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 157);
+/******/ 	return __webpack_require__(__webpack_require__.s = 189);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -18222,14 +18222,46 @@ module.exports = PageModel;
 /* 154 */,
 /* 155 */,
 /* 156 */,
-/* 157 */
+/* 157 */,
+/* 158 */,
+/* 159 */,
+/* 160 */,
+/* 161 */,
+/* 162 */,
+/* 163 */,
+/* 164 */,
+/* 165 */,
+/* 166 */,
+/* 167 */,
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
+/* 175 */,
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(158);
+module.exports = __webpack_require__(190);
 
 
 /***/ }),
-/* 158 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18271,11 +18303,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var KoBinder = __webpack_require__(2);
-var ClientesModel = __webpack_require__(159);
+var RecibosModel = __webpack_require__(191);
 $(function () {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            KoBinder.bind($("#clientesForm"), new ClientesModel());
+            KoBinder.bind($("#recibosModel"), new RecibosModel());
             return [2 /*return*/];
         });
     });
@@ -18284,7 +18316,7 @@ $(function () {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 159 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18324,38 +18356,35 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var ClienteModel = __webpack_require__(160);
-var ProxyRest = __webpack_require__(4);
 var Page = __webpack_require__(146);
+var ProxyRest = __webpack_require__(4);
 var moment = __webpack_require__(0);
 moment.locale('es');
-var ClientesModel = /** @class */ (function () {
-    function ClientesModel() {
-        var self = this;
+var RecibosModel = /** @class */ (function () {
+    function RecibosModel() {
         this.pageSize = 20;
-        this.fechaParsed = ko.observable();
         this.pageNumber = ko.observable(1);
         this.totalPages = ko.observable();
         this.lastPage = ko.observable(false);
         this.firstPage = ko.observable(true);
         this.showPagination = ko.observable(false);
-        this.clientes = ko.observableArray();
         this.pages = ko.observableArray([]);
-        this.proxy = new ProxyRest("/api/Clientes");
-        self.getAll();
+        this.recibos = ko.observableArray();
+        this.proxy = new ProxyRest("/api/Recibos");
+        this.getAll();
     }
-    ClientesModel.prototype.getAll = function () {
+    RecibosModel.prototype.getAll = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var self, resultados, myjson, i, pageNumber, isSelected, page, _i, _a, clientejson, cliente;
+            var self, response, recibosjson, i, pageNumber, isSelected, page, _i, _a, recibo;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         self = this;
                         return [4 /*yield*/, self.proxy.get("", self.pageNumber(), self.pageSize)];
                     case 1:
-                        resultados = _b.sent();
-                        myjson = JSON.parse((JSON.parse(JSON.stringify(resultados))));
-                        self.totalPages(myjson.totalPages);
+                        response = _b.sent();
+                        recibosjson = JSON.parse((JSON.parse(JSON.stringify(response))));
+                        self.totalPages(recibosjson.totalPages);
                         if (self.totalPages() > 1) {
                             self.showPagination(true);
                         }
@@ -18366,29 +18395,26 @@ var ClientesModel = /** @class */ (function () {
                             page = new Page(isSelected, pageNumber);
                             self.pages.push(page);
                         }
-                        self.clientes.removeAll();
-                        for (_i = 0, _a = myjson.clientes; _i < _a.length; _i++) {
-                            clientejson = _a[_i];
-                            cliente = new ClienteModel();
-                            cliente.id = clientejson.id;
-                            cliente.folio = clientejson.folio;
-                            cliente.contacto = clientejson.contacto;
-                            cliente.empresa = clientejson.empresa;
-                            cliente.telefono = clientejson.telefono;
-                            cliente.email = clientejson.email;
-                            cliente.fechaCreado = clientejson.fechaCreado;
-                            cliente.domicilio = clientejson.domicilio;
-                            self.clientes.push(cliente);
+                        self.recibos.removeAll();
+                        for (_i = 0, _a = recibosjson.recibos; _i < _a.length; _i++) {
+                            recibo = _a[_i];
+                            self.recibos.push(self.getModel(recibo));
                         }
                         return [2 /*return*/];
                 }
             });
         });
     };
-    ClientesModel.prototype.dateFormatter = function (date) {
-        return moment(date).format('l');
+    RecibosModel.prototype.getModel = function (recibo) {
+        return {
+            id: recibo.id,
+            folio: recibo.folio,
+            clienteId: recibo.clienteId,
+            proveedorId: recibo.proveedorId,
+            fecha: recibo.fecha
+        };
     };
-    ClientesModel.prototype.selectedPage = function (page) {
+    RecibosModel.prototype.selectedPage = function (page) {
         var self = this;
         self.pageNumber(page.pageNumber());
         page.pageNumber() === self.totalPages() ? self.lastPage(true) : self.lastPage(false);
@@ -18396,7 +18422,7 @@ var ClientesModel = /** @class */ (function () {
         page.pageNumber() === 1 ? self.firstPage(true) : self.firstPage(false);
         self.getAll();
     };
-    ClientesModel.prototype.next = function () {
+    RecibosModel.prototype.next = function () {
         var self = this;
         var arrPosition = self.pageNumber() - 1;
         var lastPage = self.pages()[arrPosition];
@@ -18407,7 +18433,7 @@ var ClientesModel = /** @class */ (function () {
             self.selectedPage(nextPage);
         }
     };
-    ClientesModel.prototype.previous = function () {
+    RecibosModel.prototype.previous = function () {
         var self = this;
         var arrPosition = self.pageNumber() - 1;
         var currentPage = self.pages()[arrPosition];
@@ -18418,25 +18444,14 @@ var ClientesModel = /** @class */ (function () {
             self.selectedPage(previousPage);
         }
     };
-    return ClientesModel;
+    RecibosModel.prototype.dateFormatter = function (date) {
+        return moment(date).format('l');
+    };
+    return RecibosModel;
 }());
-module.exports = ClientesModel;
+module.exports = RecibosModel;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-/* 160 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var ClienteModel = /** @class */ (function () {
-    function ClienteModel() {
-    }
-    return ClienteModel;
-}());
-module.exports = ClienteModel;
-
 
 /***/ })
 /******/ ]);

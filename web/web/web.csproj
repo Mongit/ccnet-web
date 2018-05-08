@@ -22,6 +22,9 @@
     <None Remove="scripts\proveedores\IProveedorModel.ts" />
     <None Remove="scripts\proveedores\NuevoProveedorModel.ts" />
     <None Remove="scripts\proveedores\ProveedoresModel.ts" />
+    <None Remove="scripts\recibos\appRecibos.ts" />
+    <None Remove="scripts\recibos\iReciboModel.ts" />
+    <None Remove="scripts\recibos\RecibosModel.ts" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
@@ -50,5 +53,8 @@
     <TypeScriptCompile Include="scripts\proveedores\IProveedorModel.ts" />
     <TypeScriptCompile Include="scripts\proveedores\NuevoProveedorModel.ts" />
     <TypeScriptCompile Include="scripts\proveedores\ProveedoresModel.ts" />
+    <TypeScriptCompile Include="scripts\recibos\appRecibos.ts" />
+    <TypeScriptCompile Include="scripts\recibos\iReciboModel.ts" />
+    <TypeScriptCompile Include="scripts\recibos\RecibosModel.ts" />
   </ItemGroup>
 </Project>

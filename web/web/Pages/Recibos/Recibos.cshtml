@@ -1,0 +1,44 @@
+﻿@page
+@model web.Pages.Recibos.RecibosModel
+@{
+    ViewData["Title"] = "Recibos";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+@section Scripts {
+    <script src="~/dist/recibosApp.bundle.js" type="text/javascript"></script>
+}
+@Html.Partial("_KoGlobalTemplates")
+
+<h2>Recibos</h2>
+
+<div class="mt-5" id="recibosModel">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Folio</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Proveedor</th>
+                <th scope="col">Fecha</th>
+                <th scope="col"><a class="btn btn-light btn-block">Nuevo Recibo</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- ko foreach: recibos -->
+            <tr>
+                <td data-bind="text: folio"></td>
+                <td data-bind="text: clienteId"></td>
+                <td data-bind="text: proveedorId"></td>
+                <td data-bind="text: $parent.dateFormatter($data.fechaCreado)"></td>
+                <td>
+                    <a class="btn btn-light btn-block">Editar</a>
+                    <button class="btn btn-secondary btn-block">Borrar</button>
+                </td>
+            </tr>
+            <!-- /ko -->
+        </tbody>
+    </table>
+    <div data-bind="if: showPagination">
+        <!-- ko template: { name: "pagination", data: $data} -->
+        <!-- /ko -->
+    </div>
+</div>
