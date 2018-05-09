@@ -147,6 +147,19 @@ class RecibosModel {
             return self.proveedorName();
         }
     }
+
+    public async save(): Promise<void> {
+        let self = this;
+        let model = self.getModel({
+            id: undefined,
+            folio: undefined,
+            clienteId: undefined,
+            proveedorId: undefined,
+            fecha: new Date()
+        });
+        let reciboId = await self.proxy.post<IReciboModel>(model);
+        window.location.href = "Recibo?id=" + JSON.parse(JSON.parse(JSON.stringify(reciboId)));
+    }
 }
 
 export = RecibosModel;

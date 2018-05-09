@@ -167,6 +167,29 @@ var RecibosModel = /** @class */ (function () {
             return self_2.proveedorName();
         }
     };
+    RecibosModel.prototype.save = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, model, reciboId;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        self = this;
+                        model = self.getModel({
+                            id: undefined,
+                            folio: undefined,
+                            clienteId: undefined,
+                            proveedorId: undefined,
+                            fecha: new Date()
+                        });
+                        return [4 /*yield*/, self.proxy.post(model)];
+                    case 1:
+                        reciboId = _a.sent();
+                        window.location.href = "Recibo?id=" + JSON.parse(JSON.parse(JSON.stringify(reciboId)));
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     return RecibosModel;
 }());
 module.exports = RecibosModel;

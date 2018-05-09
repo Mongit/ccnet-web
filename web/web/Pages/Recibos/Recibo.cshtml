@@ -1,0 +1,58 @@
+﻿@page
+@model web.Pages.Recibos.ReciboModel
+@{
+    ViewData["Title"] = "Recibo";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+@section Scripts {
+    <script src="~/dist/reciboApp.bundle.js" type="text/javascript"></script>
+}
+
+<div id="reciboModel">
+    <div id="accordion" class="my-lg-5">
+        <div class="card">
+            <form data-bind="submit: save" novalidate>
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        Nuevo Recibo
+                    </h5>
+                </div>
+                <div class="collapse show" data-parent="#accordion">
+                    <div class="card-body">
+                        <!-- ko  template: { name: "recibo" } --><!-- /ko -->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script id="recibo" type="text/html">
+    <div class="row">
+        <div class="col-md-9"></div>
+        <div class="col-md-3">
+            <label><strong>Fecha / Folio</strong></label>
+            <input class="form-control" type="text" placeholder="jue 20 may 18 / 5" readonly>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>
+            <strong>
+                Cliente
+                <small class="text-muted">(Opcional)</small>
+            </strong>
+        </label>
+        <input type="text" class="form-control" placeholder="Buscar Cliente..." data-bind="jqAuto: { source: clienteRemoteHandler, value: clienteRemoteValue, inputProp: 'empresa', labelProp: 'empresa', valueProp: 'id' }" />
+    </div>
+    <div class="form-group">
+        <label>
+            <strong>Proveedor</strong>
+            <small class="text-muted">(Opcional)</small>
+        </label>
+        <input type="text" class="form-control" placeholder="Buscar Proveedor..." data-bind="jqAuto: { source: proveedorRemoteHandler, value: proveedorRemoteValue, inputProp: 'empresa', labelProp: 'empresa', valueProp: 'id' }" />
+    </div>
+    <div class="form-group text-right">
+        <a class="btn btn-light" data-bind="attr: { href: 'Recibos' }">Cancelar</a>
+        <input class="btn btn-primary" type="submit" value="Guardar">
+    </div>
+</script>

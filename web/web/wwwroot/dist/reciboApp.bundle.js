@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 177);
+/******/ 	return __webpack_require__(__webpack_require__.s = 192);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -73,239 +73,15 @@ module.exports = __webpack_require__(3).Promise;
 
 /***/ }),
 
-/***/ 10:
+/***/ 192:
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* WEBPACK VAR INJECTION */(function(Promise) {
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-var ProxyBase = /** @class */ (function () {
-    function ProxyBase(endPoint) {
-        this.endPoint = endPoint;
-    }
-    ProxyBase.prototype.getUrlWithId = function (id, pageNumber, pageSize) {
-        var self = this;
-        if (id === undefined || id === null || $.trim(id).length === 0) {
-            if (pageNumber === undefined && pageSize === undefined || pageNumber === null && pageSize === null) {
-                return self.endPoint;
-            }
-            return self.endPoint + "/" + pageNumber + "/" + pageSize;
-        }
-        if (pageNumber === undefined || pageNumber === null || pageSize === undefined || pageSize === null) {
-            return self.endPoint + "/" + id;
-        }
-        return self.endPoint + "/" + id + "/" + pageNumber + "/" + pageSize;
-    };
-    ProxyBase.prototype.serverCall = function (model) {
-        return __awaiter(this, void 0, void 0, function () {
-            var promise;
-            return __generator(this, function (_a) {
-                promise = $.ajax({
-                    url: 'ServerCall',
-                    method: 'POST',
-                    data: model
-                });
-                return [2 /*return*/, Promise.resolve(promise)];
-            });
-        });
-    };
-    return ProxyBase;
-}());
-module.exports = ProxyBase;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-
-/***/ 14:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Size;
-(function (Size) {
-    Size[Size["small"] = 0] = "small";
-    Size[Size["medium"] = 1] = "medium";
-    Size[Size["large"] = 2] = "large";
-})(Size || (Size = {}));
-module.exports = Size;
+module.exports = __webpack_require__(193);
 
 
 /***/ }),
 
-/***/ 142:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Size = __webpack_require__(14);
-var KoBinder = __webpack_require__(2);
-var BindedModal = /** @class */ (function () {
-    function BindedModal(info) {
-        this.title = ko.observable(info.title);
-        this.templateBody = ko.observable(info.templateBody);
-        this.templateFooter = ko.observable(info.templateFooter);
-        this.model = info.model;
-        this.size = info.size;
-        this.selector = "GlobalModalContainer";
-        this.info = info;
-        this.modal = this.create();
-        var self = this;
-        info.model.setModal(self.modal);
-    }
-    BindedModal.prototype.getContainer = function () {
-        var self = this;
-        var container = $("#" + self.selector);
-        if (container.length === 0) {
-            $("<div id='" + self.selector + "'></div>").prependTo("body");
-        }
-        else {
-            container.empty();
-        }
-        return container;
-    };
-    BindedModal.prototype.create = function () {
-        var self = this;
-        var myModal = $('<div class="modal" tabindex="-1" role="dialog">' +
-            '    <div class="modal-dialog" role="document">' +
-            '        <div class="modal-content">' +
-            '            <div class="modal-header">   ' +
-            '                <h5 class="modal-title" data-bind="text: title"></h5>' +
-            '                <button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
-            '                    <span aria-hidden="true">&times;</span>' +
-            '                 </button>' +
-            '            </div>' +
-            '            <div class="modal-body" data-bind="template: { name: templateBody(), data: model }">' +
-            '            ' +
-            '            </div>' +
-            '            <div class="modal-footer" data-bind="template: { name: templateFooter(), data: model }">' +
-            '         ' +
-            '            </div>' +
-            '        </div>' +
-            '    </div>' +
-            '</div>');
-        var modal = myModal.find('div.modal-dialog');
-        switch (self.size) {
-            case Size.small:
-                modal.addClass('modal-sm');
-                break;
-            case Size.medium:
-                modal.addClass('modal-md');
-                break;
-            case Size.large:
-                modal.addClass('modal-lg');
-                break;
-        }
-        self.getContainer().append(myModal);
-        KoBinder.bind(myModal, self);
-        myModal.modal();
-        if (self.info.onClose !== undefined) {
-            myModal.on('hidden.bs.modal', self.info.onClose);
-        }
-        return myModal;
-    };
-    return BindedModal;
-}());
-module.exports = BindedModal;
-
-
-/***/ }),
-
-/***/ 143:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var ConfirmModel = /** @class */ (function () {
-    function ConfirmModel(message) {
-        this.message = ko.observable(message);
-        this.result = ko.observable(false);
-    }
-    ConfirmModel.prototype.setToTrue = function () {
-        var self = this;
-        self.result(true);
-        self.dialog.modal('hide');
-    };
-    ConfirmModel.prototype.setModal = function (modal) {
-        var self = this;
-        this.dialog = modal;
-    };
-    return ConfirmModel;
-}());
-module.exports = ConfirmModel;
-
-
-/***/ }),
-
-/***/ 16:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var UrlUtils = /** @class */ (function () {
-    function UrlUtils() {
-    }
-    UrlUtils.getParameterByName = function (name, url) {
-        if (!url)
-            url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
-        if (!results)
-            return null;
-        if (!results[2])
-            return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-    };
-    return UrlUtils;
-}());
-module.exports = UrlUtils;
-
-
-/***/ }),
-
-/***/ 177:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(178);
-
-
-/***/ }),
-
-/***/ 178:
+/***/ 193:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -347,11 +123,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var KoBinder = __webpack_require__(2);
-var CuentasModel = __webpack_require__(179);
+var ReciboModel = __webpack_require__(194);
 $(function () {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            KoBinder.bind($("#cuentasForm"), new CuentasModel());
+            KoBinder.bind($("#reciboModel"), new ReciboModel());
             return [2 /*return*/];
         });
     });
@@ -361,123 +137,27 @@ $(function () {
 
 /***/ }),
 
-/***/ 179:
+/***/ 194:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(Promise) {
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-var ProxyRest = __webpack_require__(8);
-var UrlUtils = __webpack_require__(16);
-var ConfirmModal = __webpack_require__(143);
-var BindedModal = __webpack_require__(142);
-var Size = __webpack_require__(14);
-var CuentasModel = /** @class */ (function () {
-    function CuentasModel() {
-        this.cuentas = ko.observableArray();
-        this.proxy = new ProxyRest("/api/Cuentas");
-        this.proveedorIdUrlParam = UrlUtils.getParameterByName("id", window.location);
-        this.getAll();
-    }
-    CuentasModel.prototype.getAll = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var self, response, cuentasjson, _i, cuentasjson_1, cuenta;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        self = this;
-                        return [4 /*yield*/, self.proxy.get(self.proveedorIdUrlParam, 1, 20)];
-                    case 1:
-                        response = _a.sent();
-                        cuentasjson = JSON.parse((JSON.parse(JSON.stringify(response))));
-                        self.cuentas.removeAll();
-                        for (_i = 0, cuentasjson_1 = cuentasjson; _i < cuentasjson_1.length; _i++) {
-                            cuenta = cuentasjson_1[_i];
-                            self.cuentas.push(self.getModel(cuenta));
-                        }
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    CuentasModel.prototype.getModel = function (cuenta) {
-        return {
-            id: cuenta.id,
-            proveedorId: cuenta.proveedorId,
-            banco: cuenta.banco,
-            titular: cuenta.titular,
-            clabe: cuenta.clabe,
-            noCuenta: cuenta.noCuenta
-        };
-    };
-    CuentasModel.prototype.delete = function (cuenta) {
-        var self = this;
-        var modalModel = new ConfirmModal("¿Está seguro de borrar ésta cuenta?");
-        var dialog = new BindedModal({
-            model: modalModel,
-            size: Size.medium,
-            templateBody: "ConfirmDeleteModalBody",
-            templateFooter: "ConfirmDeleteModalFooter",
-            title: "¡Confirmación!",
-            onClose: function (e) {
-                return __awaiter(this, void 0, void 0, function () {
-                    var deleted;
-                    return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0:
-                                if (!(modalModel.result() === true)) return [3 /*break*/, 2];
-                                self.cuentas.remove(cuenta);
-                                return [4 /*yield*/, self.proxy.delete(cuenta.id)];
-                            case 1:
-                                deleted = _a.sent();
-                                alert(deleted);
-                                _a.label = 2;
-                            case 2: return [2 /*return*/];
-                        }
-                    });
-                });
-            }
-        });
-    };
-    return CuentasModel;
-}());
-module.exports = CuentasModel;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+var ReciboModel = /** @class */ (function () {
+    function ReciboModel() {
+    }
+    ReciboModel.prototype.save = function () {
+        alert("save");
+    };
+    ReciboModel.prototype.proveedorRemoteHandler = function () {
+        alert("proveedorRemoteHandler");
+    };
+    ReciboModel.prototype.clienteRemoteHandler = function () {
+        alert("clienteRemoteHandler");
+    };
+    return ReciboModel;
+}());
+module.exports = ReciboModel;
+
 
 /***/ }),
 
@@ -1885,148 +1565,6 @@ module.exports = g;
 /***/ (function(module, exports) {
 
 /* (ignored) */
-
-/***/ }),
-
-/***/ 8:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(Promise) {
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-var HttpMethod = __webpack_require__(9);
-var ProxyBase = __webpack_require__(10);
-var ProxyRest = /** @class */ (function (_super) {
-    __extends(ProxyRest, _super);
-    function ProxyRest(endPoint) {
-        return _super.call(this, endPoint) || this;
-    }
-    ProxyRest.prototype.get = function (id, pageNumber, pageSize) {
-        return __awaiter(this, void 0, void 0, function () {
-            var self, model;
-            return __generator(this, function (_a) {
-                self = this;
-                model = {
-                    body: "",
-                    endPont: self.getUrlWithId(id, pageNumber, pageSize),
-                    httpMethod: HttpMethod.get,
-                    urlParams: {}
-                };
-                return [2 /*return*/, this.serverCall(model)];
-            });
-        });
-    };
-    ProxyRest.prototype.post = function (body) {
-        return __awaiter(this, void 0, void 0, function () {
-            var self, model;
-            return __generator(this, function (_a) {
-                self = this;
-                model = {
-                    body: JSON.stringify(body),
-                    endPont: self.endPoint,
-                    httpMethod: HttpMethod.post,
-                    urlParams: {}
-                };
-                return [2 /*return*/, this.serverCall(model)];
-            });
-        });
-    };
-    ProxyRest.prototype.put = function (id, body) {
-        return __awaiter(this, void 0, void 0, function () {
-            var self, model;
-            return __generator(this, function (_a) {
-                self = this;
-                model = {
-                    body: JSON.stringify(body),
-                    endPont: self.getUrlWithId(id),
-                    httpMethod: HttpMethod.put,
-                    urlParams: {}
-                };
-                return [2 /*return*/, this.serverCall(model)];
-            });
-        });
-    };
-    ProxyRest.prototype.delete = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            var self, model;
-            return __generator(this, function (_a) {
-                self = this;
-                model = {
-                    body: "",
-                    endPont: self.getUrlWithId(id),
-                    httpMethod: HttpMethod.delete,
-                    urlParams: {}
-                };
-                return [2 /*return*/, this.serverCall(model)];
-            });
-        });
-    };
-    return ProxyRest;
-}(ProxyBase));
-module.exports = ProxyRest;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-
-/***/ 9:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var HttpMethod;
-(function (HttpMethod) {
-    HttpMethod[HttpMethod["get"] = 0] = "get";
-    HttpMethod[HttpMethod["post"] = 1] = "post";
-    HttpMethod[HttpMethod["put"] = 2] = "put";
-    HttpMethod[HttpMethod["delete"] = 3] = "delete";
-})(HttpMethod || (HttpMethod = {}));
-module.exports = HttpMethod;
-
 
 /***/ })
 
