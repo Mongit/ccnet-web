@@ -26,9 +26,9 @@
             <!-- ko foreach: recibos -->
             <tr>
                 <td data-bind="text: folio"></td>
-                <td data-bind="text: clienteId"></td>
-                <td data-bind="text: proveedorId"></td>
-                <td data-bind="text: $parent.dateFormatter($data.fechaCreado)"></td>
+                <td data-bind="text: $parent.getClienteName($data.clienteId)"></td>
+                <td data-bind="text: $parent.getProveedorName($data.proveedorId)"></td>
+                <td data-bind="text: $parent.dateFormatter($data.fecha)"></td>
                 <td>
                     <a class="btn btn-light btn-block">Editar</a>
                     <button class="btn btn-secondary btn-block">Borrar</button>

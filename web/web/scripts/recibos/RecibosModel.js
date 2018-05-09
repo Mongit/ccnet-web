@@ -46,6 +46,8 @@ var RecibosModel = /** @class */ (function () {
         this.lastPage = ko.observable(false);
         this.firstPage = ko.observable(true);
         this.showPagination = ko.observable(false);
+        this.name = ko.observable();
+        this.proveedorName = ko.observable();
         this.pages = ko.observableArray([]);
         this.recibos = ko.observableArray();
         this.proxy = new ProxyRest("/api/Recibos");
@@ -123,7 +125,37 @@ var RecibosModel = /** @class */ (function () {
         }
     };
     RecibosModel.prototype.dateFormatter = function (date) {
-        return moment(date).format('l');
+        return moment(date).format('ll');
+    };
+    RecibosModel.prototype.getObjectName = function (id, proxy) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, responseJson;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, proxy.get(id, null, null)];
+                    case 1:
+                        response = _a.sent();
+                        responseJson = JSON.parse((JSON.parse(JSON.stringify(response))));
+                        return [2 /*return*/, responseJson.empresa];
+                }
+            });
+        });
+    };
+    RecibosModel.prototype.getClienteName = function (id) {
+        var self = this;
+        var clienteProxy = new ProxyRest("/api/Clientes");
+        this.getObjectName(id, clienteProxy).then(function (res) {
+            self.name(res);
+        });
+        return self.name();
+    };
+    RecibosModel.prototype.getProveedorName = function (id) {
+        var self = this;
+        var proveedorProxy = new ProxyRest("/api/Proveedores");
+        this.getObjectName(id, proveedorProxy).then(function (res) {
+            self.proveedorName(res);
+        });
+        return self.proveedorName();
     };
     return RecibosModel;
 }());

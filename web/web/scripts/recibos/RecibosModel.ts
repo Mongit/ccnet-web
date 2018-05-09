@@ -13,6 +13,8 @@ class RecibosModel {
     public lastPage: KnockoutObservable<boolean>;
     public firstPage: KnockoutObservable<boolean>;
     public showPagination: KnockoutObservable<boolean>;
+    public name: KnockoutObservable<string>;
+    public proveedorName: KnockoutObservable<string>;
 
     public pages: KnockoutObservableArray<Page>;
     public recibos: KnockoutObservableArray<IReciboModel>;
@@ -27,6 +29,8 @@ class RecibosModel {
         this.lastPage = ko.observable<boolean>(false);
         this.firstPage = ko.observable<boolean>(true);
         this.showPagination = ko.observable<boolean>(false);
+        this.name = ko.observable<string>();
+        this.proveedorName = ko.observable<string>();
 
         this.pages = ko.observableArray<Page>([]);
         this.recibos = ko.observableArray<IReciboModel>();
@@ -107,7 +111,31 @@ class RecibosModel {
     }
 
     public dateFormatter(date): string {
-        return moment(date).format('l');
+        return moment(date).format('ll');
+    }
+
+    public async getObjectName(id: string, proxy: ProxyRest): Promise<string> {
+        let response = await proxy.get(id, null, null);
+        let responseJson = JSON.parse((JSON.parse(JSON.stringify(response))));
+        return responseJson.empresa;
+    }
+
+    public getClienteName(id: string): string {
+        const self = this;
+        let clienteProxy = new ProxyRest("/api/Clientes");
+        this.getObjectName(id, clienteProxy).then(function (res) {
+            self.name(res);
+        });
+        return self.name();
+    }
+
+    public getProveedorName(id: string): string {
+        const self = this;
+        let proveedorProxy = new ProxyRest("/api/Proveedores");
+        this.getObjectName(id, proveedorProxy).then(function (res) {
+            self.proveedorName(res);
+        });
+        return self.proveedorName();
     }
 }
 
