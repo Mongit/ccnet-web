@@ -142,20 +142,30 @@ var RecibosModel = /** @class */ (function () {
         });
     };
     RecibosModel.prototype.getClienteName = function (id) {
-        var self = this;
-        var clienteProxy = new ProxyRest("/api/Clientes");
-        this.getObjectName(id, clienteProxy).then(function (res) {
-            self.name(res);
-        });
-        return self.name();
+        if (id === "00000000-0000-0000-0000-000000000000") {
+            return "";
+        }
+        else {
+            var self_1 = this;
+            var clienteProxy = new ProxyRest("/api/Clientes");
+            this.getObjectName(id, clienteProxy).then(function (res) {
+                self_1.name(res);
+            });
+            return self_1.name();
+        }
     };
     RecibosModel.prototype.getProveedorName = function (id) {
-        var self = this;
-        var proveedorProxy = new ProxyRest("/api/Proveedores");
-        this.getObjectName(id, proveedorProxy).then(function (res) {
-            self.proveedorName(res);
-        });
-        return self.proveedorName();
+        if (id === "00000000-0000-0000-0000-000000000000") {
+            return "";
+        }
+        else {
+            var self_2 = this;
+            var proveedorProxy = new ProxyRest("/api/Proveedores");
+            this.getObjectName(id, proveedorProxy).then(function (res) {
+                self_2.proveedorName(res);
+            });
+            return self_2.proveedorName();
+        }
     };
     return RecibosModel;
 }());

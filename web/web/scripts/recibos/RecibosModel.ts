@@ -121,21 +121,31 @@ class RecibosModel {
     }
 
     public getClienteName(id: string): string {
-        const self = this;
-        let clienteProxy = new ProxyRest("/api/Clientes");
-        this.getObjectName(id, clienteProxy).then(function (res) {
-            self.name(res);
-        });
-        return self.name();
+        if (id === "00000000-0000-0000-0000-000000000000") {
+            return "";
+        }
+        else {
+            const self = this;
+            let clienteProxy = new ProxyRest("/api/Clientes");
+            this.getObjectName(id, clienteProxy).then(function (res) {
+                self.name(res);
+            });
+            return self.name();
+        }
     }
 
     public getProveedorName(id: string): string {
-        const self = this;
-        let proveedorProxy = new ProxyRest("/api/Proveedores");
-        this.getObjectName(id, proveedorProxy).then(function (res) {
-            self.proveedorName(res);
-        });
-        return self.proveedorName();
+        if (id === "00000000-0000-0000-0000-000000000000") {
+            return "";
+        }
+        else {
+            const self = this;
+            let proveedorProxy = new ProxyRest("/api/Proveedores");
+            this.getObjectName(id, proveedorProxy).then(function (res) {
+                self.proveedorName(res);
+            });
+            return self.proveedorName();
+        }
     }
 }
 
