@@ -6,8 +6,8 @@ import * as moment from 'moment';
 moment.locale('es');
 
 class ReciboModel {
-    public folio: KnockoutObservable<string>;
-    public fecha: KnockoutObservable<string>;
+    public folio: KnockoutObservable<number>;
+    public fecha: KnockoutObservable<Date>;
     public clienteRemoteValue: KnockoutObservable<string>;
     public proveedorRemoteValue: KnockoutObservable<string>;
     
@@ -15,8 +15,8 @@ class ReciboModel {
     public reciboIdUrlParam: string;
     
     constructor() {
-        this.folio = ko.observable<string>("");
-        this.fecha = ko.observable<string>("");
+        this.folio = ko.observable<number>();
+        this.fecha = ko.observable<Date>();
         this.clienteRemoteValue = ko.observable<string>();
         this.proveedorRemoteValue = ko.observable<string>();
         
@@ -33,11 +33,7 @@ class ReciboModel {
         let reciboJson = JSON.parse(JSON.parse(JSON.stringify(response)));
 
         self.folio(reciboJson.folio);
-        self.fecha(moment(reciboJson.fecha).format('l'));
-    }
-
-    public save(): void {
-        alert("save");
+        self.fecha(reciboJson.fecha);
     }
     
     public async clienteRemoteHandler(term: string, callback): Promise<void> {
@@ -52,6 +48,29 @@ class ReciboModel {
         let response = await proveedorProxy.get(term, null, null);
         let proveedoresjson = JSON.parse((JSON.parse(JSON.stringify(response))));
         callback(proveedoresjson);
+    }
+
+    public async update(): Promise<void> {
+        const self = this;
+        let model = self.getModel();
+        let response = await self.proxy.put<IReciboModel>(self.reciboIdUrlParam, model);
+        alert(response);
+        window.location.href = "Recibos";
+    }
+
+    public getModel(): IReciboModel {
+        const self = this;
+        return {
+            id: self.reciboIdUrlParam,
+            folio: self.folio(),
+            clienteId: self.clienteRemoteValue(),
+            proveedorId: self.proveedorRemoteValue(),
+            fecha: self.fecha()
+        };
+    }
+
+    public dateFormatter(date): string {
+        return moment(date).format('l');
     }
 }
 

@@ -40,8 +40,8 @@ var moment = require("moment");
 moment.locale('es');
 var ReciboModel = /** @class */ (function () {
     function ReciboModel() {
-        this.folio = ko.observable("");
-        this.fecha = ko.observable("");
+        this.folio = ko.observable();
+        this.fecha = ko.observable();
         this.clienteRemoteValue = ko.observable();
         this.proveedorRemoteValue = ko.observable();
         this.proxy = new ProxyRest("/api/Recibos");
@@ -60,14 +60,11 @@ var ReciboModel = /** @class */ (function () {
                         response = _a.sent();
                         reciboJson = JSON.parse(JSON.parse(JSON.stringify(response)));
                         self.folio(reciboJson.folio);
-                        self.fecha(moment(reciboJson.fecha).format('l'));
+                        self.fecha(reciboJson.fecha);
                         return [2 /*return*/];
                 }
             });
         });
-    };
-    ReciboModel.prototype.save = function () {
-        alert("save");
     };
     ReciboModel.prototype.clienteRemoteHandler = function (term, callback) {
         return __awaiter(this, void 0, void 0, function () {
@@ -102,6 +99,24 @@ var ReciboModel = /** @class */ (function () {
                 }
             });
         });
+    };
+    ReciboModel.prototype.update = function () {
+        var self = this;
+        var model = self.getModel();
+        var response = self.proxy.put(self.reciboIdUrlParam, model);
+    };
+    ReciboModel.prototype.getModel = function () {
+        var self = this;
+        return {
+            id: self.reciboIdUrlParam,
+            folio: self.folio(),
+            clienteId: self.clienteRemoteValue(),
+            proveedorId: self.proveedorRemoteValue(),
+            fecha: self.fecha()
+        };
+    };
+    ReciboModel.prototype.dateFormatter = function (date) {
+        return moment(date).format('l');
     };
     return ReciboModel;
 }());
