@@ -8,6 +8,8 @@ moment.locale('es');
 class ReciboModel {
     public folio: KnockoutObservable<string>;
     public fecha: KnockoutObservable<string>;
+    public clienteRemoteValue: KnockoutObservable<string>;
+    public proveedorRemoteValue: KnockoutObservable<string>;
     
     public proxy: ProxyRest;
     public reciboIdUrlParam: string;
@@ -15,6 +17,8 @@ class ReciboModel {
     constructor() {
         this.folio = ko.observable<string>("");
         this.fecha = ko.observable<string>("");
+        this.clienteRemoteValue = ko.observable<string>();
+        this.proveedorRemoteValue = ko.observable<string>();
         
         this.proxy = new ProxyRest("/api/Recibos");
         this.reciboIdUrlParam = UrlUtils.getParameterByName("id", window.location);
@@ -35,13 +39,19 @@ class ReciboModel {
     public save(): void {
         alert("save");
     }
-
-    public proveedorRemoteHandler(): void {
-        alert("proveedorRemoteHandler");
+    
+    public async clienteRemoteHandler(term: string, callback): Promise<void> {
+        let clienteProxy = new ProxyRest("/api/Clientes/search/term");
+        let response = await clienteProxy.get(term, null, null);
+        let clientesjson = JSON.parse((JSON.parse(JSON.stringify(response))));
+        callback(clientesjson);
     }
 
-    public clienteRemoteHandler(): void {
-        alert("clienteRemoteHandler");
+    public async proveedorRemoteHandler(term: string, callback): Promise<void> {
+        let proveedorProxy = new ProxyRest("/api/Proveedores/search/term");
+        let response = await proveedorProxy.get(term, null, null);
+        let proveedoresjson = JSON.parse((JSON.parse(JSON.stringify(response))));
+        callback(proveedoresjson);
     }
 }
 

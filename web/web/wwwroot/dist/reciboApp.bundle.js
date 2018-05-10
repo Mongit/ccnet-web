@@ -18376,6 +18376,8 @@ var ReciboModel = /** @class */ (function () {
     function ReciboModel() {
         this.folio = ko.observable("");
         this.fecha = ko.observable("");
+        this.clienteRemoteValue = ko.observable();
+        this.proveedorRemoteValue = ko.observable();
         this.proxy = new ProxyRest("/api/Recibos");
         this.reciboIdUrlParam = UrlUtils.getParameterByName("id", window.location);
         this.getOne();
@@ -18401,11 +18403,39 @@ var ReciboModel = /** @class */ (function () {
     ReciboModel.prototype.save = function () {
         alert("save");
     };
-    ReciboModel.prototype.proveedorRemoteHandler = function () {
-        alert("proveedorRemoteHandler");
+    ReciboModel.prototype.clienteRemoteHandler = function (term, callback) {
+        return __awaiter(this, void 0, void 0, function () {
+            var clienteProxy, response, clientesjson;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        clienteProxy = new ProxyRest("/api/Clientes/search/term");
+                        return [4 /*yield*/, clienteProxy.get(term, null, null)];
+                    case 1:
+                        response = _a.sent();
+                        clientesjson = JSON.parse((JSON.parse(JSON.stringify(response))));
+                        callback(clientesjson);
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
-    ReciboModel.prototype.clienteRemoteHandler = function () {
-        alert("clienteRemoteHandler");
+    ReciboModel.prototype.proveedorRemoteHandler = function (term, callback) {
+        return __awaiter(this, void 0, void 0, function () {
+            var proveedorProxy, response, proveedoresjson;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        proveedorProxy = new ProxyRest("/api/Proveedores/search/term");
+                        return [4 /*yield*/, proveedorProxy.get(term, null, null)];
+                    case 1:
+                        response = _a.sent();
+                        proveedoresjson = JSON.parse((JSON.parse(JSON.stringify(response))));
+                        callback(proveedoresjson);
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     return ReciboModel;
 }());
