@@ -68,7 +68,7 @@
 /***/ 1:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(4).Promise;
+module.exports = __webpack_require__(5).Promise;
 
 
 /***/ }),
@@ -271,7 +271,7 @@ module.exports = ConfirmModel;
 
 /***/ }),
 
-/***/ 15:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -401,8 +401,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var ProxyRest = __webpack_require__(3);
-var UrlUtils = __webpack_require__(15);
+var ProxyRest = __webpack_require__(4);
+var UrlUtils = __webpack_require__(16);
 var ConfirmModal = __webpack_require__(143);
 var BindedModal = __webpack_require__(142);
 var Size = __webpack_require__(14);
@@ -501,7 +501,7 @@ module.exports = KoBinder;
 
 /***/ }),
 
-/***/ 3:
+/***/ 4:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -626,7 +626,7 @@ module.exports = ProxyRest;
 
 /***/ }),
 
-/***/ 4:
+/***/ 5:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, global) {var require;/*!
@@ -761,7 +761,7 @@ function flush() {
 function attemptVertx() {
   try {
     var r = require;
-    var vertx = __webpack_require__(7);
+    var vertx = __webpack_require__(8);
     vertxNext = vertx.runOnLoop || vertx.runOnContext;
     return useVertxTimer();
   } catch (e) {
@@ -1783,11 +1783,11 @@ return Promise;
 
 })));
 //# sourceMappingURL=es6-promise.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(7)))
 
 /***/ }),
 
-/***/ 5:
+/***/ 6:
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -1978,7 +1978,7 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ 6:
+/***/ 7:
 /***/ (function(module, exports) {
 
 var g;
@@ -2006,7 +2006,7 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 7:
+/***/ 8:
 /***/ (function(module, exports) {
 
 /* (ignored) */

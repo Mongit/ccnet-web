@@ -11,6 +11,9 @@
     <script src="~/lib/knockout/knockout-jqAutocomplete.js"></script>
 }
 
+@Html.Partial("_KoGlobalTemplates")
+@Html.Partial("_ConfirmDeleteModal")
+
 <div id="reciboModel">
     <div id="accordion" class="my-lg-5">
         <div class="card">
@@ -23,6 +26,13 @@
                 <div class="collapse show" data-parent="#accordion">
                     <div class="card-body">
                         <!-- ko  template: { name: "recibo" } --><!-- /ko -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <br />
+                                <br />
+                            </div>
+                        </div>
+                        <!-- ko  template: { name: "reciboItems" } --><!-- /ko -->
                     </div>
                 </div>
             </form>
@@ -57,5 +67,85 @@
     <div class="form-group text-right">
         <a class="btn btn-light" data-bind="attr: { href: 'Recibos' }">Cancelar</a>
         <input class="btn btn-primary" type="submit" value="Guardar">
+    </div>
+</script>
+
+<script id="reciboItems" type="text/html">
+    <div class="col-md-12">
+        <h5>
+            Items
+        </h5>
+
+        <div class="form-row" data-bind="with: temporalItem()">
+            <div class="col-md-2">
+                <label>Cantidad</label>
+                <input type="text" placeholder="Cantidad" class="form-control" data-bind="value: cantidad.value, css: { 'is-invalid': cantidad.hasError() }, hasFocus: $parent.temporalItemHasFocus" />
+                <!-- ko  template: { name: "Validation", data: cantidad } -->
+                <!-- /ko -->
+            </div>
+            <div class="col-md-6">
+                <label>Descripción</label>
+                <input type="text" placeholder="Descripción" class="form-control" data-bind="value: descripcion.value, css: { 'is-invalid': descripcion.hasError() }" />
+                <!-- ko  template: { name: "Validation", data: descripcion } -->
+                <!-- /ko -->
+            </div>
+            <div class="col-md-2">
+                <label>Precio</label>
+                <input type="text" placeholder="Precio" class="form-control" data-bind="value: precio.value, css: { 'is-invalid': precio.hasError() }" />
+                <!-- ko  template: { name: "Validation", data: precio } -->
+                <!-- /ko -->
+            </div>
+            <div class="col-md-2">
+                <label>Acciones</label>
+                <input type="button" class="btn btn-default" data-bind="click: $parent.addReciboItem.bind($parent)" value="Agregar" />
+            </div>
+        </div>
+
+        <div class="form-row pt-4">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Costo</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- ko foreach: reciboItems -->
+                        <tr>
+                            <td>
+                                <div>
+                                    <span data-bind="text: cantidad.value"></span>
+                                </div>
+                            </td>
+                            <td>
+                                <span data-bind="text: descripcion.value"></span>
+                            </td>
+                            <td>
+                                <span data-bind="template: { name: 'templatePrice', data: parseFloat(precio.value()) }"> </span>
+                            </td>
+                            <td>
+                                <span data-bind="template: { name: 'templatePrice', data: costo() }"> </span>
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-secondary" data-bind="click: $parent.removeReciboItem.bind($parent)">Borrar</button>
+                            </td>
+                        </tr>
+                        <!-- /ko -->
+
+                        <tr>
+                            <td class="text-right" colspan="3"><strong>Total:</strong></td>
+                            <td class="text-left" colspan="2">
+                                <span data-bind="template: { name: 'templatePrice', data: total() }"> </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </script>

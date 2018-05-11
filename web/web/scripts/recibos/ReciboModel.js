@@ -36,17 +36,33 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var ProxyRest = require("./../api/proxyRest");
 var UrlUtils = require("./../utils/UrlUtils");
+var ReciboItemModel = require("./ReciboItemModel");
+var BindedModal = require("./../modals/BindedModal");
+var Size = require("./../utils/Size");
+var ConfirmModal = require("./../modals/confirmModal");
 var moment = require("moment");
 moment.locale('es');
 var ReciboModel = /** @class */ (function () {
     function ReciboModel() {
+        var self = this;
         this.folio = ko.observable();
         this.fecha = ko.observable();
         this.clienteRemoteValue = ko.observable();
         this.proveedorRemoteValue = ko.observable();
+        this.temporalItem = ko.observable(new ReciboItemModel());
+        this.temporalItemHasFocus = ko.observable();
+        this.reciboItems = ko.observableArray();
         this.proxy = new ProxyRest("/api/Recibos");
         this.reciboIdUrlParam = UrlUtils.getParameterByName("id", window.location);
         this.getOne();
+        this.total = ko.computed(function () {
+            var sumaCostos = 0;
+            for (var _i = 0, _a = self.reciboItems(); _i < _a.length; _i++) {
+                var ri = _a[_i];
+                sumaCostos += ri.costo();
+            }
+            return sumaCostos;
+        }, self);
     }
     ReciboModel.prototype.getOne = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -101,9 +117,22 @@ var ReciboModel = /** @class */ (function () {
         });
     };
     ReciboModel.prototype.update = function () {
-        var self = this;
-        var model = self.getModel();
-        var response = self.proxy.put(self.reciboIdUrlParam, model);
+        return __awaiter(this, void 0, void 0, function () {
+            var self, model, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        self = this;
+                        model = self.getModel();
+                        return [4 /*yield*/, self.proxy.put(self.reciboIdUrlParam, model)];
+                    case 1:
+                        response = _a.sent();
+                        alert(response);
+                        window.location.href = "Recibos";
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     ReciboModel.prototype.getModel = function () {
         var self = this;
@@ -117,6 +146,47 @@ var ReciboModel = /** @class */ (function () {
     };
     ReciboModel.prototype.dateFormatter = function (date) {
         return moment(date).format('l');
+    };
+    ReciboModel.prototype.addReciboItem = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, newItem;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        self = this;
+                        return [4 /*yield*/, self.temporalItem().validate()];
+                    case 1:
+                        if ((_a.sent()) === true) {
+                            newItem = new ReciboItemModel();
+                            newItem.cantidad.value(self.temporalItem().cantidad.value());
+                            newItem.descripcion.value(self.temporalItem().descripcion.value());
+                            newItem.precio.value(self.temporalItem().precio.value());
+                            newItem.reciboId = self.reciboIdUrlParam;
+                            newItem.cotizacionId = self.temporalItem().cotizacionId;
+                            self.reciboItems.push(newItem);
+                            self.temporalItem(new ReciboItemModel());
+                            self.temporalItemHasFocus(true);
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ReciboModel.prototype.removeReciboItem = function (item) {
+        var self = this;
+        var modalModel = new ConfirmModal("¿Está seguro de borrar éste item?");
+        var dialog = new BindedModal({
+            model: modalModel,
+            size: Size.small,
+            templateBody: "ConfirmDeleteModalBody",
+            templateFooter: "ConfirmDeleteModalFooter",
+            title: "¡Confirmación!",
+            onClose: function (e) {
+                if (modalModel.result() === true) {
+                    self.reciboItems.remove(item);
+                }
+            }
+        });
     };
     return ReciboModel;
 }());
