@@ -19218,12 +19218,18 @@ var ReciboModel = /** @class */ (function () {
     };
     ReciboModel.prototype.getModel = function () {
         var self = this;
+        var itemArray = new Array();
+        for (var _i = 0, _a = self.reciboItems(); _i < _a.length; _i++) {
+            var item = _a[_i];
+            itemArray.push(item.getModel());
+        }
         return {
             id: self.reciboIdUrlParam,
             folio: self.folio(),
             clienteId: self.clienteRemoteValue(),
             proveedorId: self.proveedorRemoteValue(),
-            fecha: self.fecha()
+            fecha: self.fecha(),
+            items: itemArray
         };
     };
     ReciboModel.prototype.dateFormatter = function (date) {

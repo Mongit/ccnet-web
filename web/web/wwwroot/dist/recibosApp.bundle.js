@@ -18407,13 +18407,30 @@ var RecibosModel = /** @class */ (function () {
             });
         });
     };
+    RecibosModel.prototype.getItemModel = function (item) {
+        return {
+            id: item.id,
+            cantidad: item.cantidad,
+            descripcion: item.descripcion,
+            precio: item.precio,
+            reciboId: item.reciboId,
+            cotizacionId: item.cotizacionId
+        };
+    };
     RecibosModel.prototype.getModel = function (recibo) {
+        var self = this;
+        var itemArray = new Array();
+        for (var _i = 0, _a = recibo.items; _i < _a.length; _i++) {
+            var item = _a[_i];
+            itemArray.push(self.getItemModel(item));
+        }
         return {
             id: recibo.id,
             folio: recibo.folio,
             clienteId: recibo.clienteId,
             proveedorId: recibo.proveedorId,
-            fecha: recibo.fecha
+            fecha: recibo.fecha,
+            items: itemArray
         };
     };
     RecibosModel.prototype.selectedPage = function (page) {
@@ -18501,7 +18518,8 @@ var RecibosModel = /** @class */ (function () {
                             folio: undefined,
                             clienteId: undefined,
                             proveedorId: undefined,
-                            fecha: new Date()
+                            fecha: new Date(),
+                            items: []
                         });
                         return [4 /*yield*/, self.proxy.post(model)];
                     case 1:

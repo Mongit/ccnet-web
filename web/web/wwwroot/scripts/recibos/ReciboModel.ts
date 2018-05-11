@@ -87,12 +87,19 @@ class ReciboModel {
 
     public getModel(): IReciboModel {
         const self = this;
+
+        let itemArray = new Array<IReciboItemModel>();
+        for (let item of self.reciboItems()) {
+            itemArray.push(item.getModel());
+        }
+
         return {
             id: self.reciboIdUrlParam,
             folio: self.folio(),
             clienteId: self.clienteRemoteValue(),
             proveedorId: self.proveedorRemoteValue(),
-            fecha: self.fecha()
+            fecha: self.fecha(),
+            items: itemArray
         };
     }
 

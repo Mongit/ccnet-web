@@ -1,6 +1,7 @@
 import Page = require("./../pagination/PageModel");
 import ProxyRest = require("./../api/proxyRest");
 import IReciboModel = require("./iReciboModel");
+import IReciboItemModel = require("./iReciboItemModel");
 import * as moment from 'moment';
 
 moment.locale('es');
@@ -63,14 +64,33 @@ class RecibosModel {
             self.recibos.push(self.getModel(recibo));
         }
     }
+    
+    public getItemModel(item): IReciboItemModel {
+        return {
+            id: item.id,
+            cantidad: item.cantidad,
+            descripcion: item.descripcion,
+            precio: item.precio,
+            reciboId: item.reciboId,
+            cotizacionId: item.cotizacionId
+        };
+    }
 
     public getModel(recibo: IReciboModel): IReciboModel {
+        const self = this;
+
+        let itemArray = new Array<IReciboItemModel>();
+        for (let item of recibo.items) {
+            itemArray.push(self.getItemModel(item));
+        }
+
         return {
             id: recibo.id,
             folio: recibo.folio,
             clienteId: recibo.clienteId,
             proveedorId: recibo.proveedorId,
-            fecha: recibo.fecha
+            fecha: recibo.fecha,
+            items: itemArray
         };
     }
 
@@ -155,7 +175,8 @@ class RecibosModel {
             folio: undefined,
             clienteId: undefined,
             proveedorId: undefined,
-            fecha: new Date()
+            fecha: new Date(),
+            items: []
         });
         let reciboId = await self.proxy.post<IReciboModel>(model);
         window.location.href = "Recibo?id=" + JSON.parse(JSON.parse(JSON.stringify(reciboId)));
