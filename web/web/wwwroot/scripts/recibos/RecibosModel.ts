@@ -2,6 +2,9 @@ import Page = require("./../pagination/PageModel");
 import ProxyRest = require("./../api/proxyRest");
 import IReciboModel = require("./iReciboModel");
 import IReciboItemModel = require("./iReciboItemModel");
+import ConfirmModal = require("./../modals/confirmModal");
+import BindedModal = require("./../modals/BindedModal");
+import Size = require("./../utils/Size");
 import * as moment from 'moment';
 
 moment.locale('es');
@@ -179,7 +182,28 @@ class RecibosModel {
             items: []
         });
         let reciboId = await self.proxy.post<IReciboModel>(model);
+        alert(reciboId);
         window.location.href = "Recibo?id=" + JSON.parse(JSON.parse(JSON.stringify(reciboId)));
+    }
+
+    public remove(recibo): void {
+        let self = this;
+        let modalModel = new ConfirmModal("¿Está seguro de borrar éste Recibo?");
+
+        let dialog = new BindedModal({
+            model: modalModel,
+            size: Size.medium,
+            templateBody: "ConfirmDeleteModalBody",
+            templateFooter: "ConfirmDeleteModalFooter",
+            title: "¡Confirmación!",
+            onClose: async function (e: JQuery.Event<HTMLElement, null>): Promise<void> {
+                if (modalModel.result() === true) {
+                    self.recibos.remove(recibo);
+                    let deleted = await self.proxy.delete<IReciboModel>(recibo.id);
+                    alert(deleted);
+                }
+            }
+        });
     }
 }
 

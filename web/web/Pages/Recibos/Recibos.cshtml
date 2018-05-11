@@ -8,6 +8,7 @@
     <script src="~/dist/recibosApp.bundle.js" type="text/javascript"></script>
 }
 @Html.Partial("_KoGlobalTemplates")
+@Html.Partial("_ConfirmDeleteModal")
 
 <h2>Recibos</h2>
 
@@ -19,7 +20,7 @@
                 <th scope="col">Cliente</th>
                 <th scope="col">Proveedor</th>
                 <th scope="col">Fecha</th>
-                <th scope="col"><a class="btn btn-light btn-block"  data-bind="click: save">Nuevo Recibo</a></th>
+                <th scope="col"><a class="btn btn-light btn-block" data-bind="click: save">Nuevo Recibo</a></th>
             </tr>
         </thead>
         <tbody>
@@ -31,7 +32,7 @@
                 <td data-bind="text: $parent.dateFormatter($data.fecha)"></td>
                 <td>
                     <a class="btn btn-light btn-block">Editar</a>
-                    <button class="btn btn-secondary btn-block">Borrar</button>
+                    <button class="btn btn-secondary btn-block" data-bind="click: $parent.remove.bind($parent)">Borrar</button>
                 </td>
             </tr>
             <!-- /ko -->

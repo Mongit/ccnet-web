@@ -156,7 +156,7 @@ module.exports = ProxyBase;
 
 "use strict";
 
-var PromiseUtils = __webpack_require__(13);
+var PromiseUtils = __webpack_require__(14);
 var ValidatorBase = /** @class */ (function () {
     function ValidatorBase() {
     }
@@ -175,12 +175,12 @@ module.exports = ValidatorBase;
 
 /***/ }),
 
-/***/ 12:
+/***/ 13:
 /***/ (function(module, exports, __webpack_require__) {
 
 var pSlice = Array.prototype.slice;
-var objectKeys = __webpack_require__(139);
-var isArguments = __webpack_require__(140);
+var objectKeys = __webpack_require__(141);
+var isArguments = __webpack_require__(142);
 
 var deepEqual = module.exports = function (actual, expected, opts) {
   if (!opts) opts = {};
@@ -276,7 +276,7 @@ function objEquiv(a, b, opts) {
 
 /***/ }),
 
-/***/ 13:
+/***/ 14:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -298,7 +298,7 @@ module.exports = PromiseUtils;
 
 /***/ }),
 
-/***/ 138:
+/***/ 140:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -313,7 +313,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var equal = __webpack_require__(12);
+var equal = __webpack_require__(13);
 var FieldBase = __webpack_require__(3);
 var Field = /** @class */ (function (_super) {
     __extends(Field, _super);
@@ -343,7 +343,7 @@ module.exports = Field;
 
 /***/ }),
 
-/***/ 139:
+/***/ 141:
 /***/ (function(module, exports) {
 
 exports = module.exports = typeof Object.keys === 'function'
@@ -359,7 +359,7 @@ function shim (obj) {
 
 /***/ }),
 
-/***/ 140:
+/***/ 142:
 /***/ (function(module, exports) {
 
 var supportsArgumentsClass = (function(){
@@ -386,7 +386,7 @@ function unsupported(object){
 
 /***/ }),
 
-/***/ 141:
+/***/ 143:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -401,7 +401,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var equal = __webpack_require__(12);
+var equal = __webpack_require__(13);
 var FieldBase = __webpack_require__(3);
 var FieldArray = /** @class */ (function (_super) {
     __extends(FieldArray, _super);
@@ -450,9 +450,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var Field = __webpack_require__(138);
+var Field = __webpack_require__(140);
 var FieldBase = __webpack_require__(3);
-var FieldArray = __webpack_require__(141);
+var FieldArray = __webpack_require__(143);
 var ValidatableValidator = __webpack_require__(17);
 var KoForm = /** @class */ (function (_super) {
     __extends(KoForm, _super);
@@ -1006,7 +1006,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var PromiseUtils = __webpack_require__(13);
+var PromiseUtils = __webpack_require__(14);
 var FieldBase = /** @class */ (function () {
     function FieldBase(validators, useStrictForComparations, value) {
         this.validators = validators;
