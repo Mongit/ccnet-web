@@ -162,7 +162,7 @@ var ReciboModel = /** @class */ (function () {
                             newItem.descripcion.value(self.temporalItem().descripcion.value());
                             newItem.precio.value(self.temporalItem().precio.value());
                             newItem.reciboId = self.reciboIdUrlParam;
-                            newItem.cotizacionId = self.temporalItem().cotizacionId;
+                            newItem.cotizacionId = self.temporalItem().cotizacionRemoteValue();
                             self.reciboItems.push(newItem);
                             self.temporalItem(new ReciboItemModel());
                             self.temporalItemHasFocus(true);

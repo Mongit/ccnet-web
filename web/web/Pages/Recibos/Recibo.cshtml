@@ -76,28 +76,39 @@
             Items
         </h5>
 
-        <div class="form-row" data-bind="with: temporalItem()">
-            <div class="col-md-2">
-                <label>Cantidad</label>
-                <input type="text" placeholder="Cantidad" class="form-control" data-bind="value: cantidad.value, css: { 'is-invalid': cantidad.hasError() }, hasFocus: $parent.temporalItemHasFocus" />
-                <!-- ko  template: { name: "Validation", data: cantidad } -->
-                <!-- /ko -->
+        <div data-bind="with: temporalItem()">
+            <div class="form-row">
+                <div class="form-group col-md-10">
+                    <label>
+                        <label>Cotización</label>
+                        <small class="text-muted">(Opcional)</small>
+                    </label>
+                    <input type="text" class="form-control" placeholder="Buscar Cotización..." data-bind="jqAuto: { source: cotizacionRemoteHandler, value: cotizacionRemoteValue, inputProp: 'folio', labelProp: 'fecha', valueProp: 'id', template: 'rowTmpl' }" />
+                </div>
             </div>
-            <div class="col-md-6">
-                <label>Descripción</label>
-                <input type="text" placeholder="Descripción" class="form-control" data-bind="value: descripcion.value, css: { 'is-invalid': descripcion.hasError() }" />
-                <!-- ko  template: { name: "Validation", data: descripcion } -->
-                <!-- /ko -->
-            </div>
-            <div class="col-md-2">
-                <label>Precio</label>
-                <input type="text" placeholder="Precio" class="form-control" data-bind="value: precio.value, css: { 'is-invalid': precio.hasError() }" />
-                <!-- ko  template: { name: "Validation", data: precio } -->
-                <!-- /ko -->
-            </div>
-            <div class="col-md-2">
-                <label>Acciones</label>
-                <input type="button" class="btn btn-default" data-bind="click: $parent.addReciboItem.bind($parent)" value="Agregar" />
+            <div class="form-row">
+                <div class="col-md-2">
+                    <label>Cantidad</label>
+                    <input type="text" placeholder="Cantidad" class="form-control" data-bind="value: cantidad.value, css: { 'is-invalid': cantidad.hasError() }, hasFocus: $parent.temporalItemHasFocus" />
+                    <!-- ko  template: { name: "Validation", data: cantidad } -->
+                    <!-- /ko -->
+                </div>
+                <div class="col-md-6">
+                    <label>Descripción</label>
+                    <input type="text" placeholder="Descripción" class="form-control" data-bind="value: descripcion.value, css: { 'is-invalid': descripcion.hasError() }" />
+                    <!-- ko  template: { name: "Validation", data: descripcion } -->
+                    <!-- /ko -->
+                </div>
+                <div class="col-md-2">
+                    <label>Precio</label>
+                    <input type="text" placeholder="Precio" class="form-control" data-bind="value: precio.value, css: { 'is-invalid': precio.hasError() }" />
+                    <!-- ko  template: { name: "Validation", data: precio } -->
+                    <!-- /ko -->
+                </div>
+                <div class="col-md-2">
+                    <label>Acciones</label>
+                    <input type="button" class="btn btn-default" data-bind="click: $parent.addReciboItem.bind($parent)" value="Agregar" />
+                </div>
             </div>
         </div>
 
@@ -110,6 +121,7 @@
                             <th scope="col">Descripción</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Costo</th>
+                            <th scope="col">Cotización</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -131,6 +143,9 @@
                             <td>
                                 <span data-bind="template: { name: 'templatePrice', data: costo() }"> </span>
                             </td>
+                            <td>
+                                <span data-bind="text: cotizacionId"> </span>
+                            </td>
                             <td class="text-center">
                                 <button class="btn btn-secondary" data-bind="click: $parent.removeReciboItem.bind($parent)">Borrar</button>
                             </td>
@@ -148,4 +163,11 @@
             </div>
         </div>
     </div>
+</script>
+
+<script id="rowTmpl" type="text/html">
+    <a>
+        <span data-bind="text: folio"></span> - 
+        <span data-bind="text: fecha"></span>
+    </a>
 </script>

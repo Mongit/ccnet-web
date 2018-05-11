@@ -3,6 +3,8 @@ import IField = require("./../field/iField");
 import stringValidator = require("./../validators/stringValidators");
 import numberValidator = require("./../validators/numberValidators");
 import IReciboItemModel = require("./iReciboItemModel");
+import ICotizacionModel = require("./../cotizaciones/CotizacionesModel");
+import ProxyRest = require("./../api/proxyRest");
 
 class ReciboItemModel extends KoForm {
     public reciboItemId: string;
@@ -12,7 +14,9 @@ class ReciboItemModel extends KoForm {
     public cantidad: IField<number>;
     public descripcion: IField<string>;
     public precio: IField<number>;
-    
+
+    public cotizacionRemoteValue: KnockoutObservable<string>;
+
     public costo: KnockoutComputed<number>;
 
     constructor() {
@@ -27,6 +31,8 @@ class ReciboItemModel extends KoForm {
         this.cantidad = self.addField<number>([new numberValidator.FloatValidator(), new numberValidator.RequiredNumberValidator()]);
         this.descripcion = self.addField<string>([new stringValidator.RequiredStringValidator()]);
         this.precio = self.addField<number>([new numberValidator.FloatValidator(), new numberValidator.RequiredNumberValidator()]);
+
+        this.cotizacionRemoteValue = ko.observable<string>();
 
         this.costo = ko.computed<number>(function (): number {
             return self.cantidad.value() * self.precio.value();
@@ -43,6 +49,13 @@ class ReciboItemModel extends KoForm {
             reciboId: self.reciboId ? self.reciboId : "00000000-0000-0000-0000-000000000000",
             cotizacionId: self.cotizacionId ? self.cotizacionId : "00000000-0000-0000-0000-000000000000"
         };
+    }
+
+    public async cotizacionRemoteHandler(term: string, callback): Promise<void> {
+        let cotizacionProxy = new ProxyRest("/api/Cotizaciones/search/term");
+        let response = await cotizacionProxy.get<ICotizacionModel>(term, null, null);
+        let cotizacionjson = JSON.parse((JSON.parse(JSON.stringify(response))));
+        callback(cotizacionjson);
     }
 }
 

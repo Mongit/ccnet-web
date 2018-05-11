@@ -76,7 +76,7 @@ class ReciboModel {
         let proveedoresjson = JSON.parse((JSON.parse(JSON.stringify(response))));
         callback(proveedoresjson);
     }
-
+    
     public async update(): Promise<void> {
         const self = this;
         let model = self.getModel();
@@ -109,7 +109,7 @@ class ReciboModel {
             newItem.descripcion.value(self.temporalItem().descripcion.value());
             newItem.precio.value(self.temporalItem().precio.value());
             newItem.reciboId = self.reciboIdUrlParam;
-            newItem.cotizacionId = self.temporalItem().cotizacionId;
+            newItem.cotizacionId = self.temporalItem().cotizacionRemoteValue();
 
             self.reciboItems.push(newItem);
 
