@@ -44,6 +44,9 @@ module.exports = {
         ],
         reciboApp: [
             './scripts/recibos/appRecibo.ts'
+        ],
+        reciboVerApp: [
+            './scripts/recibos/appReciboVer.ts'
         ]
     },
     module: {

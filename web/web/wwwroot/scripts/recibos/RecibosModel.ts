@@ -182,7 +182,6 @@ class RecibosModel {
             items: []
         });
         let reciboId = await self.proxy.post<IReciboModel>(model);
-        alert(reciboId);
         window.location.href = "Recibo?id=" + JSON.parse(JSON.parse(JSON.stringify(reciboId)));
     }
 

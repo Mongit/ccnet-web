@@ -205,7 +205,6 @@ var RecibosModel = /** @class */ (function () {
                         return [4 /*yield*/, self.proxy.post(model)];
                     case 1:
                         reciboId = _a.sent();
-                        alert(reciboId);
                         window.location.href = "Recibo?id=" + JSON.parse(JSON.parse(JSON.stringify(reciboId)));
                         return [2 /*return*/];
                 }

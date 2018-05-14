@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 162);
+/******/ 	return __webpack_require__(__webpack_require__.s = 196);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -4632,7 +4632,98 @@ module.exports = KoBinder;
 
 
 /***/ }),
-/* 3 */,
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Promise) {
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var PromiseUtils = __webpack_require__(13);
+var FieldBase = /** @class */ (function () {
+    function FieldBase(validators, useStrictForComparations, value) {
+        this.validators = validators;
+        this.initialValue = value;
+        this.useStrictForComparations = useStrictForComparations;
+        this.errors = ko.observableArray([]);
+        var self = this;
+        this.hasChanged = ko.pureComputed(function () {
+            return self.getHasChanged();
+        }, self);
+        this.hasError = ko.pureComputed(function () {
+            return self.errors().length > 0;
+        }, self);
+    }
+    FieldBase.prototype.validate = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, isValid, _i, _a, validator, result;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        self = this;
+                        self.errors.removeAll();
+                        isValid = true;
+                        _i = 0, _a = self.validators;
+                        _b.label = 1;
+                    case 1:
+                        if (!(_i < _a.length)) return [3 /*break*/, 4];
+                        validator = _a[_i];
+                        return [4 /*yield*/, validator.check(self.value())];
+                    case 2:
+                        result = _b.sent();
+                        if (result.isValid === false) {
+                            self.errors.push(result.message);
+                            isValid = false;
+                        }
+                        _b.label = 3;
+                    case 3:
+                        _i++;
+                        return [3 /*break*/, 1];
+                    case 4: return [2 /*return*/, PromiseUtils.toPromise(isValid)];
+                }
+            });
+        });
+    };
+    return FieldBase;
+}());
+module.exports = FieldBase;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4757,7 +4848,29 @@ module.exports = ProxyRest;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 5 */,
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var PromiseUtils = __webpack_require__(13);
+var ValidatorBase = /** @class */ (function () {
+    function ValidatorBase() {
+    }
+    ValidatorBase.prototype.toPromise = function (isValid, message) {
+        if (message === void 0) { message = ""; }
+        var result = {
+            isValid: isValid,
+            message: isValid ? "" : message
+        };
+        return PromiseUtils.toPromise(result);
+    };
+    return ValidatorBase;
+}());
+module.exports = ValidatorBase;
+
+
+/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6234,24 +6347,192 @@ module.exports = ProxyBase;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 12 */,
-/* 13 */,
-/* 14 */
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var pSlice = Array.prototype.slice;
+var objectKeys = __webpack_require__(139);
+var isArguments = __webpack_require__(140);
+
+var deepEqual = module.exports = function (actual, expected, opts) {
+  if (!opts) opts = {};
+  // 7.1. All identical values are equivalent, as determined by ===.
+  if (actual === expected) {
+    return true;
+
+  } else if (actual instanceof Date && expected instanceof Date) {
+    return actual.getTime() === expected.getTime();
+
+  // 7.3. Other pairs that do not both pass typeof value == 'object',
+  // equivalence is determined by ==.
+  } else if (!actual || !expected || typeof actual != 'object' && typeof expected != 'object') {
+    return opts.strict ? actual === expected : actual == expected;
+
+  // 7.4. For all other Object pairs, including Array objects, equivalence is
+  // determined by having the same number of owned properties (as verified
+  // with Object.prototype.hasOwnProperty.call), the same set of keys
+  // (although not necessarily the same order), equivalent values for every
+  // corresponding key, and an identical 'prototype' property. Note: this
+  // accounts for both named and indexed properties on Arrays.
+  } else {
+    return objEquiv(actual, expected, opts);
+  }
+}
+
+function isUndefinedOrNull(value) {
+  return value === null || value === undefined;
+}
+
+function isBuffer (x) {
+  if (!x || typeof x !== 'object' || typeof x.length !== 'number') return false;
+  if (typeof x.copy !== 'function' || typeof x.slice !== 'function') {
+    return false;
+  }
+  if (x.length > 0 && typeof x[0] !== 'number') return false;
+  return true;
+}
+
+function objEquiv(a, b, opts) {
+  var i, key;
+  if (isUndefinedOrNull(a) || isUndefinedOrNull(b))
+    return false;
+  // an identical 'prototype' property.
+  if (a.prototype !== b.prototype) return false;
+  //~~~I've managed to break Object.keys through screwy arguments passing.
+  //   Converting to array solves the problem.
+  if (isArguments(a)) {
+    if (!isArguments(b)) {
+      return false;
+    }
+    a = pSlice.call(a);
+    b = pSlice.call(b);
+    return deepEqual(a, b, opts);
+  }
+  if (isBuffer(a)) {
+    if (!isBuffer(b)) {
+      return false;
+    }
+    if (a.length !== b.length) return false;
+    for (i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) return false;
+    }
+    return true;
+  }
+  try {
+    var ka = objectKeys(a),
+        kb = objectKeys(b);
+  } catch (e) {//happens when one is a string literal and the other isn't
+    return false;
+  }
+  // having the same number of owned properties (keys incorporates
+  // hasOwnProperty)
+  if (ka.length != kb.length)
+    return false;
+  //the same set of keys (although not necessarily the same order),
+  ka.sort();
+  kb.sort();
+  //~~~cheap key test
+  for (i = ka.length - 1; i >= 0; i--) {
+    if (ka[i] != kb[i])
+      return false;
+  }
+  //equivalent values for every corresponding key, and
+  //~~~possibly expensive deep test
+  for (i = ka.length - 1; i >= 0; i--) {
+    key = ka[i];
+    if (!deepEqual(a[key], b[key], opts)) return false;
+  }
+  return typeof a === typeof b;
+}
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Promise) {
+var PromiseUtils = /** @class */ (function () {
+    function PromiseUtils() {
+    }
+    PromiseUtils.toPromise = function (value) {
+        var promise = new Promise(function (resolve, reject) {
+            resolve(value);
+        });
+        return promise;
+    };
+    return PromiseUtils;
+}());
+module.exports = PromiseUtils;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+/* 14 */,
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Size;
-(function (Size) {
-    Size[Size["small"] = 0] = "small";
-    Size[Size["medium"] = 1] = "medium";
-    Size[Size["large"] = 2] = "large";
-})(Size || (Size = {}));
-module.exports = Size;
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var Field = __webpack_require__(138);
+var FieldBase = __webpack_require__(3);
+var FieldArray = __webpack_require__(141);
+var ValidatableValidator = __webpack_require__(136);
+var KoForm = /** @class */ (function (_super) {
+    __extends(KoForm, _super);
+    function KoForm(validators) {
+        if (validators === void 0) { validators = [new ValidatableValidator("Encontramos un error en alguno de sus campos.")]; }
+        var _this = _super.call(this, validators, true, []) || this;
+        _this.value = ko.observableArray();
+        return _this;
+    }
+    KoForm.prototype.resetHasChanged = function () {
+        var self = this;
+        for (var _i = 0, _a = self.value(); _i < _a.length; _i++) {
+            var field = _a[_i];
+            field.resetHasChanged();
+        }
+    };
+    KoForm.prototype.getHasChanged = function () {
+        var self = this;
+        for (var _i = 0, _a = self.value(); _i < _a.length; _i++) {
+            var field = _a[_i];
+            if (field.hasChanged()) {
+                return true;
+            }
+        }
+        return false;
+    };
+    KoForm.prototype.addField = function (validators, useStrictForComparations, value) {
+        if (useStrictForComparations === void 0) { useStrictForComparations = true; }
+        var self = this;
+        var field = new Field(validators, useStrictForComparations, value);
+        self.value.push(field);
+        return field;
+    };
+    KoForm.prototype.addFieldArray = function (validators, useStrictForComparations, value) {
+        if (useStrictForComparations === void 0) { useStrictForComparations = true; }
+        var self = this;
+        var field = new FieldArray(validators, useStrictForComparations, value);
+        self.value.push(field);
+        return field;
+    };
+    return KoForm;
+}(FieldBase));
+module.exports = KoForm;
 
 
 /***/ }),
-/* 15 */,
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17938,114 +18219,295 @@ return zhTw;
 
 
 /***/ }),
-/* 136 */,
-/* 137 */,
-/* 138 */,
-/* 139 */,
-/* 140 */,
-/* 141 */,
-/* 142 */
+/* 136 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Promise) {
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var ValidatorBase = __webpack_require__(5);
+var ValidatableValidator = /** @class */ (function (_super) {
+    __extends(ValidatableValidator, _super);
+    function ValidatableValidator(message) {
+        var _this = _super.call(this) || this;
+        _this.message = message;
+        return _this;
+    }
+    ValidatableValidator.prototype.check = function (value) {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, isValid, _i, value_1, f;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        self = this;
+                        isValid = true;
+                        if (value === null || value === undefined || !$.isArray(value)) {
+                            return [2 /*return*/, self.toPromise(isValid, self.message)];
+                        }
+                        _i = 0, value_1 = value;
+                        _a.label = 1;
+                    case 1:
+                        if (!(_i < value_1.length)) return [3 /*break*/, 4];
+                        f = value_1[_i];
+                        return [4 /*yield*/, f.validate()];
+                    case 2:
+                        if ((_a.sent()) === false) {
+                            isValid = false;
+                        }
+                        _a.label = 3;
+                    case 3:
+                        _i++;
+                        return [3 /*break*/, 1];
+                    case 4: return [2 /*return*/, self.toPromise(isValid, self.message)];
+                }
+            });
+        });
+    };
+    return ValidatableValidator;
+}(ValidatorBase));
+module.exports = ValidatableValidator;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Size = __webpack_require__(14);
-var KoBinder = __webpack_require__(2);
-var BindedModal = /** @class */ (function () {
-    function BindedModal(info) {
-        this.title = ko.observable(info.title);
-        this.templateBody = ko.observable(info.templateBody);
-        this.templateFooter = ko.observable(info.templateFooter);
-        this.model = info.model;
-        this.size = info.size;
-        this.selector = "GlobalModalContainer";
-        this.info = info;
-        this.modal = this.create();
-        var self = this;
-        info.model.setModal(self.modal);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ValidatorBase = __webpack_require__(5);
+var StringValidatorBase = /** @class */ (function (_super) {
+    __extends(StringValidatorBase, _super);
+    function StringValidatorBase() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    BindedModal.prototype.getContainer = function () {
-        var self = this;
-        var container = $("#" + self.selector);
-        if (container.length === 0) {
-            $("<div id='" + self.selector + "'></div>").prependTo("body");
+    StringValidatorBase.prototype.hasValue = function (value) {
+        if (value === null || value === undefined || $.trim(value).length === 0) {
+            return false;
         }
-        else {
-            container.empty();
-        }
-        return container;
+        return true;
     };
-    BindedModal.prototype.create = function () {
+    return StringValidatorBase;
+}(ValidatorBase));
+var StartsByRStringValidator = /** @class */ (function (_super) {
+    __extends(StartsByRStringValidator, _super);
+    function StartsByRStringValidator() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    StartsByRStringValidator.prototype.check = function (value) {
         var self = this;
-        var myModal = $('<div class="modal" tabindex="-1" role="dialog">' +
-            '    <div class="modal-dialog" role="document">' +
-            '        <div class="modal-content">' +
-            '            <div class="modal-header">   ' +
-            '                <h5 class="modal-title" data-bind="text: title"></h5>' +
-            '                <button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
-            '                    <span aria-hidden="true">&times;</span>' +
-            '                 </button>' +
-            '            </div>' +
-            '            <div class="modal-body" data-bind="template: { name: templateBody(), data: model }">' +
-            '            ' +
-            '            </div>' +
-            '            <div class="modal-footer" data-bind="template: { name: templateFooter(), data: model }">' +
-            '         ' +
-            '            </div>' +
-            '        </div>' +
-            '    </div>' +
-            '</div>');
-        var modal = myModal.find('div.modal-dialog');
-        switch (self.size) {
-            case Size.small:
-                modal.addClass('modal-sm');
-                break;
-            case Size.medium:
-                modal.addClass('modal-md');
-                break;
-            case Size.large:
-                modal.addClass('modal-lg');
-                break;
-        }
-        self.getContainer().append(myModal);
-        KoBinder.bind(myModal, self);
-        myModal.modal();
-        if (self.info.onClose !== undefined) {
-            myModal.on('hidden.bs.modal', self.info.onClose);
-        }
-        return myModal;
+        var isValid = !self.hasValue(value) || value[0].toUpperCase() === "R";
+        return self.toPromise(isValid, "Éste campo debe comenzar con la letra R.");
     };
-    return BindedModal;
-}());
-module.exports = BindedModal;
+    return StartsByRStringValidator;
+}(StringValidatorBase));
+exports.StartsByRStringValidator = StartsByRStringValidator;
+var RequiredStringValidator = /** @class */ (function (_super) {
+    __extends(RequiredStringValidator, _super);
+    function RequiredStringValidator() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    RequiredStringValidator.prototype.check = function (value) {
+        var self = this;
+        var isValid = self.hasValue(value);
+        return self.toPromise(isValid, "Éste campo no puede estar vacío.");
+    };
+    return RequiredStringValidator;
+}(StringValidatorBase));
+exports.RequiredStringValidator = RequiredStringValidator;
 
 
 /***/ }),
-/* 143 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var ConfirmModel = /** @class */ (function () {
-    function ConfirmModel(message) {
-        this.message = ko.observable(message);
-        this.result = ko.observable(false);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var equal = __webpack_require__(12);
+var FieldBase = __webpack_require__(3);
+var Field = /** @class */ (function (_super) {
+    __extends(Field, _super);
+    function Field(validators, useStrictForComparations, value) {
+        if (useStrictForComparations === void 0) { useStrictForComparations = true; }
+        var _this = _super.call(this, validators, useStrictForComparations, value) || this;
+        _this.value = ko.observable(value);
+        var self = _this;
+        _this.value.subscribe(function (newValue) {
+            self.validate();
+        });
+        return _this;
     }
-    ConfirmModel.prototype.setToTrue = function () {
+    Field.prototype.getHasChanged = function () {
         var self = this;
-        self.result(true);
-        self.dialog.modal('hide');
+        var areEqual = equal(self.initialValue, self.value(), { strict: self.useStrictForComparations });
+        return areEqual === false;
     };
-    ConfirmModel.prototype.setModal = function (modal) {
+    Field.prototype.resetHasChanged = function () {
         var self = this;
-        this.dialog = modal;
+        self.initialValue = self.value();
     };
-    return ConfirmModel;
-}());
-module.exports = ConfirmModel;
+    return Field;
+}(FieldBase));
+module.exports = Field;
 
 
 /***/ }),
+/* 139 */
+/***/ (function(module, exports) {
+
+exports = module.exports = typeof Object.keys === 'function'
+  ? Object.keys : shim;
+
+exports.shim = shim;
+function shim (obj) {
+  var keys = [];
+  for (var key in obj) keys.push(key);
+  return keys;
+}
+
+
+/***/ }),
+/* 140 */
+/***/ (function(module, exports) {
+
+var supportsArgumentsClass = (function(){
+  return Object.prototype.toString.call(arguments)
+})() == '[object Arguments]';
+
+exports = module.exports = supportsArgumentsClass ? supported : unsupported;
+
+exports.supported = supported;
+function supported(object) {
+  return Object.prototype.toString.call(object) == '[object Arguments]';
+};
+
+exports.unsupported = unsupported;
+function unsupported(object){
+  return object &&
+    typeof object == 'object' &&
+    typeof object.length == 'number' &&
+    Object.prototype.hasOwnProperty.call(object, 'callee') &&
+    !Object.prototype.propertyIsEnumerable.call(object, 'callee') ||
+    false;
+};
+
+
+/***/ }),
+/* 141 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var equal = __webpack_require__(12);
+var FieldBase = __webpack_require__(3);
+var FieldArray = /** @class */ (function (_super) {
+    __extends(FieldArray, _super);
+    function FieldArray(validators, useStrictForComparations, value) {
+        if (useStrictForComparations === void 0) { useStrictForComparations = true; }
+        var _this = _super.call(this, validators, useStrictForComparations, value) || this;
+        _this.value = ko.observableArray(value);
+        return _this;
+        // =========================================================================
+        // "arrayChange": Please subscribe on the cosumer class.
+        // =========================================================================        
+        // const self = this;
+        // this.value.subscribe(function (changes: KnockoutArrayChange<T>): void {
+        //     //self.validate();
+        // }, self, "arrayChange");
+        // =========================================================================
+    }
+    FieldArray.prototype.getHasChanged = function () {
+        var self = this;
+        var areEqual = equal(self.initialValue, self.value(), { strict: self.useStrictForComparations });
+        return areEqual === false;
+    };
+    FieldArray.prototype.resetHasChanged = function () {
+        var self = this;
+        self.initialValue = self.value();
+    };
+    return FieldArray;
+}(FieldBase));
+module.exports = FieldArray;
+
+
+/***/ }),
+/* 142 */,
+/* 143 */,
 /* 144 */
 /***/ (function(module, exports) {
 
@@ -18334,26 +18796,174 @@ module.exports = webpackContext;
 webpackContext.id = 145;
 
 /***/ }),
-/* 146 */,
-/* 147 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var PageModel = /** @class */ (function () {
-    function PageModel(isSelected, pageNumber) {
-        this.isSelected = ko.observable(isSelected);
-        this.pageNumber = ko.observable(pageNumber);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ValidatorBase = __webpack_require__(5);
+var NumberValidatorBase = /** @class */ (function (_super) {
+    __extends(NumberValidatorBase, _super);
+    function NumberValidatorBase() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    return PageModel;
-}());
-module.exports = PageModel;
+    NumberValidatorBase.prototype.hasValue = function (value) {
+        if (value === null || value === undefined || $.trim(value.toString()).length === 0) {
+            return false;
+        }
+        return true;
+    };
+    return NumberValidatorBase;
+}(ValidatorBase));
+var RequiredNumberValidator = /** @class */ (function (_super) {
+    __extends(RequiredNumberValidator, _super);
+    function RequiredNumberValidator() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    RequiredNumberValidator.prototype.check = function (value) {
+        var self = this;
+        var isValid = self.hasValue(value);
+        return self.toPromise(isValid, "Éste campo no puede estar vacío.");
+    };
+    return RequiredNumberValidator;
+}(NumberValidatorBase));
+exports.RequiredNumberValidator = RequiredNumberValidator;
+var FloatValidator = /** @class */ (function (_super) {
+    __extends(FloatValidator, _super);
+    function FloatValidator() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    FloatValidator.prototype.check = function (value) {
+        var self = this;
+        var isValid = self.hasValue(value) === false || /^-?\d*(\.\d+)?$/.test(value.toString());
+        return self.toPromise(isValid, "Éste campo debe ser númerico.");
+    };
+    return FloatValidator;
+}(NumberValidatorBase));
+exports.FloatValidator = FloatValidator;
 
 
 /***/ }),
+/* 147 */,
 /* 148 */,
 /* 149 */,
-/* 150 */,
+/* 150 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Promise) {
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var KoForm = __webpack_require__(15);
+var stringValidator = __webpack_require__(137);
+var numberValidator = __webpack_require__(146);
+var ProxyRest = __webpack_require__(4);
+var ReciboItemModel = /** @class */ (function (_super) {
+    __extends(ReciboItemModel, _super);
+    function ReciboItemModel() {
+        var _this = _super.call(this) || this;
+        var self = _this;
+        _this.reciboItemId = "";
+        _this.reciboId = "";
+        _this.cotizacionId = "";
+        _this.cantidad = self.addField([new numberValidator.FloatValidator(), new numberValidator.RequiredNumberValidator()]);
+        _this.descripcion = self.addField([new stringValidator.RequiredStringValidator()]);
+        _this.precio = self.addField([new numberValidator.FloatValidator(), new numberValidator.RequiredNumberValidator()]);
+        _this.cotizacionRemoteValue = ko.observable();
+        _this.costo = ko.computed(function () {
+            return self.cantidad.value() * self.precio.value();
+        }, self);
+        return _this;
+    }
+    ReciboItemModel.prototype.getModel = function () {
+        var self = this;
+        return {
+            id: self.reciboItemId ? self.reciboItemId : "00000000-0000-0000-0000-000000000000",
+            cantidad: self.cantidad.value(),
+            descripcion: self.descripcion.value(),
+            precio: self.precio.value(),
+            reciboId: self.reciboId ? self.reciboId : "00000000-0000-0000-0000-000000000000",
+            cotizacionId: self.cotizacionId ? self.cotizacionId : "00000000-0000-0000-0000-000000000000"
+        };
+    };
+    ReciboItemModel.prototype.cotizacionRemoteHandler = function (term, callback) {
+        return __awaiter(this, void 0, void 0, function () {
+            var cotizacionProxy, response, cotizacionjson;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        cotizacionProxy = new ProxyRest("/api/Cotizaciones/search/term");
+                        return [4 /*yield*/, cotizacionProxy.get(term, null, null)];
+                    case 1:
+                        response = _a.sent();
+                        cotizacionjson = JSON.parse((JSON.parse(JSON.stringify(response))));
+                        callback(cotizacionjson);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return ReciboItemModel;
+}(KoForm));
+module.exports = ReciboItemModel;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
 /* 151 */,
 /* 152 */,
 /* 153 */,
@@ -18365,14 +18975,48 @@ module.exports = PageModel;
 /* 159 */,
 /* 160 */,
 /* 161 */,
-/* 162 */
+/* 162 */,
+/* 163 */,
+/* 164 */,
+/* 165 */,
+/* 166 */,
+/* 167 */,
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
+/* 175 */,
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(163);
+module.exports = __webpack_require__(197);
 
 
 /***/ }),
-/* 163 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18414,11 +19058,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var KoBinder = __webpack_require__(2);
-var CotizacionesClienteModel = __webpack_require__(164);
+var ReciboVerModel = __webpack_require__(198);
 $(function () {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            KoBinder.bind($("#cotizacionesCliente"), new CotizacionesClienteModel());
+            KoBinder.bind($("#reciboVerModel"), new ReciboVerModel());
             return [2 /*return*/];
         });
     });
@@ -18427,7 +19071,7 @@ $(function () {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 164 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18467,195 +19111,106 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var CotizacionesModel = __webpack_require__(165);
-var ProxyRest = __webpack_require__(4);
 var UrlUtils = __webpack_require__(16);
-var ConfirmModal = __webpack_require__(143);
-var BindedModal = __webpack_require__(142);
-var Size = __webpack_require__(14);
-var Page = __webpack_require__(147);
+var ProxyRest = __webpack_require__(4);
+var ReciboItemModel = __webpack_require__(150);
 var moment = __webpack_require__(0);
 moment.locale('es');
-var CotizacionesClienteModel = /** @class */ (function () {
-    function CotizacionesClienteModel() {
-        this.pageSize = 20;
+var ReciboVerModel = /** @class */ (function () {
+    function ReciboVerModel() {
+        var self = this;
+        this.reciboIdUrlParam = UrlUtils.getParameterByName("id", window.location);
+        this.proxy = new ProxyRest("/api/Recibos");
         this.folio = ko.observable();
-        this.contacto = ko.observable();
-        this.fechaParsed = ko.observable();
-        this.pageNumber = ko.observable(1);
-        this.totalPages = ko.observable();
-        this.lastPage = ko.observable(false);
-        this.firstPage = ko.observable(true);
-        this.showPagination = ko.observable(false);
-        this.cotizacionesArray = ko.observableArray();
-        this.pages = ko.observableArray([]);
-        this.proxy = new ProxyRest("/api/Cotizaciones");
-        this.clienteIdUrlParam = UrlUtils.getParameterByName('id', window.location);
-        this.getCotizaciones();
+        this.clienteName = ko.observable();
+        this.proveedorName = ko.observable();
+        this.fecha = ko.observable();
+        this.items = ko.observableArray();
+        this.total = ko.computed(function () {
+            var sumaCostos = 0;
+            for (var _i = 0, _a = self.items(); _i < _a.length; _i++) {
+                var ri = _a[_i];
+                sumaCostos += ri.costo();
+            }
+            return sumaCostos;
+        }, self);
+        this.getOne();
     }
-    CotizacionesClienteModel.prototype.getCotizaciones = function () {
+    ReciboVerModel.prototype.getOne = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var self, cotizaciones, cotizacionesJson, i, pageNumber, isSelected, page, _i, _a, cotizacionjson, cotizacion;
+            var self, response, reciboJson, _i, _a, item, itemModel;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        this.getCliente();
                         self = this;
-                        return [4 /*yield*/, self.proxy.get(self.clienteIdUrlParam, self.pageNumber(), self.pageSize)];
+                        return [4 /*yield*/, self.proxy.get(self.reciboIdUrlParam)];
                     case 1:
-                        cotizaciones = _b.sent();
-                        cotizacionesJson = JSON.parse((JSON.parse(JSON.stringify(cotizaciones))));
-                        self.totalPages(cotizacionesJson.totalPages);
-                        if (self.totalPages() > 1) {
-                            self.showPagination(true);
-                        }
-                        self.pages.removeAll();
-                        for (i = 0; i < self.totalPages(); i++) {
-                            pageNumber = i + 1;
-                            isSelected = self.pageNumber() === pageNumber;
-                            page = new Page(isSelected, pageNumber);
-                            self.pages.push(page);
-                        }
-                        self.cotizacionesArray.removeAll();
-                        for (_i = 0, _a = cotizacionesJson.cotizaciones; _i < _a.length; _i++) {
-                            cotizacionjson = _a[_i];
-                            cotizacion = new CotizacionesModel();
-                            cotizacion.id = cotizacionjson.id;
-                            cotizacion.folio = cotizacionjson.folio;
-                            cotizacion.clienteId = cotizacionjson.clienteId;
-                            cotizacion.fecha = cotizacionjson.fecha;
-                            self.cotizacionesArray.push(cotizacion);
+                        response = _b.sent();
+                        reciboJson = JSON.parse(JSON.parse(JSON.stringify(response)));
+                        self.folio(reciboJson.folio);
+                        self.fecha(reciboJson.fecha);
+                        self.getClienteName(reciboJson.clienteId);
+                        self.getProveedorName(reciboJson.proveedorId);
+                        for (_i = 0, _a = reciboJson.items; _i < _a.length; _i++) {
+                            item = _a[_i];
+                            itemModel = new ReciboItemModel();
+                            itemModel.reciboItemId = item.id;
+                            itemModel.cantidad.value(item.cantidad);
+                            itemModel.descripcion.value(item.descripcion);
+                            itemModel.precio.value(item.precio);
+                            itemModel.reciboId = item.reciboId;
+                            itemModel.cotizacionId = item.cotizacionId;
+                            self.items.push(itemModel);
                         }
                         return [2 /*return*/];
                 }
             });
         });
     };
-    CotizacionesClienteModel.prototype.getCliente = function () {
+    ReciboVerModel.prototype.getClienteName = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var self, proxyCliente, cliente, clienteJson;
+            var self, clienteProxy, response, clienteJson;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         self = this;
-                        proxyCliente = new ProxyRest("/api/Clientes");
-                        return [4 /*yield*/, proxyCliente.get(self.clienteIdUrlParam, null, null)];
+                        clienteProxy = new ProxyRest("/api/Clientes");
+                        return [4 /*yield*/, clienteProxy.get(id)];
                     case 1:
-                        cliente = _a.sent();
-                        clienteJson = JSON.parse((JSON.parse(JSON.stringify(cliente))));
-                        self.contacto(clienteJson.contacto);
-                        self.folio(clienteJson.folio);
+                        response = _a.sent();
+                        clienteJson = JSON.parse(JSON.parse(JSON.stringify(response)));
+                        self.clienteName(clienteJson.empresa);
                         return [2 /*return*/];
                 }
             });
         });
     };
-    CotizacionesClienteModel.prototype.dateFormatter = function (date) {
-        return moment(date).format('LLLL');
-    };
-    CotizacionesClienteModel.prototype.getModel = function () {
-        var self = this;
-        var model = new CotizacionesModel();
-        model.id = undefined;
-        model.folio = undefined;
-        model.clienteId = self.clienteIdUrlParam;
-        model.fecha = new Date();
-        return model;
-    };
-    CotizacionesClienteModel.prototype.save = function () {
+    ReciboVerModel.prototype.getProveedorName = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var self, model, cotizacionId;
+            var self, proveedorProxy, response, proveedorJson;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         self = this;
-                        model = self.getModel();
-                        return [4 /*yield*/, self.proxy.post(model)];
+                        proveedorProxy = new ProxyRest("/api/Proveedores");
+                        return [4 /*yield*/, proveedorProxy.get(id)];
                     case 1:
-                        cotizacionId = _a.sent();
-                        window.location.href = "Cotizaciones?cotId=" + JSON.parse(JSON.parse(JSON.stringify(cotizacionId))) + "&cteId=" + self.clienteIdUrlParam;
+                        response = _a.sent();
+                        proveedorJson = JSON.parse(JSON.parse(JSON.stringify(response)));
+                        self.proveedorName(proveedorJson.empresa);
                         return [2 /*return*/];
                 }
             });
         });
     };
-    CotizacionesClienteModel.prototype.remove = function (cotizacion) {
-        var self = this;
-        var modalModel = new ConfirmModal("¿Está seguro de borrar ésta Cotización junto con sus elementos?");
-        var dialog = new BindedModal({
-            model: modalModel,
-            size: Size.medium,
-            templateBody: "ConfirmDeleteModalBody",
-            templateFooter: "ConfirmDeleteModalFooter",
-            title: "¡Confirmación!",
-            onClose: function (e) {
-                return __awaiter(this, void 0, void 0, function () {
-                    var deleted;
-                    return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0:
-                                if (!(modalModel.result() === true)) return [3 /*break*/, 2];
-                                self.cotizacionesArray.remove(cotizacion);
-                                return [4 /*yield*/, self.proxy.delete(cotizacion.id)];
-                            case 1:
-                                deleted = _a.sent();
-                                _a.label = 2;
-                            case 2: return [2 /*return*/];
-                        }
-                    });
-                });
-            }
-        });
+    ReciboVerModel.prototype.dateFormatter = function (date) {
+        return moment(date).format('l');
     };
-    CotizacionesClienteModel.prototype.selectedPage = function (page) {
-        var self = this;
-        self.pageNumber(page.pageNumber());
-        page.pageNumber() === self.totalPages() ? self.lastPage(true) : self.lastPage(false);
-        ;
-        page.pageNumber() === 1 ? self.firstPage(true) : self.firstPage(false);
-        self.getCotizaciones();
-    };
-    CotizacionesClienteModel.prototype.next = function () {
-        var self = this;
-        var arrPosition = self.pageNumber() - 1;
-        var lastPage = self.pages()[arrPosition];
-        lastPage.isSelected(false);
-        var nextPage = self.pages()[arrPosition + 1];
-        if (nextPage.pageNumber() <= self.totalPages()) {
-            nextPage.isSelected(true);
-            self.selectedPage(nextPage);
-        }
-    };
-    CotizacionesClienteModel.prototype.previous = function () {
-        var self = this;
-        var arrPosition = self.pageNumber() - 1;
-        var currentPage = self.pages()[arrPosition];
-        currentPage.isSelected(false);
-        var previousPage = self.pages()[arrPosition - 1];
-        if (previousPage.pageNumber() > 0) {
-            previousPage.isSelected(true);
-            self.selectedPage(previousPage);
-        }
-    };
-    return CotizacionesClienteModel;
+    return ReciboVerModel;
 }());
-module.exports = CotizacionesClienteModel;
+module.exports = ReciboVerModel;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-/* 165 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var CotizacionesModel = /** @class */ (function () {
-    function CotizacionesModel() {
-    }
-    return CotizacionesModel;
-}());
-module.exports = CotizacionesModel;
-
 
 /***/ })
 /******/ ]);

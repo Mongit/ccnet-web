@@ -24,11 +24,13 @@
     <None Remove="scripts\proveedores\ProveedoresModel.ts" />
     <None Remove="scripts\recibos\appRecibo.ts" />
     <None Remove="scripts\recibos\appRecibos.ts" />
+    <None Remove="scripts\recibos\appReciboVer.ts" />
     <None Remove="scripts\recibos\iReciboItemModel.ts" />
     <None Remove="scripts\recibos\iReciboModel.ts" />
     <None Remove="scripts\recibos\ReciboItemModel.ts" />
     <None Remove="scripts\recibos\ReciboModel.ts" />
     <None Remove="scripts\recibos\RecibosModel.ts" />
+    <None Remove="scripts\recibos\ReciboVerModel.ts" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
@@ -59,10 +61,12 @@
     <TypeScriptCompile Include="scripts\proveedores\ProveedoresModel.ts" />
     <TypeScriptCompile Include="scripts\recibos\appRecibo.ts" />
     <TypeScriptCompile Include="scripts\recibos\appRecibos.ts" />
+    <TypeScriptCompile Include="scripts\recibos\appReciboVer.ts" />
     <TypeScriptCompile Include="scripts\recibos\iReciboItemModel.ts" />
     <TypeScriptCompile Include="scripts\recibos\iReciboModel.ts" />
     <TypeScriptCompile Include="scripts\recibos\ReciboItemModel.ts" />
     <TypeScriptCompile Include="scripts\recibos\ReciboModel.ts" />
     <TypeScriptCompile Include="scripts\recibos\RecibosModel.ts" />
+    <TypeScriptCompile Include="scripts\recibos\ReciboVerModel.ts" />
   </ItemGroup>
 </Project>
