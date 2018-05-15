@@ -186,7 +186,7 @@ class RecibosModel {
     }
 
     public remove(recibo): void {
-        let self = this;
+        const self = this;
         let modalModel = new ConfirmModal("¿Está seguro de borrar éste Recibo?");
 
         let dialog = new BindedModal({
