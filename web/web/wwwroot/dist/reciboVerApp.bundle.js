@@ -19124,6 +19124,7 @@ var ReciboVerModel = /** @class */ (function () {
         this.folio = ko.observable();
         this.clienteName = ko.observable();
         this.proveedorName = ko.observable();
+        this.cotizacionFolio = ko.observable();
         this.fecha = ko.observable();
         this.items = ko.observableArray();
         this.total = ko.computed(function () {
@@ -19151,18 +19152,27 @@ var ReciboVerModel = /** @class */ (function () {
                         self.fecha(reciboJson.fecha);
                         self.getClienteName(reciboJson.clienteId);
                         self.getProveedorName(reciboJson.proveedorId);
-                        for (_i = 0, _a = reciboJson.items; _i < _a.length; _i++) {
-                            item = _a[_i];
-                            itemModel = new ReciboItemModel();
-                            itemModel.reciboItemId = item.id;
-                            itemModel.cantidad.value(item.cantidad);
-                            itemModel.descripcion.value(item.descripcion);
-                            itemModel.precio.value(item.precio);
-                            itemModel.reciboId = item.reciboId;
-                            itemModel.cotizacionId = item.cotizacionId;
-                            self.items.push(itemModel);
-                        }
-                        return [2 /*return*/];
+                        _i = 0, _a = reciboJson.items;
+                        _b.label = 2;
+                    case 2:
+                        if (!(_i < _a.length)) return [3 /*break*/, 5];
+                        item = _a[_i];
+                        return [4 /*yield*/, self.getCotiazacionFolio(item.cotizacionId)];
+                    case 3:
+                        _b.sent();
+                        itemModel = new ReciboItemModel();
+                        itemModel.reciboItemId = item.id;
+                        itemModel.cantidad.value(item.cantidad);
+                        itemModel.descripcion.value(item.descripcion);
+                        itemModel.precio.value(item.precio);
+                        itemModel.reciboId = item.reciboId;
+                        itemModel.cotizacionId = self.cotizacionFolio();
+                        self.items.push(itemModel);
+                        _b.label = 4;
+                    case 4:
+                        _i++;
+                        return [3 /*break*/, 2];
+                    case 5: return [2 /*return*/];
                 }
             });
         });
@@ -19199,6 +19209,29 @@ var ReciboVerModel = /** @class */ (function () {
                         proveedorJson = JSON.parse(JSON.parse(JSON.stringify(response)));
                         self.proveedorName(proveedorJson.empresa);
                         return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ReciboVerModel.prototype.getCotiazacionFolio = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, cotizacionProxy, response, cotizacionJson;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        self = this;
+                        if (!(id === "00000000-0000-0000-0000-000000000000")) return [3 /*break*/, 1];
+                        self.cotizacionFolio("");
+                        return [3 /*break*/, 3];
+                    case 1:
+                        cotizacionProxy = new ProxyRest("/api/Cotizaciones");
+                        return [4 /*yield*/, cotizacionProxy.get(id)];
+                    case 2:
+                        response = _a.sent();
+                        cotizacionJson = JSON.parse(JSON.parse(JSON.stringify(response)));
+                        self.cotizacionFolio(cotizacionJson.folio + " - " + self.dateFormatter(cotizacionJson.fecha));
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
                 }
             });
         });

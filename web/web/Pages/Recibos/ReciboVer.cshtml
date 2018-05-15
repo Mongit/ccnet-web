@@ -78,7 +78,7 @@
                             <th scope="col">Descripción</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Costo</th>
-                            <th scope="col">Cotización</th>
+                            <th scope="col">Cotización<small class="text-muted"> (Folio - Fecha)</small></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -100,7 +100,7 @@
                                 <span data-bind="template: { name: 'templatePrice', data: costo() }"> </span>
                             </td>
                             <td>
-                                <span data-bind="text: cotizacionId === '00000000-0000-0000-0000-000000000000' ? '' : cotizacionId "> </span>
+                                <span data-bind="text: cotizacionId"> </span>
                             </td>
                         </tr>
                         <!-- /ko -->

@@ -5,6 +5,7 @@ import IClienteModel = require("./../clientes/IClienteModel");
 import IProveedorModel = require("./../proveedores/IProveedorModel");
 import ReciboItemModel = require("./ReciboItemModel");
 import IReciboItemModel = require("./iReciboItemModel");
+import CotizacionesModel = require("./../cotizaciones/CotizacionesModel");
 import * as moment from 'moment';
 
 moment.locale('es');
@@ -16,6 +17,7 @@ class ReciboVerModel {
     public folio: KnockoutObservable<number>;
     public clienteName: KnockoutObservable<string>;
     public proveedorName: KnockoutObservable<string>;
+    public cotizacionFolio: KnockoutObservable<string>;
     public fecha: KnockoutObservable<Date>;
 
     public items: KnockoutObservableArray<ReciboItemModel>;
@@ -30,6 +32,7 @@ class ReciboVerModel {
         this.folio = ko.observable<number>();
         this.clienteName = ko.observable<string>();
         this.proveedorName = ko.observable<string>();
+        this.cotizacionFolio = ko.observable<string>();
         this.fecha = ko.observable<Date>();
 
         this.items = ko.observableArray<ReciboItemModel>();
@@ -58,13 +61,15 @@ class ReciboVerModel {
         self.getProveedorName(reciboJson.proveedorId);
         
         for (let item of reciboJson.items) {
+            await self.getCotiazacionFolio(item.cotizacionId);
+
             let itemModel = new ReciboItemModel();
             itemModel.reciboItemId = item.id;
             itemModel.cantidad.value(item.cantidad);
             itemModel.descripcion.value(item.descripcion);
             itemModel.precio.value(item.precio);
             itemModel.reciboId = item.reciboId;
-            itemModel.cotizacionId = item.cotizacionId
+            itemModel.cotizacionId = self.cotizacionFolio();
 
             self.items.push(itemModel);
         }
@@ -86,6 +91,20 @@ class ReciboVerModel {
         let proveedorJson = JSON.parse(JSON.parse(JSON.stringify(response)));
 
         self.proveedorName(proveedorJson.empresa);
+    }
+
+    public async getCotiazacionFolio(id: string): Promise<void> {
+        const self = this;
+        if (id === "00000000-0000-0000-0000-000000000000") {
+            self.cotizacionFolio("");
+        }
+        else {
+            let cotizacionProxy = new ProxyRest("/api/Cotizaciones");
+            let response = await cotizacionProxy.get<CotizacionesModel>(id);
+            let cotizacionJson = JSON.parse(JSON.parse(JSON.stringify(response)));
+
+            self.cotizacionFolio(cotizacionJson.folio + " - " + self.dateFormatter(cotizacionJson.fecha));
+        }
     }
 
     public dateFormatter(date): string {
