@@ -31,6 +31,8 @@
     <None Remove="scripts\recibos\ReciboModel.ts" />
     <None Remove="scripts\recibos\RecibosModel.ts" />
     <None Remove="scripts\recibos\ReciboVerModel.ts" />
+    <None Remove="scripts\stock\appStockList.ts" />
+    <None Remove="scripts\stock\StockListModel.ts" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
@@ -68,5 +70,7 @@
     <TypeScriptCompile Include="scripts\recibos\ReciboModel.ts" />
     <TypeScriptCompile Include="scripts\recibos\RecibosModel.ts" />
     <TypeScriptCompile Include="scripts\recibos\ReciboVerModel.ts" />
+    <TypeScriptCompile Include="scripts\stock\appStockList.ts" />
+    <TypeScriptCompile Include="scripts\stock\StockListModel.ts" />
   </ItemGroup>
 </Project>

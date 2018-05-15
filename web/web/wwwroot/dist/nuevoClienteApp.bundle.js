@@ -68,7 +68,7 @@
 /***/ 1:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(6).Promise;
+module.exports = __webpack_require__(5).Promise;
 
 
 /***/ }),
@@ -341,7 +341,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var ValidatorBase = __webpack_require__(5);
+var ValidatorBase = __webpack_require__(9);
 var ValidatableValidator = /** @class */ (function (_super) {
     __extends(ValidatableValidator, _super);
     function ValidatableValidator(message) {
@@ -403,7 +403,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ValidatorBase = __webpack_require__(5);
+var ValidatorBase = __webpack_require__(9);
 var StringValidatorBase = /** @class */ (function (_super) {
     __extends(StringValidatorBase, _super);
     function StringValidatorBase() {
@@ -1063,30 +1063,6 @@ module.exports = ProxyRest;
 /***/ 5:
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-var PromiseUtils = __webpack_require__(13);
-var ValidatorBase = /** @class */ (function () {
-    function ValidatorBase() {
-    }
-    ValidatorBase.prototype.toPromise = function (isValid, message) {
-        if (message === void 0) { message = ""; }
-        var result = {
-            isValid: isValid,
-            message: isValid ? "" : message
-        };
-        return PromiseUtils.toPromise(result);
-    };
-    return ValidatorBase;
-}());
-module.exports = ValidatorBase;
-
-
-/***/ }),
-
-/***/ 6:
-/***/ (function(module, exports, __webpack_require__) {
-
 /* WEBPACK VAR INJECTION */(function(process, global) {var require;/*!
  * @overview es6-promise - a tiny implementation of Promises/A+.
  * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
@@ -1219,7 +1195,7 @@ function flush() {
 function attemptVertx() {
   try {
     var r = require;
-    var vertx = __webpack_require__(9);
+    var vertx = __webpack_require__(8);
     vertxNext = vertx.runOnLoop || vertx.runOnContext;
     return useVertxTimer();
   } catch (e) {
@@ -2241,11 +2217,11 @@ return Promise;
 
 })));
 //# sourceMappingURL=es6-promise.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(7)))
 
 /***/ }),
 
-/***/ 7:
+/***/ 6:
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -2436,7 +2412,7 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ 8:
+/***/ 7:
 /***/ (function(module, exports) {
 
 var g;
@@ -2464,10 +2440,34 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 9:
+/***/ 8:
 /***/ (function(module, exports) {
 
 /* (ignored) */
+
+/***/ }),
+
+/***/ 9:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var PromiseUtils = __webpack_require__(13);
+var ValidatorBase = /** @class */ (function () {
+    function ValidatorBase() {
+    }
+    ValidatorBase.prototype.toPromise = function (isValid, message) {
+        if (message === void 0) { message = ""; }
+        var result = {
+            isValid: isValid,
+            message: isValid ? "" : message
+        };
+        return PromiseUtils.toPromise(result);
+    };
+    return ValidatorBase;
+}());
+module.exports = ValidatorBase;
+
 
 /***/ })
 
