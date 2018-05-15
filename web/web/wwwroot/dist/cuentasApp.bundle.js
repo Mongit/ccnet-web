@@ -77,23 +77,6 @@ module.exports = __webpack_require__(5).Promise;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-var HttpMethod;
-(function (HttpMethod) {
-    HttpMethod[HttpMethod["get"] = 0] = "get";
-    HttpMethod[HttpMethod["post"] = 1] = "post";
-    HttpMethod[HttpMethod["put"] = 2] = "put";
-    HttpMethod[HttpMethod["delete"] = 3] = "delete";
-})(HttpMethod || (HttpMethod = {}));
-module.exports = HttpMethod;
-
-
-/***/ }),
-
-/***/ 11:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 /* WEBPACK VAR INJECTION */(function(Promise) {
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -165,6 +148,32 @@ var ProxyBase = /** @class */ (function () {
 module.exports = ProxyBase;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+
+/***/ 135:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var UrlUtils = /** @class */ (function () {
+    function UrlUtils() {
+    }
+    UrlUtils.getParameterByName = function (name, url) {
+        if (!url)
+            url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
+        if (!results)
+            return null;
+        if (!results[2])
+            return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    };
+    return UrlUtils;
+}());
+module.exports = UrlUtils;
+
 
 /***/ }),
 
@@ -288,32 +297,6 @@ module.exports = ConfirmModel;
 
 /***/ }),
 
-/***/ 16:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var UrlUtils = /** @class */ (function () {
-    function UrlUtils() {
-    }
-    UrlUtils.getParameterByName = function (name, url) {
-        if (!url)
-            url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
-        if (!results)
-            return null;
-        if (!results[2])
-            return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-    };
-    return UrlUtils;
-}());
-module.exports = UrlUtils;
-
-
-/***/ }),
-
 /***/ 178:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -419,7 +402,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var ProxyRest = __webpack_require__(4);
-var UrlUtils = __webpack_require__(16);
+var UrlUtils = __webpack_require__(135);
 var ConfirmModal = __webpack_require__(143);
 var BindedModal = __webpack_require__(142);
 var Size = __webpack_require__(14);
@@ -568,8 +551,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var HttpMethod = __webpack_require__(10);
-var ProxyBase = __webpack_require__(11);
+var HttpMethod = __webpack_require__(9);
+var ProxyBase = __webpack_require__(10);
 var ProxyRest = /** @class */ (function (_super) {
     __extends(ProxyRest, _super);
     function ProxyRest(endPoint) {
@@ -2027,6 +2010,23 @@ module.exports = g;
 /***/ (function(module, exports) {
 
 /* (ignored) */
+
+/***/ }),
+
+/***/ 9:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var HttpMethod;
+(function (HttpMethod) {
+    HttpMethod[HttpMethod["get"] = 0] = "get";
+    HttpMethod[HttpMethod["post"] = 1] = "post";
+    HttpMethod[HttpMethod["put"] = 2] = "put";
+    HttpMethod[HttpMethod["delete"] = 3] = "delete";
+})(HttpMethod || (HttpMethod = {}));
+module.exports = HttpMethod;
+
 
 /***/ })
 

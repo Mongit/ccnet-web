@@ -32,6 +32,7 @@
     <None Remove="scripts\recibos\RecibosModel.ts" />
     <None Remove="scripts\recibos\ReciboVerModel.ts" />
     <None Remove="scripts\stock\appStockList.ts" />
+    <None Remove="scripts\stock\iStockModel.ts" />
     <None Remove="scripts\stock\StockListModel.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -71,6 +72,7 @@
     <TypeScriptCompile Include="scripts\recibos\RecibosModel.ts" />
     <TypeScriptCompile Include="scripts\recibos\ReciboVerModel.ts" />
     <TypeScriptCompile Include="scripts\stock\appStockList.ts" />
+    <TypeScriptCompile Include="scripts\stock\iStockModel.ts" />
     <TypeScriptCompile Include="scripts\stock\StockListModel.ts" />
   </ItemGroup>
 </Project>
