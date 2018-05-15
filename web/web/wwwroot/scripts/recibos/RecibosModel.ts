@@ -17,7 +17,7 @@ class RecibosModel {
     public lastPage: KnockoutObservable<boolean>;
     public firstPage: KnockoutObservable<boolean>;
     public showPagination: KnockoutObservable<boolean>;
-    public name: KnockoutObservable<string>;
+    public clienteName: KnockoutObservable<string>;
     public proveedorName: KnockoutObservable<string>;
 
     public pages: KnockoutObservableArray<Page>;
@@ -33,7 +33,7 @@ class RecibosModel {
         this.lastPage = ko.observable<boolean>(false);
         this.firstPage = ko.observable<boolean>(true);
         this.showPagination = ko.observable<boolean>(false);
-        this.name = ko.observable<string>();
+        this.clienteName = ko.observable<string>();
         this.proveedorName = ko.observable<string>();
 
         this.pages = ko.observableArray<Page>([]);
@@ -64,7 +64,38 @@ class RecibosModel {
 
         self.recibos.removeAll();
         for (let recibo of recibosjson.recibos) {
+            await self.getCliente(recibo.clienteId);
+            await self.getProveedor(recibo.proveedorId);
             self.recibos.push(self.getModel(recibo));
+        }
+    }
+
+    public async getCliente(id: string): Promise<void> {
+        const self = this;
+        if (id === "00000000-0000-0000-0000-000000000000") {
+            self.clienteName("");
+        }
+        else {
+
+            let clienteProxy = new ProxyRest("/api/Clientes");
+            let response = await clienteProxy.get(id, null, null);
+            let clienteJson = JSON.parse((JSON.parse(JSON.stringify(response))));
+
+            self.clienteName(clienteJson.empresa);
+        }
+    }
+
+    public async getProveedor(id: string): Promise<void> {
+        const self = this;
+        if (id === "00000000-0000-0000-0000-000000000000") {
+            self.proveedorName("");
+        }
+        else {
+            let proveedorProxy = new ProxyRest("/api/Proveedores");
+            let response = await proveedorProxy.get(id, null, null);
+            let proveedorJson = JSON.parse((JSON.parse(JSON.stringify(response))));
+
+            self.proveedorName(proveedorJson.empresa);
         }
     }
     
@@ -90,8 +121,8 @@ class RecibosModel {
         return {
             id: recibo.id,
             folio: recibo.folio,
-            clienteId: recibo.clienteId,
-            proveedorId: recibo.proveedorId,
+            clienteId: self.clienteName(),
+            proveedorId: self.proveedorName(),
             fecha: recibo.fecha,
             items: itemArray
         };
@@ -135,40 +166,6 @@ class RecibosModel {
 
     public dateFormatter(date): string {
         return moment(date).format('ll');
-    }
-
-    public async getObjectName(id: string, proxy: ProxyRest): Promise<string> {
-        let response = await proxy.get(id, null, null);
-        let responseJson = JSON.parse((JSON.parse(JSON.stringify(response))));
-        return responseJson.empresa;
-    }
-
-    public getClienteName(id: string): string {
-        if (id === "00000000-0000-0000-0000-000000000000") {
-            return "";
-        }
-        else {
-            const self = this;
-            let clienteProxy = new ProxyRest("/api/Clientes");
-            this.getObjectName(id, clienteProxy).then(function (res) {
-                self.name(res);
-            });
-            return self.name();
-        }
-    }
-
-    public getProveedorName(id: string): string {
-        if (id === "00000000-0000-0000-0000-000000000000") {
-            return "";
-        }
-        else {
-            const self = this;
-            let proveedorProxy = new ProxyRest("/api/Proveedores");
-            this.getObjectName(id, proveedorProxy).then(function (res) {
-                self.proveedorName(res);
-            });
-            return self.proveedorName();
-        }
     }
 
     public async save(): Promise<void> {

@@ -49,7 +49,7 @@ var RecibosModel = /** @class */ (function () {
         this.lastPage = ko.observable(false);
         this.firstPage = ko.observable(true);
         this.showPagination = ko.observable(false);
-        this.name = ko.observable();
+        this.clienteName = ko.observable();
         this.proveedorName = ko.observable();
         this.pages = ko.observableArray([]);
         this.recibos = ko.observableArray();
@@ -79,11 +79,69 @@ var RecibosModel = /** @class */ (function () {
                             self.pages.push(page);
                         }
                         self.recibos.removeAll();
-                        for (_i = 0, _a = recibosjson.recibos; _i < _a.length; _i++) {
-                            recibo = _a[_i];
-                            self.recibos.push(self.getModel(recibo));
-                        }
-                        return [2 /*return*/];
+                        _i = 0, _a = recibosjson.recibos;
+                        _b.label = 2;
+                    case 2:
+                        if (!(_i < _a.length)) return [3 /*break*/, 6];
+                        recibo = _a[_i];
+                        return [4 /*yield*/, self.getCliente(recibo.clienteId)];
+                    case 3:
+                        _b.sent();
+                        return [4 /*yield*/, self.getProveedor(recibo.proveedorId)];
+                    case 4:
+                        _b.sent();
+                        self.recibos.push(self.getModel(recibo));
+                        _b.label = 5;
+                    case 5:
+                        _i++;
+                        return [3 /*break*/, 2];
+                    case 6: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    RecibosModel.prototype.getCliente = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, clienteProxy, response, clienteJson;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        self = this;
+                        if (!(id === "00000000-0000-0000-0000-000000000000")) return [3 /*break*/, 1];
+                        self.clienteName("");
+                        return [3 /*break*/, 3];
+                    case 1:
+                        clienteProxy = new ProxyRest("/api/Clientes");
+                        return [4 /*yield*/, clienteProxy.get(id, null, null)];
+                    case 2:
+                        response = _a.sent();
+                        clienteJson = JSON.parse((JSON.parse(JSON.stringify(response))));
+                        self.clienteName(clienteJson.empresa);
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    RecibosModel.prototype.getProveedor = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, proveedorProxy, response, proveedorJson;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        self = this;
+                        if (!(id === "00000000-0000-0000-0000-000000000000")) return [3 /*break*/, 1];
+                        self.proveedorName("");
+                        return [3 /*break*/, 3];
+                    case 1:
+                        proveedorProxy = new ProxyRest("/api/Proveedores");
+                        return [4 /*yield*/, proveedorProxy.get(id, null, null)];
+                    case 2:
+                        response = _a.sent();
+                        proveedorJson = JSON.parse((JSON.parse(JSON.stringify(response))));
+                        self.proveedorName(proveedorJson.empresa);
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
                 }
             });
         });
@@ -108,8 +166,8 @@ var RecibosModel = /** @class */ (function () {
         return {
             id: recibo.id,
             folio: recibo.folio,
-            clienteId: recibo.clienteId,
-            proveedorId: recibo.proveedorId,
+            clienteId: self.clienteName(),
+            proveedorId: self.proveedorName(),
             fecha: recibo.fecha,
             items: itemArray
         };
@@ -146,46 +204,6 @@ var RecibosModel = /** @class */ (function () {
     };
     RecibosModel.prototype.dateFormatter = function (date) {
         return moment(date).format('ll');
-    };
-    RecibosModel.prototype.getObjectName = function (id, proxy) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response, responseJson;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, proxy.get(id, null, null)];
-                    case 1:
-                        response = _a.sent();
-                        responseJson = JSON.parse((JSON.parse(JSON.stringify(response))));
-                        return [2 /*return*/, responseJson.empresa];
-                }
-            });
-        });
-    };
-    RecibosModel.prototype.getClienteName = function (id) {
-        if (id === "00000000-0000-0000-0000-000000000000") {
-            return "";
-        }
-        else {
-            var self_1 = this;
-            var clienteProxy = new ProxyRest("/api/Clientes");
-            this.getObjectName(id, clienteProxy).then(function (res) {
-                self_1.name(res);
-            });
-            return self_1.name();
-        }
-    };
-    RecibosModel.prototype.getProveedorName = function (id) {
-        if (id === "00000000-0000-0000-0000-000000000000") {
-            return "";
-        }
-        else {
-            var self_2 = this;
-            var proveedorProxy = new ProxyRest("/api/Proveedores");
-            this.getObjectName(id, proveedorProxy).then(function (res) {
-                self_2.proveedorName(res);
-            });
-            return self_2.proveedorName();
-        }
     };
     RecibosModel.prototype.save = function () {
         return __awaiter(this, void 0, void 0, function () {
