@@ -90,6 +90,8 @@ var RecibosModel = /** @class */ (function () {
                         return [4 /*yield*/, self.getProveedor(recibo.proveedorId)];
                     case 4:
                         _b.sent();
+                        recibo.clienteId = self.clienteName();
+                        recibo.proveedorId = self.proveedorName();
                         self.recibos.push(self.getModel(recibo));
                         _b.label = 5;
                     case 5:
@@ -146,30 +148,15 @@ var RecibosModel = /** @class */ (function () {
             });
         });
     };
-    RecibosModel.prototype.getItemModel = function (item) {
-        return {
-            id: item.id,
-            cantidad: item.cantidad,
-            descripcion: item.descripcion,
-            precio: item.precio,
-            reciboId: item.reciboId,
-            cotizacionId: item.cotizacionId
-        };
-    };
     RecibosModel.prototype.getModel = function (recibo) {
         var self = this;
-        var itemArray = new Array();
-        for (var _i = 0, _a = recibo.items; _i < _a.length; _i++) {
-            var item = _a[_i];
-            itemArray.push(self.getItemModel(item));
-        }
         return {
             id: recibo.id,
             folio: recibo.folio,
-            clienteId: self.clienteName(),
-            proveedorId: self.proveedorName(),
+            clienteId: recibo.clienteId,
+            proveedorId: recibo.proveedorId,
             fecha: recibo.fecha,
-            items: itemArray
+            items: recibo.items
         };
     };
     RecibosModel.prototype.selectedPage = function (page) {
@@ -213,10 +200,10 @@ var RecibosModel = /** @class */ (function () {
                     case 0:
                         self = this;
                         model = self.getModel({
-                            id: undefined,
-                            folio: undefined,
-                            clienteId: undefined,
-                            proveedorId: undefined,
+                            id: "00000000-0000-0000-0000-000000000000",
+                            folio: 0,
+                            clienteId: "00000000-0000-0000-0000-000000000000",
+                            proveedorId: "00000000-0000-0000-0000-000000000000",
                             fecha: new Date(),
                             items: []
                         });

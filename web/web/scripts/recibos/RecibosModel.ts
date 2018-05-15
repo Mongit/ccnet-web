@@ -66,6 +66,10 @@ class RecibosModel {
         for (let recibo of recibosjson.recibos) {
             await self.getCliente(recibo.clienteId);
             await self.getProveedor(recibo.proveedorId);
+
+            recibo.clienteId = self.clienteName();
+            recibo.proveedorId = self.proveedorName();
+
             self.recibos.push(self.getModel(recibo));
         }
     }
@@ -98,33 +102,17 @@ class RecibosModel {
             self.proveedorName(proveedorJson.empresa);
         }
     }
-    
-    public getItemModel(item): IReciboItemModel {
-        return {
-            id: item.id,
-            cantidad: item.cantidad,
-            descripcion: item.descripcion,
-            precio: item.precio,
-            reciboId: item.reciboId,
-            cotizacionId: item.cotizacionId
-        };
-    }
-
+   
     public getModel(recibo: IReciboModel): IReciboModel {
         const self = this;
-
-        let itemArray = new Array<IReciboItemModel>();
-        for (let item of recibo.items) {
-            itemArray.push(self.getItemModel(item));
-        }
-
+        
         return {
             id: recibo.id,
             folio: recibo.folio,
-            clienteId: self.clienteName(),
-            proveedorId: self.proveedorName(),
+            clienteId: recibo.clienteId,
+            proveedorId: recibo.proveedorId,
             fecha: recibo.fecha,
-            items: itemArray
+            items: recibo.items
         };
     }
 
@@ -171,10 +159,10 @@ class RecibosModel {
     public async save(): Promise<void> {
         let self = this;
         let model = self.getModel({
-            id: undefined,
-            folio: undefined,
-            clienteId: undefined,
-            proveedorId: undefined,
+            id: "00000000-0000-0000-0000-000000000000",
+            folio: 0,
+            clienteId: "00000000-0000-0000-0000-000000000000",
+            proveedorId: "00000000-0000-0000-0000-000000000000",
             fecha: new Date(),
             items: []
         });
