@@ -28,12 +28,12 @@
         <tbody>
             <!-- ko foreach: stockList -->
             <tr>
-                <td data-bind="text: productoId"></td>
+                <td data-bind="text: productoNombre"></td>
                 <td data-bind="text: cantidad"></td>
                 <td data-bind="text: precio"></td>
                 <td data-bind="text: $parent.dateFormatter($data.fecha)"></td>
-                <td data-bind="text: proveedorId"></td>
-                <td data-bind="text: reciboId"></td>
+                <td data-bind="text: proveedorEmpresa"></td>
+                <td data-bind="text: reciboFolio"></td>
                 <td>
                     <button class="btn btn-secondary btn-block" data-bind="click: $parent.remove.bind($parent)">Borrar</button>
                 </td>

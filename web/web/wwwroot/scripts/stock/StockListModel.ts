@@ -1,6 +1,6 @@
 import Page = require("./../pagination/PageModel");
 import ProxyRest = require("./../api/proxyRest");
-import IStockModel = require("./iStockModel");
+import IStockReportModel = require("./iStockReportModel");
 import ConfirmModal = require("./../modals/confirmModal");
 import BindedModal = require("./../modals/BindedModal");
 import Size = require("./../utils/Size");
@@ -16,12 +16,9 @@ class StockListModel {
     public lastPage: KnockoutObservable<boolean>;
     public firstPage: KnockoutObservable<boolean>;
     public showPagination: KnockoutObservable<boolean>;
-    public productoName: KnockoutObservable<string>;
-    public proveedorName: KnockoutObservable<string>;
-    public reciboFolio: KnockoutObservable<string>;
-
+    
     public pages: KnockoutObservableArray<Page>;
-    public stockList: KnockoutObservableArray<IStockModel>;
+    public stockList: KnockoutObservableArray<IStockReportModel>;
 
     public proxy: ProxyRest;
 
@@ -33,12 +30,9 @@ class StockListModel {
         this.lastPage = ko.observable<boolean>(false);
         this.firstPage = ko.observable<boolean>(true);
         this.showPagination = ko.observable<boolean>(false);
-        this.productoName = ko.observable<string>();
-        this.proveedorName = ko.observable<string>();
-        this.reciboFolio = ko.observable<string>();
-
+        
         this.pages = ko.observableArray<Page>([]);
-        this.stockList = ko.observableArray<IStockModel>();
+        this.stockList = ko.observableArray<IStockReportModel>();
 
         this.proxy = new ProxyRest("/api/Stocks");
 
@@ -65,64 +59,21 @@ class StockListModel {
 
         self.stockList.removeAll();
         for (let stock of stockJson.stocks) {
-            await self.getProducto(stock.productoId);
-            await self.getProveedor(stock.proveedorId);
-            await self.getRecibo(stock.reciboId);
-            
             self.stockList.push({
                 id: stock.id,
-                productoId: self.productoName(),
+                productoId: stock.productoId,
                 cantidad: stock.cantidad,
                 precio: stock.precio,
                 fecha: stock.fecha,
-                proveedorId: self.proveedorName(),
-                reciboId: self.reciboFolio()
+                proveedorId: stock.proveedorId,
+                reciboId: stock.reciboId,
+                productoNombre: stock.productoNombre,
+                proveedorEmpresa: stock.proveedorEmpresa,
+                reciboFolio: stock.reciboFolio
             });
         }
     }
-
-    public async getProducto(id: string): Promise<void> {
-        const self = this;
-        if (id === "00000000-0000-0000-0000-000000000000") {
-            self.productoName("");
-        }
-        else {
-            let productoProxy = new ProxyRest("/api/Productos");
-            let response = await productoProxy.get(id, null, null);
-            let productoJson = JSON.parse((JSON.parse(JSON.stringify(response))));
-
-            self.productoName(productoJson.nombre);
-        }
-    }
-
-    public async getProveedor(id: string): Promise<void> {
-        const self = this;
-        if (id === "00000000-0000-0000-0000-000000000000") {
-            self.proveedorName("");
-        }
-        else {
-            let proveedorProxy = new ProxyRest("/api/Proveedores");
-            let response = await proveedorProxy.get(id, null, null);
-            let proveedorJson = JSON.parse((JSON.parse(JSON.stringify(response))));
-
-            self.proveedorName(proveedorJson.empresa);
-        }
-    }
-
-    public async getRecibo(id: string): Promise<void> {
-        const self = this;
-        if (id === "00000000-0000-0000-0000-000000000000") {
-            self.reciboFolio("");
-        }
-        else {
-            let reciboProxy = new ProxyRest("/api/Recibos");
-            let response = await reciboProxy.get(id, null, null);
-            let reciboJson = JSON.parse((JSON.parse(JSON.stringify(response))));
-
-            self.reciboFolio(reciboJson.folio);
-        }
-    }
-
+    
     public selectedPage(page: Page): void {
         const self = this;
         self.pageNumber(page.pageNumber());
@@ -163,7 +114,7 @@ class StockListModel {
         return moment(date).format('ll');
     }
 
-    public remove(stock): void {
+    public remove(stock: IStockReportModel): void {
         const self = this;
         let modalModel = new ConfirmModal("¿Está seguro de borrar éste registro?");
 
@@ -176,7 +127,7 @@ class StockListModel {
             onClose: async function (e: JQuery.Event<HTMLElement, null>): Promise<void> {
                 if (modalModel.result() === true) {
                     self.stockList.remove(stock);
-                    let deleted = await self.proxy.delete<IStockModel>(stock.id);
+                    let deleted = await self.proxy.delete<IStockReportModel>(stock.id);
                 }
             }
         });

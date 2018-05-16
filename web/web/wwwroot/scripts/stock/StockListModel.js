@@ -49,9 +49,6 @@ var StockListModel = /** @class */ (function () {
         this.lastPage = ko.observable(false);
         this.firstPage = ko.observable(true);
         this.showPagination = ko.observable(false);
-        this.productoName = ko.observable();
-        this.proveedorName = ko.observable();
-        this.reciboFolio = ko.observable();
         this.pages = ko.observableArray([]);
         this.stockList = ko.observableArray();
         this.proxy = new ProxyRest("/api/Stocks");
@@ -80,103 +77,22 @@ var StockListModel = /** @class */ (function () {
                             self.pages.push(page);
                         }
                         self.stockList.removeAll();
-                        _i = 0, _a = stockJson.stocks;
-                        _b.label = 2;
-                    case 2:
-                        if (!(_i < _a.length)) return [3 /*break*/, 7];
-                        stock = _a[_i];
-                        return [4 /*yield*/, self.getProducto(stock.productoId)];
-                    case 3:
-                        _b.sent();
-                        return [4 /*yield*/, self.getProveedor(stock.proveedorId)];
-                    case 4:
-                        _b.sent();
-                        return [4 /*yield*/, self.getRecibo(stock.reciboId)];
-                    case 5:
-                        _b.sent();
-                        self.stockList.push({
-                            id: stock.id,
-                            productoId: self.productoName(),
-                            cantidad: stock.cantidad,
-                            precio: stock.precio,
-                            fecha: stock.fecha,
-                            proveedorId: self.proveedorName(),
-                            reciboId: self.reciboFolio()
-                        });
-                        _b.label = 6;
-                    case 6:
-                        _i++;
-                        return [3 /*break*/, 2];
-                    case 7: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    StockListModel.prototype.getProducto = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            var self, productoProxy, response, productoJson;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        self = this;
-                        if (!(id === "00000000-0000-0000-0000-000000000000")) return [3 /*break*/, 1];
-                        self.productoName("");
-                        return [3 /*break*/, 3];
-                    case 1:
-                        productoProxy = new ProxyRest("/api/Productos");
-                        return [4 /*yield*/, productoProxy.get(id, null, null)];
-                    case 2:
-                        response = _a.sent();
-                        productoJson = JSON.parse((JSON.parse(JSON.stringify(response))));
-                        self.productoName(productoJson.nombre);
-                        _a.label = 3;
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    StockListModel.prototype.getProveedor = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            var self, proveedorProxy, response, proveedorJson;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        self = this;
-                        if (!(id === "00000000-0000-0000-0000-000000000000")) return [3 /*break*/, 1];
-                        self.proveedorName("");
-                        return [3 /*break*/, 3];
-                    case 1:
-                        proveedorProxy = new ProxyRest("/api/Proveedores");
-                        return [4 /*yield*/, proveedorProxy.get(id, null, null)];
-                    case 2:
-                        response = _a.sent();
-                        proveedorJson = JSON.parse((JSON.parse(JSON.stringify(response))));
-                        self.proveedorName(proveedorJson.empresa);
-                        _a.label = 3;
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    StockListModel.prototype.getRecibo = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            var self, reciboProxy, response, reciboJson;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        self = this;
-                        if (!(id === "00000000-0000-0000-0000-000000000000")) return [3 /*break*/, 1];
-                        self.reciboFolio("");
-                        return [3 /*break*/, 3];
-                    case 1:
-                        reciboProxy = new ProxyRest("/api/Recibos");
-                        return [4 /*yield*/, reciboProxy.get(id, null, null)];
-                    case 2:
-                        response = _a.sent();
-                        reciboJson = JSON.parse((JSON.parse(JSON.stringify(response))));
-                        self.reciboFolio(reciboJson.folio);
-                        _a.label = 3;
-                    case 3: return [2 /*return*/];
+                        for (_i = 0, _a = stockJson.stocks; _i < _a.length; _i++) {
+                            stock = _a[_i];
+                            self.stockList.push({
+                                id: stock.id,
+                                productoId: stock.productoId,
+                                cantidad: stock.cantidad,
+                                precio: stock.precio,
+                                fecha: stock.fecha,
+                                proveedorId: stock.proveedorId,
+                                reciboId: stock.reciboId,
+                                productoNombre: stock.productoNombre,
+                                proveedorEmpresa: stock.proveedorEmpresa,
+                                reciboFolio: stock.reciboFolio
+                            });
+                        }
+                        return [2 /*return*/];
                 }
             });
         });

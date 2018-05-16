@@ -34,6 +34,7 @@
     <None Remove="scripts\stock\appStock.ts" />
     <None Remove="scripts\stock\appStockList.ts" />
     <None Remove="scripts\stock\iStockModel.ts" />
+    <None Remove="scripts\stock\IStockReportModel.ts" />
     <None Remove="scripts\stock\StockListModel.ts" />
     <None Remove="scripts\stock\StockModel.ts" />
   </ItemGroup>
@@ -76,6 +77,7 @@
     <TypeScriptCompile Include="scripts\stock\appStock.ts" />
     <TypeScriptCompile Include="scripts\stock\appStockList.ts" />
     <TypeScriptCompile Include="scripts\stock\iStockModel.ts" />
+    <TypeScriptCompile Include="scripts\stock\iStockReportModel.ts" />
     <TypeScriptCompile Include="scripts\stock\StockListModel.ts" />
     <TypeScriptCompile Include="scripts\stock\StockModel.ts" />
   </ItemGroup>
