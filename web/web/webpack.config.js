@@ -50,6 +50,9 @@ module.exports = {
         ],
         stockListApp: [
             './scripts/stock/appStockList.ts'
+        ],
+        stockApp: [
+            './scripts/stock/appStock.ts'
         ]
     },
     module: {

@@ -77,6 +77,23 @@ module.exports = __webpack_require__(5).Promise;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+var HttpMethod;
+(function (HttpMethod) {
+    HttpMethod[HttpMethod["get"] = 0] = "get";
+    HttpMethod[HttpMethod["post"] = 1] = "post";
+    HttpMethod[HttpMethod["put"] = 2] = "put";
+    HttpMethod[HttpMethod["delete"] = 3] = "delete";
+})(HttpMethod || (HttpMethod = {}));
+module.exports = HttpMethod;
+
+
+/***/ }),
+
+/***/ 11:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(Promise) {
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -151,7 +168,7 @@ module.exports = ProxyBase;
 
 /***/ }),
 
-/***/ 14:
+/***/ 133:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -172,7 +189,7 @@ module.exports = Size;
 
 "use strict";
 
-var Size = __webpack_require__(14);
+var Size = __webpack_require__(133);
 var KoBinder = __webpack_require__(2);
 var BindedModal = /** @class */ (function () {
     function BindedModal(info) {
@@ -271,7 +288,7 @@ module.exports = ConfirmModel;
 
 /***/ }),
 
-/***/ 146:
+/***/ 147:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -392,11 +409,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var Page = __webpack_require__(146);
+var Page = __webpack_require__(147);
 var ProxyRest = __webpack_require__(4);
 var ConfirmModal = __webpack_require__(143);
 var BindedModal = __webpack_require__(142);
-var Size = __webpack_require__(14);
+var Size = __webpack_require__(133);
 var ProductosModel = /** @class */ (function () {
     function ProductosModel() {
         this.pageSize = 20;
@@ -588,8 +605,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var HttpMethod = __webpack_require__(9);
-var ProxyBase = __webpack_require__(10);
+var HttpMethod = __webpack_require__(10);
+var ProxyBase = __webpack_require__(11);
 var ProxyRest = /** @class */ (function (_super) {
     __extends(ProxyRest, _super);
     function ProxyRest(endPoint) {
@@ -2047,23 +2064,6 @@ module.exports = g;
 /***/ (function(module, exports) {
 
 /* (ignored) */
-
-/***/ }),
-
-/***/ 9:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var HttpMethod;
-(function (HttpMethod) {
-    HttpMethod[HttpMethod["get"] = 0] = "get";
-    HttpMethod[HttpMethod["post"] = 1] = "post";
-    HttpMethod[HttpMethod["put"] = 2] = "put";
-    HttpMethod[HttpMethod["delete"] = 3] = "delete";
-})(HttpMethod || (HttpMethod = {}));
-module.exports = HttpMethod;
-
 
 /***/ })
 

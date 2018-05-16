@@ -159,7 +159,6 @@ class StockListModel {
     public dateFormatter(date): string {
         return moment(date).format('ll');
     }
-
 }
 
 export = StockListModel;
