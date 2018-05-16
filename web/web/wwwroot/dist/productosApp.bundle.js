@@ -168,7 +168,7 @@ module.exports = ProxyBase;
 
 /***/ }),
 
-/***/ 133:
+/***/ 14:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -189,7 +189,7 @@ module.exports = Size;
 
 "use strict";
 
-var Size = __webpack_require__(133);
+var Size = __webpack_require__(14);
 var KoBinder = __webpack_require__(2);
 var BindedModal = /** @class */ (function () {
     function BindedModal(info) {
@@ -413,7 +413,7 @@ var Page = __webpack_require__(147);
 var ProxyRest = __webpack_require__(4);
 var ConfirmModal = __webpack_require__(143);
 var BindedModal = __webpack_require__(142);
-var Size = __webpack_require__(133);
+var Size = __webpack_require__(14);
 var ProductosModel = /** @class */ (function () {
     function ProductosModel() {
         this.pageSize = 20;

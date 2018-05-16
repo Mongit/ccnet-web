@@ -1,6 +1,9 @@
 import Page = require("./../pagination/PageModel");
 import ProxyRest = require("./../api/proxyRest");
 import IStockModel = require("./iStockModel");
+import ConfirmModal = require("./../modals/confirmModal");
+import BindedModal = require("./../modals/BindedModal");
+import Size = require("./../utils/Size");
 import * as moment from 'moment';
 
 moment.locale('es');
@@ -158,6 +161,25 @@ class StockListModel {
 
     public dateFormatter(date): string {
         return moment(date).format('ll');
+    }
+
+    public remove(stock): void {
+        const self = this;
+        let modalModel = new ConfirmModal("¿Está seguro de borrar éste registro?");
+
+        let dialog = new BindedModal({
+            model: modalModel,
+            size: Size.medium,
+            templateBody: "ConfirmDeleteModalBody",
+            templateFooter: "ConfirmDeleteModalFooter",
+            title: "¡Confirmación!",
+            onClose: async function (e: JQuery.Event<HTMLElement, null>): Promise<void> {
+                if (modalModel.result() === true) {
+                    self.stockList.remove(stock);
+                    let deleted = await self.proxy.delete<IStockModel>(stock.id);
+                }
+            }
+        });
     }
 }
 

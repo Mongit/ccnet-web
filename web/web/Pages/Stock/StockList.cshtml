@@ -8,6 +8,7 @@
     <script src="~/dist/stockListApp.bundle.js" type="text/javascript"></script>
 }
 @Html.Partial("_KoGlobalTemplates")
+@Html.Partial("_ConfirmDeleteModal")
 
 <h2>Stock List</h2>
 
@@ -34,7 +35,7 @@
                 <td data-bind="text: proveedorId"></td>
                 <td data-bind="text: reciboId"></td>
                 <td>
-                    <button class="btn btn-secondary btn-block">Borrar</button>
+                    <button class="btn btn-secondary btn-block" data-bind="click: $parent.remove.bind($parent)">Borrar</button>
                 </td>
             </tr>
             <!-- /ko -->

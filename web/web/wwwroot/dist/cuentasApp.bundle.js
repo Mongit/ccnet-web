@@ -168,22 +168,6 @@ module.exports = ProxyBase;
 
 /***/ }),
 
-/***/ 133:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Size;
-(function (Size) {
-    Size[Size["small"] = 0] = "small";
-    Size[Size["medium"] = 1] = "medium";
-    Size[Size["large"] = 2] = "large";
-})(Size || (Size = {}));
-module.exports = Size;
-
-
-/***/ }),
-
 /***/ 136:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -210,12 +194,28 @@ module.exports = UrlUtils;
 
 /***/ }),
 
+/***/ 14:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Size;
+(function (Size) {
+    Size[Size["small"] = 0] = "small";
+    Size[Size["medium"] = 1] = "medium";
+    Size[Size["large"] = 2] = "large";
+})(Size || (Size = {}));
+module.exports = Size;
+
+
+/***/ }),
+
 /***/ 142:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Size = __webpack_require__(133);
+var Size = __webpack_require__(14);
 var KoBinder = __webpack_require__(2);
 var BindedModal = /** @class */ (function () {
     function BindedModal(info) {
@@ -422,7 +422,7 @@ var ProxyRest = __webpack_require__(4);
 var UrlUtils = __webpack_require__(136);
 var ConfirmModal = __webpack_require__(143);
 var BindedModal = __webpack_require__(142);
-var Size = __webpack_require__(133);
+var Size = __webpack_require__(14);
 var CuentasModel = /** @class */ (function () {
     function CuentasModel() {
         this.cuentas = ko.observableArray();

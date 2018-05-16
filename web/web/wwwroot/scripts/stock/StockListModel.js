@@ -36,6 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var Page = require("./../pagination/PageModel");
 var ProxyRest = require("./../api/proxyRest");
+var ConfirmModal = require("./../modals/confirmModal");
+var BindedModal = require("./../modals/BindedModal");
+var Size = require("./../utils/Size");
 var moment = require("moment");
 moment.locale('es');
 var StockListModel = /** @class */ (function () {
@@ -210,6 +213,34 @@ var StockListModel = /** @class */ (function () {
     };
     StockListModel.prototype.dateFormatter = function (date) {
         return moment(date).format('ll');
+    };
+    StockListModel.prototype.remove = function (stock) {
+        var self = this;
+        var modalModel = new ConfirmModal("¿Está seguro de borrar éste registro?");
+        var dialog = new BindedModal({
+            model: modalModel,
+            size: Size.medium,
+            templateBody: "ConfirmDeleteModalBody",
+            templateFooter: "ConfirmDeleteModalFooter",
+            title: "¡Confirmación!",
+            onClose: function (e) {
+                return __awaiter(this, void 0, void 0, function () {
+                    var deleted;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                if (!(modalModel.result() === true)) return [3 /*break*/, 2];
+                                self.stockList.remove(stock);
+                                return [4 /*yield*/, self.proxy.delete(stock.id)];
+                            case 1:
+                                deleted = _a.sent();
+                                _a.label = 2;
+                            case 2: return [2 /*return*/];
+                        }
+                    });
+                });
+            }
+        });
     };
     return StockListModel;
 }());

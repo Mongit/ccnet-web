@@ -4,7 +4,6 @@ import KoForm = require("./../form/KoForm");
 import IField = require("./../field/iField");
 import * as moment from 'moment';
 import * as numberValidators from './../validators/numberValidators';
-import { FloatValidator } from "./../validators/numberValidators";
 
 moment.locale('es');
 
