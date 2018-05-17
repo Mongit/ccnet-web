@@ -20,8 +20,12 @@ class StockModel extends KoForm {
     public productoHasError: KnockoutObservable<boolean>;
     public proveedorHasError: KnockoutObservable<boolean>;
     public reciboHasError: KnockoutObservable<boolean>;
+    public display: KnockoutObservable<string>;
+    public modificaStock: KnockoutObservable<boolean>;
 
     public remoteValuesValid: KnockoutComputed<boolean>;
+    public currentDisplay: KnockoutComputed<string>;
+    public modificaStockComputed: KnockoutComputed<void>;
 
     public proxy: ProxyRest;
 
@@ -41,9 +45,25 @@ class StockModel extends KoForm {
         this.productoHasError = ko.observable<boolean>(false);
         this.proveedorHasError = ko.observable<boolean>(false);
         this.reciboHasError = ko.observable<boolean>(false);
+        this.display = ko.observable<string>();
+        this.modificaStock = ko.observable<boolean>(false);
 
+        this.modificaStockComputed = ko.computed<void>(function (): void {
+            if (self.modificaStock() === false) {
+                self.proveedorRemoteValue("");
+                self.reciboRemoteValue("");
+            }
+        }, self);
+        this.currentDisplay = ko.computed<string>(function (): string {
+            if (self.display() === "recibo") {
+                self.proveedorRemoteValue("");
+            }
+            else {
+                self.reciboRemoteValue("");
+            }
+            return self.display();
+        }, self);
         this.remoteValuesValid = ko.computed<boolean>(function (): boolean {
-            const self = this;
             let prodValidation = self.isGUID(self.productoRemoteValue()) || self.newWindow ? true : false;
             let provValidation = self.isGUID(self.proveedorRemoteValue()) || self.isEmpty(self.proveedorRemoteValue()) ? true : false;
             let reciboValidation = self.isGUID(self.reciboRemoteValue()) || self.isEmpty(self.reciboRemoteValue()) ? true : false;
@@ -55,7 +75,7 @@ class StockModel extends KoForm {
 
             return prodValidation && provValidation && reciboValidation;
         }, self);
-
+        
         this.proxy = new ProxyRest("/api/Stocks");
     }
 
@@ -120,7 +140,6 @@ class StockModel extends KoForm {
         }
         return false;
     }
-    
 }
 
 export = StockModel;

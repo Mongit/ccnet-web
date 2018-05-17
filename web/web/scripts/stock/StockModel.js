@@ -64,8 +64,24 @@ var StockModel = /** @class */ (function (_super) {
         _this.productoHasError = ko.observable(false);
         _this.proveedorHasError = ko.observable(false);
         _this.reciboHasError = ko.observable(false);
+        _this.display = ko.observable();
+        _this.modificaStock = ko.observable(false);
+        _this.modificaStockComputed = ko.computed(function () {
+            if (self.modificaStock() === false) {
+                self.proveedorRemoteValue("");
+                self.reciboRemoteValue("");
+            }
+        }, self);
+        _this.currentDisplay = ko.computed(function () {
+            if (self.display() === "recibo") {
+                self.proveedorRemoteValue("");
+            }
+            else {
+                self.reciboRemoteValue("");
+            }
+            return self.display();
+        }, self);
         _this.remoteValuesValid = ko.computed(function () {
-            var self = this;
             var prodValidation = self.isGUID(self.productoRemoteValue()) || self.newWindow ? true : false;
             var provValidation = self.isGUID(self.proveedorRemoteValue()) || self.isEmpty(self.proveedorRemoteValue()) ? true : false;
             var reciboValidation = self.isGUID(self.reciboRemoteValue()) || self.isEmpty(self.reciboRemoteValue()) ? true : false;
