@@ -55,11 +55,26 @@ var StockModel = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         var self = _this;
         _this.fecha = new Date();
+        _this.newWindow = true;
         _this.cantidad = self.addField([new numberValidators.FloatValidator(), new numberValidators.RequiredNumberValidator()]);
         _this.precio = self.addField([new numberValidators.FloatValidator(), new numberValidators.RequiredNumberValidator()]);
         _this.productoRemoteValue = ko.observable();
         _this.proveedorRemoteValue = ko.observable();
         _this.reciboRemoteValue = ko.observable();
+        _this.productoHasError = ko.observable(false);
+        _this.proveedorHasError = ko.observable(false);
+        _this.reciboHasError = ko.observable(false);
+        _this.remoteValuesValid = ko.computed(function () {
+            var self = this;
+            var prodValidation = self.isGUID(self.productoRemoteValue()) || self.newWindow ? true : false;
+            var provValidation = self.isGUID(self.proveedorRemoteValue()) || self.isEmpty(self.proveedorRemoteValue()) ? true : false;
+            var reciboValidation = self.isGUID(self.reciboRemoteValue()) || self.isEmpty(self.reciboRemoteValue()) ? true : false;
+            self.newWindow = false;
+            self.productoHasError(prodValidation === true ? false : true);
+            self.proveedorHasError(provValidation === true ? false : true);
+            self.reciboHasError(reciboValidation === true ? false : true);
+            return prodValidation && provValidation && reciboValidation;
+        }, self);
         _this.proxy = new ProxyRest("/api/Stocks");
         return _this;
     }
@@ -72,7 +87,7 @@ var StockModel = /** @class */ (function (_super) {
                         self = this;
                         return [4 /*yield*/, self.validate()];
                     case 1:
-                        if (!((_a.sent()) && self.productoRemoteValue())) return [3 /*break*/, 3];
+                        if (!((_a.sent()) && self.remoteValuesValid())) return [3 /*break*/, 3];
                         model = {
                             id: "00000000-0000-0000-0000-000000000000",
                             productoId: self.productoRemoteValue(),
@@ -89,7 +104,7 @@ var StockModel = /** @class */ (function (_super) {
                         window.location.href = "StockList";
                         return [3 /*break*/, 4];
                     case 3:
-                        alert("Lo sentimos, revise que los campos requeridos (*) no esten vacíos.");
+                        self.productoHasError(self.isEmpty(self.productoRemoteValue()) ? true : false);
                         _a.label = 4;
                     case 4: return [2 /*return*/];
                 }
@@ -149,6 +164,20 @@ var StockModel = /** @class */ (function (_super) {
                 }
             });
         });
+    };
+    StockModel.prototype.isGUID = function (expression) {
+        if (expression != null) {
+            var guidRegExp = new RegExp('^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$');
+            return guidRegExp.test(expression);
+        }
+        return false;
+    };
+    StockModel.prototype.isEmpty = function (expression) {
+        if (expression === undefined || expression === null || $.trim(expression).length === 0
+            || expression === null || expression === undefined) {
+            return true;
+        }
+        return false;
     };
     return StockModel;
 }(KoForm));

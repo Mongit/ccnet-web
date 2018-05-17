@@ -24,7 +24,10 @@
         </div>
         <div class="form-group">
             <label><strong>Producto *</strong></label>
-            <input type="text" class="form-control" placeholder="Buscar y seleccionar nombre del producto" data-bind="jqAuto: { source: productoRemoteHandler, value: productoRemoteValue, inputProp: 'nombre', labelProp: 'nombre', valueProp: 'id', template: 'productoTmpl' }, hasFocus: true"/>
+            <input type="text" class="form-control" placeholder="Buscar y seleccionar nombre del producto" data-bind="jqAuto: { source: productoRemoteHandler, value: productoRemoteValue, inputProp: 'nombre', labelProp: 'nombre', valueProp: 'id', template: 'productoTmpl' }, hasFocus: true, css: { 'is-invalid': productoHasError() }" />
+            <!-- ko if: productoHasError() -->
+                <div class="invalid-feedback">Seleccione un producto.</div>
+            <!-- /ko  -->
         </div>
         <div class="form-group">
             <label><strong>Cantidad *</strong></label>
@@ -43,14 +46,20 @@
                 <strong>Proveedor</strong>
                 <small class="text-muted">(Opcional)</small>
             </label>
-            <input type="text" class="form-control" placeholder="Buscar y seleccionar nombre del proveedor" data-bind="jqAuto: { source: proveedorRemoteHandler, value: proveedorRemoteValue, inputProp: 'empresa', labelProp: 'empresa', valueProp: 'id' }"/>
+            <input type="text" class="form-control" placeholder="Buscar y seleccionar nombre del proveedor" data-bind="jqAuto: { source: proveedorRemoteHandler, value: proveedorRemoteValue, inputProp: 'empresa', labelProp: 'empresa', valueProp: 'id' }, css: { 'is-invalid': proveedorHasError() }" />
+            <!-- ko if: proveedorHasError() -->
+            <div class="invalid-feedback">Seleccione un producto.</div>
+            <!-- /ko  -->
         </div>
         <div class="form-group">
             <label>
                 <strong>Folio de recibo</strong>
                 <small class="text-muted">(Opcional)</small>
             </label>
-            <input type="text" class="form-control" placeholder="Buscar y seleccionar folio del recibo" data-bind="jqAuto: { source: reciboRemoteHandler, value: reciboRemoteValue, inputProp: 'folio', labelProp: 'folio', valueProp: 'id', template: 'reciboTmpl' }"/>
+            <input type="text" class="form-control" placeholder="Buscar y seleccionar folio del recibo" data-bind="jqAuto: { source: reciboRemoteHandler, value: reciboRemoteValue, inputProp: 'folio', labelProp: 'folio', valueProp: 'id', template: 'reciboTmpl' }, css: { 'is-invalid': reciboHasError() }" />
+            <!-- ko if: reciboHasError() -->
+            <div class="invalid-feedback">Seleccione un producto.</div>
+            <!-- /ko  -->
         </div>
         <div class="form-group text-right">
             <a class="btn btn-light" data-bind="attr: { href: 'StockList' }">Cancelar</a>

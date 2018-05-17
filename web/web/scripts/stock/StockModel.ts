@@ -9,6 +9,7 @@ moment.locale('es');
 
 class StockModel extends KoForm {
     public fecha: Date;
+    public newWindow: boolean;
 
     public cantidad: IField<number>;
     public precio: IField<number>;
@@ -16,6 +17,11 @@ class StockModel extends KoForm {
     public productoRemoteValue: KnockoutObservable<string>;
     public proveedorRemoteValue: KnockoutObservable<string>;
     public reciboRemoteValue: KnockoutObservable<string>;
+    public productoHasError: KnockoutObservable<boolean>;
+    public proveedorHasError: KnockoutObservable<boolean>;
+    public reciboHasError: KnockoutObservable<boolean>;
+
+    public remoteValuesValid: KnockoutComputed<boolean>;
 
     public proxy: ProxyRest;
 
@@ -24,6 +30,7 @@ class StockModel extends KoForm {
         const self = this;
 
         this.fecha = new Date();
+        this.newWindow = true;
 
         this.cantidad = self.addField<number>([new numberValidators.FloatValidator(), new numberValidators.RequiredNumberValidator()]);
         this.precio = self.addField<number>([new numberValidators.FloatValidator(), new numberValidators.RequiredNumberValidator()]);
@@ -31,13 +38,30 @@ class StockModel extends KoForm {
         this.productoRemoteValue = ko.observable<string>();
         this.proveedorRemoteValue = ko.observable<string>();
         this.reciboRemoteValue = ko.observable<string>();
+        this.productoHasError = ko.observable<boolean>(false);
+        this.proveedorHasError = ko.observable<boolean>(false);
+        this.reciboHasError = ko.observable<boolean>(false);
+
+        this.remoteValuesValid = ko.computed<boolean>(function (): boolean {
+            const self = this;
+            let prodValidation = self.isGUID(self.productoRemoteValue()) || self.newWindow ? true : false;
+            let provValidation = self.isGUID(self.proveedorRemoteValue()) || self.isEmpty(self.proveedorRemoteValue()) ? true : false;
+            let reciboValidation = self.isGUID(self.reciboRemoteValue()) || self.isEmpty(self.reciboRemoteValue()) ? true : false;
+
+            self.newWindow = false;
+            self.productoHasError(prodValidation === true ? false : true);
+            self.proveedorHasError(provValidation === true ? false : true);
+            self.reciboHasError(reciboValidation === true ? false : true);
+
+            return prodValidation && provValidation && reciboValidation;
+        }, self);
 
         this.proxy = new ProxyRest("/api/Stocks");
     }
 
     public async save(): Promise<void> {
         const self = this;
-        if (await self.validate() && self.productoRemoteValue()) {
+        if (await self.validate() && self.remoteValuesValid()) {
             let model: IStockModel = {
                 id: "00000000-0000-0000-0000-000000000000",
                 productoId: self.productoRemoteValue(),
@@ -52,7 +76,7 @@ class StockModel extends KoForm {
             window.location.href = "StockList";
         }
         else {
-            alert("Lo sentimos, revise que los campos requeridos (*) no esten vacíos.")
+            self.productoHasError(self.isEmpty(self.productoRemoteValue()) ? true : false);
         }
     }
 
@@ -80,6 +104,23 @@ class StockModel extends KoForm {
         let recibos = JSON.parse((JSON.parse(JSON.stringify(response))));
         callback(recibos);
     }
+
+    public isGUID(expression: string): boolean {
+        if (expression != null) {
+            let guidRegExp = new RegExp('^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$');
+            return guidRegExp.test(expression);
+        }
+        return false;
+    }
+
+    public isEmpty(expression: string): boolean {
+        if (expression === undefined || expression === null || $.trim(expression).length === 0
+            || expression === null || expression === undefined) {
+            return true;
+        }
+        return false;
+    }
+    
 }
 
 export = StockModel;
