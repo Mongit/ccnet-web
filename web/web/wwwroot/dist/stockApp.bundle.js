@@ -4774,8 +4774,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var HttpMethod = __webpack_require__(10);
-var ProxyBase = __webpack_require__(11);
+var HttpMethod = __webpack_require__(9);
+var ProxyBase = __webpack_require__(10);
 var ProxyRest = /** @class */ (function (_super) {
     __extends(ProxyRest, _super);
     function ProxyRest(endPoint) {
@@ -6236,29 +6236,6 @@ module.exports = g;
 
 "use strict";
 
-var PromiseUtils = __webpack_require__(13);
-var ValidatorBase = /** @class */ (function () {
-    function ValidatorBase() {
-    }
-    ValidatorBase.prototype.toPromise = function (isValid, message) {
-        if (message === void 0) { message = ""; }
-        var result = {
-            isValid: isValid,
-            message: isValid ? "" : message
-        };
-        return PromiseUtils.toPromise(result);
-    };
-    return ValidatorBase;
-}());
-module.exports = ValidatorBase;
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 var HttpMethod;
 (function (HttpMethod) {
     HttpMethod[HttpMethod["get"] = 0] = "get";
@@ -6270,7 +6247,7 @@ module.exports = HttpMethod;
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6345,6 +6322,29 @@ var ProxyBase = /** @class */ (function () {
 module.exports = ProxyBase;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var PromiseUtils = __webpack_require__(13);
+var ValidatorBase = /** @class */ (function () {
+    function ValidatorBase() {
+    }
+    ValidatorBase.prototype.toPromise = function (isValid, message) {
+        if (message === void 0) { message = ""; }
+        var result = {
+            isValid: isValid,
+            message: isValid ? "" : message
+        };
+        return PromiseUtils.toPromise(result);
+    };
+    return ValidatorBase;
+}());
+module.exports = ValidatorBase;
+
 
 /***/ }),
 /* 12 */
@@ -18244,7 +18244,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var ValidatorBase = __webpack_require__(9);
+var ValidatorBase = __webpack_require__(11);
 var ValidatableValidator = /** @class */ (function (_super) {
     __extends(ValidatableValidator, _super);
     function ValidatableValidator(message) {
@@ -18714,7 +18714,8 @@ module.exports = webpackContext;
 webpackContext.id = 145;
 
 /***/ }),
-/* 146 */
+/* 146 */,
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18730,7 +18731,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ValidatorBase = __webpack_require__(9);
+var ValidatorBase = __webpack_require__(11);
 var NumberValidatorBase = /** @class */ (function (_super) {
     __extends(NumberValidatorBase, _super);
     function NumberValidatorBase() {
@@ -18773,7 +18774,6 @@ exports.FloatValidator = FloatValidator;
 
 
 /***/ }),
-/* 147 */,
 /* 148 */,
 /* 149 */,
 /* 150 */,
@@ -18943,7 +18943,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var ProxyRest = __webpack_require__(4);
 var KoForm = __webpack_require__(134);
 var moment = __webpack_require__(0);
-var numberValidators = __webpack_require__(146);
+var numberValidators = __webpack_require__(147);
 moment.locale('es');
 var StockModel = /** @class */ (function (_super) {
     __extends(StockModel, _super);
