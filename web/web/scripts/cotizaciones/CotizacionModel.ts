@@ -3,7 +3,7 @@ import KoForm = require("./../form/KoForm");
 import IField = require("./../field/iField");
 import IFieldBase = require("./../field/iFieldBase");
 import IFieldArray = require("./../field/iFieldArray");
-import ICotizacionModel = require("./iCotizacionModel");
+import ICotizacionesModel = require("./CotizacionesModel");
 import * as moment from 'moment';
 import * as validators from './../validators/stringValidators';
 import IBindedModelInfo = require("./../modals/IBindedModalInfo");
@@ -29,7 +29,7 @@ class CotizacionModel extends KoForm {
     public totalPresupuestos: KnockoutComputed<number>;
 
     public idCotizacion: string;
-    public idCliente: string;
+    public cteId: string;
     
     public proxy: ProxyRest;
 
@@ -47,7 +47,7 @@ class CotizacionModel extends KoForm {
         this.currentTemplate = ko.observable<string>("editar");
 
         this.idCotizacion = UrlUtils.getParameterByName('cotId', window.location);
-        this.idCliente = UrlUtils.getParameterByName('cteId', window.location);;
+        this.cteId = UrlUtils.getParameterByName('cteId', window.location);;
         
         this.proxy = new ProxyRest("/api/Cotizaciones");
                 
@@ -89,22 +89,17 @@ class CotizacionModel extends KoForm {
         await this.getCliente();
 
         const self = this;
-        let cotizaciones = await self.proxy.get(self.idCliente);
-        let cotizacionesJson = JSON.parse((JSON.parse(JSON.stringify(cotizaciones))));
-                
-        for (let cotizacion of cotizacionesJson) {
-            if (self.idCotizacion === cotizacion.id) {
-                self.fechaCreado(moment(cotizacion.fecha).format('LL'));
-                self.fechaFuturo(moment(cotizacion.fecha).add(15, 'days').format('LL'));
-                break;
-            }
-        }
+        let cotizacion = await self.proxy.get<ICotizacionesModel>(self.idCotizacion);
+        let cotizacionJson = JSON.parse((JSON.parse(JSON.stringify(cotizacion))));
+
+        self.fechaCreado(moment(cotizacionJson.fecha).format('LL'));
+        self.fechaFuturo(moment(cotizacionJson.fecha).add(15, 'days').format('LL'));
     }
 
     public async getCliente(): Promise<void> {
         const self = this;
         let proxyCliente = new ProxyRest("/api/Clientes");
-        let cliente = await proxyCliente.get(self.idCliente);
+        let cliente = await proxyCliente.get(self.cteId);
         let clienteJson = JSON.parse((JSON.parse(JSON.stringify(cliente))));
 
         self.empresa(clienteJson.empresa);

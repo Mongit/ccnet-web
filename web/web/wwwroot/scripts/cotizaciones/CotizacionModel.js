@@ -66,7 +66,7 @@ var CotizacionModel = /** @class */ (function (_super) {
         _this.fechaFuturo = ko.observable("");
         _this.currentTemplate = ko.observable("editar");
         _this.idCotizacion = UrlUtils.getParameterByName('cotId', window.location);
-        _this.idCliente = UrlUtils.getParameterByName('cteId', window.location);
+        _this.cteId = UrlUtils.getParameterByName('cteId', window.location);
         ;
         _this.proxy = new ProxyRest("/api/Cotizaciones");
         _this.presupuestos = self.addFieldArray([new ValidatableValidator("Encontramos un error en alguno de sus campos.")]);
@@ -101,25 +101,19 @@ var CotizacionModel = /** @class */ (function (_super) {
     };
     CotizacionModel.prototype.getCotizacion = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var self, cotizaciones, cotizacionesJson, _i, cotizacionesJson_1, cotizacion;
+            var self, cotizacion, cotizacionJson;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getCliente()];
                     case 1:
                         _a.sent();
                         self = this;
-                        return [4 /*yield*/, self.proxy.get(self.idCliente)];
+                        return [4 /*yield*/, self.proxy.get(self.idCotizacion)];
                     case 2:
-                        cotizaciones = _a.sent();
-                        cotizacionesJson = JSON.parse((JSON.parse(JSON.stringify(cotizaciones))));
-                        for (_i = 0, cotizacionesJson_1 = cotizacionesJson; _i < cotizacionesJson_1.length; _i++) {
-                            cotizacion = cotizacionesJson_1[_i];
-                            if (self.idCotizacion === cotizacion.id) {
-                                self.fechaCreado(moment(cotizacion.fecha).format('LL'));
-                                self.fechaFuturo(moment(cotizacion.fecha).add(15, 'days').format('LL'));
-                                break;
-                            }
-                        }
+                        cotizacion = _a.sent();
+                        cotizacionJson = JSON.parse((JSON.parse(JSON.stringify(cotizacion))));
+                        self.fechaCreado(moment(cotizacionJson.fecha).format('LL'));
+                        self.fechaFuturo(moment(cotizacionJson.fecha).add(15, 'days').format('LL'));
                         return [2 /*return*/];
                 }
             });
@@ -133,7 +127,7 @@ var CotizacionModel = /** @class */ (function (_super) {
                     case 0:
                         self = this;
                         proxyCliente = new ProxyRest("/api/Clientes");
-                        return [4 /*yield*/, proxyCliente.get(self.idCliente)];
+                        return [4 /*yield*/, proxyCliente.get(self.cteId)];
                     case 1:
                         cliente = _a.sent();
                         clienteJson = JSON.parse((JSON.parse(JSON.stringify(cliente))));
