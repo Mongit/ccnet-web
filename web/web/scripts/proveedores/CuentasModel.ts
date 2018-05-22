@@ -57,7 +57,6 @@ class CuentasModel {
                 if (modalModel.result() === true) {
                     self.cuentas.remove(cuenta);
                     let deleted = await self.proxy.delete<iCuentaModel>(cuenta.id);
-                    alert(deleted);
                 }
 
             }

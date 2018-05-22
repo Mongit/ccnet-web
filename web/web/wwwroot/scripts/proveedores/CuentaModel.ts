@@ -12,10 +12,10 @@ class CuentaModel extends KoForm {
     public noCuenta: IField<string>;
 
     public proxy: ProxyRest;
-    public proveedorId: string;
     public cuentaIdUrlParam: string;
 
     public currentTemplate: KnockoutObservable<string>;
+    public proveedorId: KnockoutObservable<string>;
 
     constructor() {
         super();
@@ -27,10 +27,10 @@ class CuentaModel extends KoForm {
         this.noCuenta = self.addField<string>([]);
 
         this.proxy = new ProxyRest("/api/Cuentas");
-        this.proveedorId = UrlUtils.getParameterByName("provId", window.location);
         this.cuentaIdUrlParam = UrlUtils.getParameterByName("id", window.location);
 
         this.currentTemplate = ko.observable<string>("nuevo");
+        this.proveedorId = ko.observable<string>(UrlUtils.getParameterByName("provId", window.location));
         self.cuentaIdUrlParam ? self.editarTemplate() : self.currentTemplate('nuevo');
     }
 
@@ -46,7 +46,7 @@ class CuentaModel extends KoForm {
             let model = self.getModel();
             let serverModel = await self.proxy.post<ICuentaModel>(model);
             alert("Cuenta guardada exitosamente.");
-            window.location.href = "Cuentas?id=" + self.proveedorId;
+            window.location.href = "Cuentas?id=" + self.proveedorId();
         }
     }
 
@@ -55,7 +55,7 @@ class CuentaModel extends KoForm {
 
         return {
             id: self.cuentaIdUrlParam ? self.cuentaIdUrlParam : "00000000-0000-0000-0000-000000000000",
-            proveedorId: self.proveedorId,
+            proveedorId: self.proveedorId(),
             banco: self.banco.value(),
             titular: self.titular.value(),
             clabe: self.clabe.value(),
@@ -69,7 +69,7 @@ class CuentaModel extends KoForm {
         let response = await self.proxy.get<ICuentaModel>(self.cuentaIdUrlParam);
         let cuentaJson = JSON.parse(JSON.parse(JSON.stringify(response)));
 
-        self.proveedorId = cuentaJson.proveedorId;
+        self.proveedorId(cuentaJson.proveedorId);
         self.banco.value(cuentaJson.banco);
         self.titular.value(cuentaJson.titular);
         self.clabe.value(cuentaJson.clabe);
@@ -82,7 +82,7 @@ class CuentaModel extends KoForm {
             let model = self.getModel();
             let cuentaUpdated = await self.proxy.put<ICuentaModel>(self.cuentaIdUrlParam, model);
             alert(JSON.stringify(cuentaUpdated));
-            window.location.href = "Cuentas?id=" + self.proveedorId;
+            window.location.href = "Cuentas?id=" + self.proveedorId();
         }
     }
 }

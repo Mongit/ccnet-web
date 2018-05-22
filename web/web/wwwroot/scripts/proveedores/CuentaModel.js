@@ -58,9 +58,9 @@ var CuentaModel = /** @class */ (function (_super) {
         _this.clabe = self.addField([]);
         _this.noCuenta = self.addField([]);
         _this.proxy = new ProxyRest("/api/Cuentas");
-        _this.proveedorId = UrlUtils.getParameterByName("provId", window.location);
         _this.cuentaIdUrlParam = UrlUtils.getParameterByName("id", window.location);
         _this.currentTemplate = ko.observable("nuevo");
+        _this.proveedorId = ko.observable(UrlUtils.getParameterByName("provId", window.location));
         self.cuentaIdUrlParam ? self.editarTemplate() : self.currentTemplate('nuevo');
         return _this;
     }
@@ -84,7 +84,7 @@ var CuentaModel = /** @class */ (function (_super) {
                     case 2:
                         serverModel = _a.sent();
                         alert("Cuenta guardada exitosamente.");
-                        window.location.href = "Cuentas?id=" + self.proveedorId;
+                        window.location.href = "Cuentas?id=" + self.proveedorId();
                         _a.label = 3;
                     case 3: return [2 /*return*/];
                 }
@@ -95,7 +95,7 @@ var CuentaModel = /** @class */ (function (_super) {
         var self = this;
         return {
             id: self.cuentaIdUrlParam ? self.cuentaIdUrlParam : "00000000-0000-0000-0000-000000000000",
-            proveedorId: self.proveedorId,
+            proveedorId: self.proveedorId(),
             banco: self.banco.value(),
             titular: self.titular.value(),
             clabe: self.clabe.value(),
@@ -113,7 +113,7 @@ var CuentaModel = /** @class */ (function (_super) {
                     case 1:
                         response = _a.sent();
                         cuentaJson = JSON.parse(JSON.parse(JSON.stringify(response)));
-                        self.proveedorId = cuentaJson.proveedorId;
+                        self.proveedorId(cuentaJson.proveedorId);
                         self.banco.value(cuentaJson.banco);
                         self.titular.value(cuentaJson.titular);
                         self.clabe.value(cuentaJson.clabe);
@@ -138,7 +138,7 @@ var CuentaModel = /** @class */ (function (_super) {
                     case 2:
                         cuentaUpdated = _a.sent();
                         alert(JSON.stringify(cuentaUpdated));
-                        window.location.href = "Cuentas?id=" + self.proveedorId;
+                        window.location.href = "Cuentas?id=" + self.proveedorId();
                         _a.label = 3;
                     case 3: return [2 /*return*/];
                 }

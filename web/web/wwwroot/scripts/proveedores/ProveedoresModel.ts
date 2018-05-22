@@ -123,7 +123,6 @@ class ProveedoresModel {
                 if (modalModel.result() === true) {
                     self.proveedores.remove(proveedor);
                     let deleted = await self.proxy.delete<iProveedorModel>(proveedor.id);
-                    alert(deleted);
                 }
 
             }
