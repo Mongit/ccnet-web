@@ -2,10 +2,10 @@
 <script id="DatosEmpresa" type="text/html">
     <div class="form">
         <div class="form-group mx-1 text-right">
-            <button class="btn btn-default" data-bind="click: addPresupuesto">Agregar</button>
+            <button class="btn btn-light" data-bind="click: addPresupuesto">Agregar</button>
 
-            <button class="btn btn-default" data-bind="click: verTemplate">Ver</button>
-            <button type="button" class="btn btn-default" onclick="history.go(-1)">Volver</button>            
+            <button class="btn btn-light" data-bind="click: verTemplate">Ver</button>
+            <a class="btn btn-light" data-bind="attr: { href: 'CotizacionesCliente?id=' + cteId }">Volver</a>            
         </div>
     </div>
 </script>
@@ -41,7 +41,7 @@
 
                 <div class="col-md-2">
                     <label>Acciones</label>
-                    <input type="button" class="btn btn-default" data-bind="click: $parent.addPresupuestoItem.bind($parent)" value="Agregar" />
+                    <input type="button" class="btn btn-light" data-bind="click: $parent.addPresupuestoItem.bind($parent)" value="Agregar" />
                 </div>
             </div>
 
