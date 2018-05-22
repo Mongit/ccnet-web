@@ -115,6 +115,7 @@ var EditarClienteModel = /** @class */ (function (_super) {
                     case 2:
                         clienteModificado = _a.sent();
                         alert(JSON.stringify(clienteModificado));
+                        window.location.href = "Clientes";
                         _a.label = 3;
                     case 3: return [2 /*return*/];
                 }

@@ -73,6 +73,7 @@ class EditarClienteModel extends KoForm {
             let model = self.getModel();
             let clienteModificado = await self.proxy.put<IClienteModel>(self.clienteIdUrlParam, model);
             alert(JSON.stringify(clienteModificado));
+            window.location.href = "Clientes";
         }
     }
 }
