@@ -48,7 +48,6 @@ var CotizacionesClienteModel = /** @class */ (function () {
         this.pageSize = 20;
         this.folio = ko.observable();
         this.contacto = ko.observable();
-        this.fechaParsed = ko.observable();
         this.pageNumber = ko.observable(1);
         this.totalPages = ko.observable();
         this.lastPage = ko.observable(false);

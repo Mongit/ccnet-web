@@ -14,7 +14,6 @@ class CotizacionesClienteModel {
 
     public folio: KnockoutObservable<number>;
     public contacto: KnockoutObservable<string>;
-    public fechaParsed: KnockoutObservable<string>;
     public pageNumber: KnockoutObservable<number>;
     public totalPages: KnockoutObservable<number>;
     public lastPage: KnockoutObservable<boolean>;
@@ -33,7 +32,6 @@ class CotizacionesClienteModel {
         
         this.folio = ko.observable<number>();
         this.contacto = ko.observable<string>();
-        this.fechaParsed = ko.observable<string>();
         this.pageNumber = ko.observable<number>(1);
         this.totalPages = ko.observable<number>();
         this.lastPage = ko.observable<boolean>(false);

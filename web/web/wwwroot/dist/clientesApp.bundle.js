@@ -18334,7 +18334,6 @@ var ClientesModel = /** @class */ (function () {
     function ClientesModel() {
         var self = this;
         this.pageSize = 20;
-        this.fechaParsed = ko.observable();
         this.pageNumber = ko.observable(1);
         this.totalPages = ko.observable();
         this.lastPage = ko.observable(false);
