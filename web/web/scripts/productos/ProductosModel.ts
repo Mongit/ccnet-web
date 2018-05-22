@@ -121,7 +121,6 @@ class ProductosModel {
                 if (modalModel.result() === true) {
                     self.productos.remove(producto);
                     let deleted = await self.proxy.delete<iProductoModel>(producto.id);
-                    alert(deleted);
                 }
 
             }
