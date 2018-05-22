@@ -184,7 +184,6 @@ class RecibosModel {
                 if (modalModel.result() === true) {
                     self.recibos.remove(recibo);
                     let deleted = await self.proxy.delete<IReciboModel>(recibo.id);
-                    alert(deleted);
                 }
             }
         });

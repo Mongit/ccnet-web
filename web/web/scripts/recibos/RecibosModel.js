@@ -236,7 +236,6 @@ var RecibosModel = /** @class */ (function () {
                                 return [4 /*yield*/, self.proxy.delete(recibo.id)];
                             case 1:
                                 deleted = _a.sent();
-                                alert(deleted);
                                 _a.label = 2;
                             case 2: return [2 /*return*/];
                         }
