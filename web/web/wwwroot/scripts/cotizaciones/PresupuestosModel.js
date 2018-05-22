@@ -147,7 +147,7 @@ var PresupuetosModel = /** @class */ (function (_super) {
     };
     PresupuetosModel.prototype.getCotizacion = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var self, proxyCotizaciones, cotizaciones, cotizacionesJson, _i, cotizacionesJson_1, cotizacion;
+            var self, proxyCotizaciones, cotizacion, cotizacionJson;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getCliente()];
@@ -155,18 +155,12 @@ var PresupuetosModel = /** @class */ (function (_super) {
                         _a.sent();
                         self = this;
                         proxyCotizaciones = new ProxyRest("/api/Cotizaciones");
-                        return [4 /*yield*/, proxyCotizaciones.get(self.cteId)];
+                        return [4 /*yield*/, proxyCotizaciones.get(self.cotId)];
                     case 2:
-                        cotizaciones = _a.sent();
-                        cotizacionesJson = JSON.parse((JSON.parse(JSON.stringify(cotizaciones))));
-                        for (_i = 0, cotizacionesJson_1 = cotizacionesJson; _i < cotizacionesJson_1.length; _i++) {
-                            cotizacion = cotizacionesJson_1[_i];
-                            if (self.cotId === cotizacion.id) {
-                                self.fechaCreado(moment(cotizacion.fecha).format('LL'));
-                                self.fechaFuturo(moment(cotizacion.fecha).add(15, 'days').format('LL'));
-                                break;
-                            }
-                        }
+                        cotizacion = _a.sent();
+                        cotizacionJson = JSON.parse((JSON.parse(JSON.stringify(cotizacion))));
+                        self.fechaCreado(moment(cotizacionJson.fecha).format('LL'));
+                        self.fechaFuturo(moment(cotizacionJson.fecha).add(15, 'days').format('LL'));
                         return [2 /*return*/];
                 }
             });

@@ -8,6 +8,7 @@ import PresupuestoModel = require("./PresupuestoModel");
 import PresupuestoItemModel = require("./PresupuestoItemModel");
 import IPresupuestoModel = require("./iPresupuestoModel");
 import IPresupuestoItemModel = require("./PresupuestoItemModel");
+import ICotizacionesModel = require("./CotizacionesModel");
 import ConfirmModal = require("./../modals/confirmModal");
 import BindedModal = require("./../modals/BindedModal");
 import Size = require("./../utils/Size");
@@ -129,16 +130,11 @@ class PresupuetosModel extends KoForm {
 
         const self = this;
         let proxyCotizaciones = new ProxyRest("/api/Cotizaciones");
-        let cotizaciones = await proxyCotizaciones.get(self.cteId);
-        let cotizacionesJson = JSON.parse((JSON.parse(JSON.stringify(cotizaciones))));
+        let cotizacion = await proxyCotizaciones.get<ICotizacionesModel>(self.cotId);
+        let cotizacionJson = JSON.parse((JSON.parse(JSON.stringify(cotizacion))));
 
-        for (let cotizacion of cotizacionesJson) {
-            if (self.cotId === cotizacion.id) {
-                self.fechaCreado(moment(cotizacion.fecha).format('LL'));
-                self.fechaFuturo(moment(cotizacion.fecha).add(15, 'days').format('LL'));
-                break;
-            }
-        }
+        self.fechaCreado(moment(cotizacionJson.fecha).format('LL'));
+        self.fechaFuturo(moment(cotizacionJson.fecha).add(15, 'days').format('LL'));
     }
 
     public async getCliente(): Promise<void> {
