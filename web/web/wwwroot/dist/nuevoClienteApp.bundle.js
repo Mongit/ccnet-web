@@ -815,6 +815,7 @@ var ClienteModel = /** @class */ (function (_super) {
                     case 2:
                         serverModel = _a.sent();
                         alert(JSON.stringify(serverModel));
+                        window.location.href = "Clientes";
                         _a.label = 3;
                     case 3: return [2 /*return*/];
                 }

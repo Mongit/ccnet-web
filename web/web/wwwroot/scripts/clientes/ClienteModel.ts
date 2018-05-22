@@ -51,6 +51,7 @@ class ClienteModel extends KoForm {
             let model = self.getModel();
             let serverModel = await self.proxy.post<IClienteModel>(model);
             alert(JSON.stringify(serverModel));
+            window.location.href = "Clientes";
         }
     }
 }
