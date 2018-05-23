@@ -1,7 +1,7 @@
 import Page = require("./../pagination/PageModel");
 import ProxyRest = require("./../api/proxyRest");
+import IReciboReportModel = require("./iReciboReportModel");
 import IReciboModel = require("./iReciboModel");
-import IReciboItemModel = require("./iReciboItemModel");
 import ConfirmModal = require("./../modals/confirmModal");
 import BindedModal = require("./../modals/BindedModal");
 import Size = require("./../utils/Size");
@@ -17,11 +17,9 @@ class RecibosModel {
     public lastPage: KnockoutObservable<boolean>;
     public firstPage: KnockoutObservable<boolean>;
     public showPagination: KnockoutObservable<boolean>;
-    public clienteName: KnockoutObservable<string>;
-    public proveedorName: KnockoutObservable<string>;
 
     public pages: KnockoutObservableArray<Page>;
-    public recibos: KnockoutObservableArray<IReciboModel>;
+    public recibos: KnockoutObservableArray<IReciboReportModel>;
 
     public proxy: ProxyRest;
 
@@ -33,11 +31,9 @@ class RecibosModel {
         this.lastPage = ko.observable<boolean>(false);
         this.firstPage = ko.observable<boolean>(true);
         this.showPagination = ko.observable<boolean>(false);
-        this.clienteName = ko.observable<string>();
-        this.proveedorName = ko.observable<string>();
 
         this.pages = ko.observableArray<Page>([]);
-        this.recibos = ko.observableArray<IReciboModel>();
+        this.recibos = ko.observableArray<IReciboReportModel>();
 
         this.proxy = new ProxyRest("/api/Recibos");
 
@@ -64,58 +60,18 @@ class RecibosModel {
 
         self.recibos.removeAll();
         for (let recibo of recibosjson.recibos) {
-            await self.getCliente(recibo.clienteId);
-            await self.getProveedor(recibo.proveedorId);
-
-            recibo.clienteId = self.clienteName();
-            recibo.proveedorId = self.proveedorName();
-
-            self.recibos.push(self.getModel(recibo));
+            self.recibos.push({
+                id: recibo.id,
+                folio: recibo.folio,
+                clienteId: recibo.clienteId,
+                proveedorId: recibo.proveedorId,
+                fecha: recibo.fecha,
+                clienteName: recibo.clienteName,
+                proveedorName: recibo.proveedorName
+            });
         }
     }
-
-    public async getCliente(id: string): Promise<void> {
-        const self = this;
-        if (id === "00000000-0000-0000-0000-000000000000") {
-            self.clienteName("");
-        }
-        else {
-
-            let clienteProxy = new ProxyRest("/api/Clientes");
-            let response = await clienteProxy.get(id, null, null);
-            let clienteJson = JSON.parse((JSON.parse(JSON.stringify(response))));
-
-            self.clienteName(clienteJson.empresa);
-        }
-    }
-
-    public async getProveedor(id: string): Promise<void> {
-        const self = this;
-        if (id === "00000000-0000-0000-0000-000000000000") {
-            self.proveedorName("");
-        }
-        else {
-            let proveedorProxy = new ProxyRest("/api/Proveedores");
-            let response = await proveedorProxy.get(id, null, null);
-            let proveedorJson = JSON.parse((JSON.parse(JSON.stringify(response))));
-
-            self.proveedorName(proveedorJson.empresa);
-        }
-    }
-   
-    public getModel(recibo: IReciboModel): IReciboModel {
-        const self = this;
-        
-        return {
-            id: recibo.id,
-            folio: recibo.folio,
-            clienteId: recibo.clienteId,
-            proveedorId: recibo.proveedorId,
-            fecha: recibo.fecha,
-            items: recibo.items
-        };
-    }
-
+    
     public selectedPage(page: Page): void {
         const self = this;
         self.pageNumber(page.pageNumber());
@@ -158,14 +114,14 @@ class RecibosModel {
 
     public async save(): Promise<void> {
         let self = this;
-        let model = self.getModel({
+        let model = {
             id: "00000000-0000-0000-0000-000000000000",
             folio: 0,
             clienteId: "00000000-0000-0000-0000-000000000000",
             proveedorId: "00000000-0000-0000-0000-000000000000",
             fecha: new Date(),
             items: []
-        });
+        };
         let reciboId = await self.proxy.post<IReciboModel>(model);
         window.location.href = "Recibo?id=" + JSON.parse(JSON.parse(JSON.stringify(reciboId)));
     }

@@ -28,8 +28,8 @@
             <tr>
                 <td data-bind="text: folio"></td>
                 <td data-bind="text: $parent.dateFormatter($data.fecha)"></td>
-                <td data-bind="text: clienteId"></td>
-                <td data-bind="text: proveedorId"></td>
+                <td data-bind="text: clienteName"></td>
+                <td data-bind="text: proveedorName"></td>
                 <td>
                     <button class="btn btn-light btn-block" data-bind="click: $parent.remove.bind($parent)">Borrar</button>
                     <a class="btn btn-secondary btn-block" data-bind="attr: { href: 'ReciboVer?id=' + id }">Ver</a>

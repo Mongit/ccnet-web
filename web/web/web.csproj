@@ -30,6 +30,7 @@
     <None Remove="scripts\recibos\appReciboVer.ts" />
     <None Remove="scripts\recibos\iReciboItemModel.ts" />
     <None Remove="scripts\recibos\iReciboModel.ts" />
+    <None Remove="scripts\recibos\iReciboReportModel.ts" />
     <None Remove="scripts\recibos\ReciboItemModel.ts" />
     <None Remove="scripts\recibos\ReciboModel.ts" />
     <None Remove="scripts\recibos\RecibosModel.ts" />
@@ -76,6 +77,7 @@
     <TypeScriptCompile Include="scripts\recibos\appReciboVer.ts" />
     <TypeScriptCompile Include="scripts\recibos\iReciboItemModel.ts" />
     <TypeScriptCompile Include="scripts\recibos\iReciboModel.ts" />
+    <TypeScriptCompile Include="scripts\recibos\iReciboReportModel.ts" />
     <TypeScriptCompile Include="scripts\recibos\ReciboItemModel.ts" />
     <TypeScriptCompile Include="scripts\recibos\ReciboModel.ts" />
     <TypeScriptCompile Include="scripts\recibos\RecibosModel.ts" />
