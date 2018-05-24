@@ -3,7 +3,7 @@ import HttpMethod = require("./httpMethod");
 
 interface IModel {
     httpMethod: HttpMethod;
-    endPont: string;
+    endPoint: string;
     urlParams: IDictionaryString;
     body: string;
 }

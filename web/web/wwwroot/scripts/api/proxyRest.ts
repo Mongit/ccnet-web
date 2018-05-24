@@ -12,7 +12,7 @@ class ProxyRest extends ProxyBase {
         const self = this;
         let model: IModel = {
             body: "",
-            endPont: self.getUrlWithId(id, pageNumber, pageSize),
+            endPoint: self.getUrlWithId(id, pageNumber, pageSize),
             httpMethod: HttpMethod.get,
             urlParams: {}
         };
@@ -24,7 +24,7 @@ class ProxyRest extends ProxyBase {
         const self = this;
         let model: IModel = {
             body: JSON.stringify(body),
-            endPont: self.endPoint,
+            endPoint: self.endPoint,
             httpMethod: HttpMethod.post,
             urlParams: {}
         };
@@ -36,7 +36,7 @@ class ProxyRest extends ProxyBase {
         const self = this;
         let model: IModel = {
             body: JSON.stringify(body),
-            endPont: self.getUrlWithId(id),
+            endPoint: self.getUrlWithId(id),
             httpMethod: HttpMethod.put,
             urlParams: {}
         };
@@ -48,7 +48,7 @@ class ProxyRest extends ProxyBase {
         const self = this;
         let model: IModel = {
             body: "",
-            endPont: self.getUrlWithId(id),
+            endPoint: self.getUrlWithId(id),
             httpMethod: HttpMethod.delete,
             urlParams: {}
         };

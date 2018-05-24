@@ -77,11 +77,6 @@ module.exports = {
     plugins: [
         new webpack.ProvidePlugin({
             Promise: 'es6-promise-promise'
-        }),
-        new webpack.LoaderOptionsPlugin({
-            options: {
-                mode:'production'
-            }
         })
     ]
 };

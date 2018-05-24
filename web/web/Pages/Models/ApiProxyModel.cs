@@ -20,7 +20,7 @@ namespace web.Pages.Models
         [JsonProperty(PropertyName = "httpMethod")]
         public HttpMethod HttpMethod { get; set; }
         [JsonProperty(PropertyName = "endPoint")]
-        public string EndPont { get; set; }
+        public string EndPoint { get; set; }
         [JsonProperty(PropertyName = "urlParams")]
         public Dictionary<string, string> UrlParams { get; set; }
         [JsonProperty(PropertyName = "body")]
@@ -30,10 +30,10 @@ namespace web.Pages.Models
         {
             if (UrlParams == null || UrlParams.Count == 0)
             {
-                return EndPont;
+                return EndPoint;
             }
 
-            return string.Format("{0}?{1}", EndPont, string.Join("&", UrlParams.Select(kvp => string.Format("{0}={1}", kvp.Key, kvp.Value))));
+            return string.Format("{0}?{1}", EndPoint, string.Join("&", UrlParams.Select(kvp => string.Format("{0}={1}", kvp.Key, kvp.Value))));
         }
     }
 }

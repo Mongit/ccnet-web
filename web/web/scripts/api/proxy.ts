@@ -15,7 +15,7 @@ class Proxy extends ProxyBase {
         const self = this;
         let model: IModel = {
             body: "",
-            endPont: self.endPoint,
+            endPoint: self.endPoint,
             httpMethod: HttpMethod.get,
             urlParams: urlParams
         };
@@ -27,7 +27,7 @@ class Proxy extends ProxyBase {
         const self = this;
         let model: IModel = {
             body: JSON.stringify(body),
-            endPont: self.endPoint,
+            endPoint: self.endPoint,
             httpMethod: HttpMethod.post,
             urlParams: urlParams
         };
@@ -39,7 +39,7 @@ class Proxy extends ProxyBase {
         const self = this;
         let model: IModel = {
             body: JSON.stringify(body),
-            endPont: self.endPoint,
+            endPoint: self.endPoint,
             httpMethod: HttpMethod.put,
             urlParams: urlParams
         };
@@ -51,7 +51,7 @@ class Proxy extends ProxyBase {
         const self = this;
         let model: IModel = {
             body: "",
-            endPont: self.endPoint,
+            endPoint: self.endPoint,
             httpMethod: HttpMethod.delete,
             urlParams: urlParams
         };

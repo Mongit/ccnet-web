@@ -1007,7 +1007,7 @@ var ProxyRest = /** @class */ (function (_super) {
                 self = this;
                 model = {
                     body: "",
-                    endPont: self.getUrlWithId(id, pageNumber, pageSize),
+                    endPoint: self.getUrlWithId(id, pageNumber, pageSize),
                     httpMethod: HttpMethod.get,
                     urlParams: {}
                 };
@@ -1022,7 +1022,7 @@ var ProxyRest = /** @class */ (function (_super) {
                 self = this;
                 model = {
                     body: JSON.stringify(body),
-                    endPont: self.endPoint,
+                    endPoint: self.endPoint,
                     httpMethod: HttpMethod.post,
                     urlParams: {}
                 };
@@ -1037,7 +1037,7 @@ var ProxyRest = /** @class */ (function (_super) {
                 self = this;
                 model = {
                     body: JSON.stringify(body),
-                    endPont: self.getUrlWithId(id),
+                    endPoint: self.getUrlWithId(id),
                     httpMethod: HttpMethod.put,
                     urlParams: {}
                 };
@@ -1052,7 +1052,7 @@ var ProxyRest = /** @class */ (function (_super) {
                 self = this;
                 model = {
                     body: "",
-                    endPont: self.getUrlWithId(id),
+                    endPoint: self.getUrlWithId(id),
                     httpMethod: HttpMethod.delete,
                     urlParams: {}
                 };

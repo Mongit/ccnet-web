@@ -44,7 +44,7 @@ namespace web.Pages
             var model = new ApiProxyModel
             {
                 HttpMethod = Models.HttpMethod.Post,
-                EndPont = "/api/Token",
+                EndPoint = "/api/Token",
                 UrlParams = null,
                 Body = JsonConvert.SerializeObject(userModel)
             };
