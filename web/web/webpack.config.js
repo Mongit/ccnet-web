@@ -74,10 +74,14 @@ module.exports = {
         filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'wwwroot/dist/')
     },
-
     plugins: [
         new webpack.ProvidePlugin({
             Promise: 'es6-promise-promise'
+        }),
+        new webpack.LoaderOptionsPlugin({
+            options: {
+                mode:'production'
+            }
         })
     ]
 };
