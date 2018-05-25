@@ -58,7 +58,10 @@ var ProxyBase = /** @class */ (function () {
                 promise = $.ajax({
                     url: 'ServerCall',
                     method: 'POST',
-                    data: model
+                    data: model,
+                });
+                promise.fail(function (a, b, c) {
+                    console.error("Error calling server");
                 });
                 return [2 /*return*/, Promise.resolve(promise)];
             });

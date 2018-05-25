@@ -27,10 +27,16 @@ abstract class ProxyBase {
         let promise = $.ajax({
             url: 'ServerCall',
             method: 'POST',
-            data: model
+            data: model,
         });
 
+        promise.fail(function (a: any, b: any, c: any): void {
+            console.error("Error calling server");
+        });   
+
         return Promise.resolve(promise);
+
+
     }
 }
 
