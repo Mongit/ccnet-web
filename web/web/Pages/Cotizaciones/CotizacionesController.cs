@@ -4,7 +4,7 @@ using web.Pages.Models;
 
 namespace web.Pages
 {
-    [Authorize]
+    //[Authorize]
     public class CotizacionesController : BaseController
     {
         private IConfiguration _config;
