@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using web.Pages.Models;
 
@@ -46,10 +48,14 @@ namespace web.Pages
         {
             try
             {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine( JsonConvert.SerializeObject(model) );
+
                 HttpResponseMessage response = await Proxy.ServerCall(model, this.Token);
                 response.EnsureSuccessStatusCode();
+                sb.AppendLine(await response.Content.ReadAsStringAsync());
 
-                return Content(await response.Content.ReadAsStringAsync());
+                return Content(sb.ToString());
                 //return Content("Hola inicio");
             }
             catch (Exception ex)
