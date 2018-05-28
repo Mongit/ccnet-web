@@ -50,7 +50,9 @@ namespace web.Pages
             }
             catch (Exception ex)
             {
-                throw ex;
+                return Content(string.Format("{0} /r/n{1}", ex.Message, ex.StackTrace));
+               
+                //throw ex;
             }
 
         }
