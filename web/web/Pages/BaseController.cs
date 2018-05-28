@@ -47,12 +47,14 @@ namespace web.Pages
             try
             {
                 HttpResponseMessage response = await Proxy.ServerCall(model, this.Token);
+                response.EnsureSuccessStatusCode();
+
                 return Content(await response.Content.ReadAsStringAsync());
                 //return Content("Hola inicio");
             }
             catch (Exception ex)
             {
-                return Content(string.Format("{0} {1}", ex.Message, ex.StackTrace));
+                return Content(string.Format("{0} {1} {2}", ex.Message, ex.StackTrace, Token));
 //              throw ex;
             }
 
