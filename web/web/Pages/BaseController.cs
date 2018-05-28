@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using web.Pages.Models;
 
 namespace web.Pages
 {
+    [AllowAnonymous]
     public class BaseController: Controller
     {
         private IApiProxy Proxy { get; set; }
@@ -37,7 +39,7 @@ namespace web.Pages
         }
 
         
-
+        
         [HttpPost]
         public async Task<IActionResult> ServerCall(ApiProxyModel model)
         {
