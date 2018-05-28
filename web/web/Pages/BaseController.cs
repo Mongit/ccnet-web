@@ -52,7 +52,7 @@ namespace web.Pages
                 sb.AppendLine( JsonConvert.SerializeObject(model) );
 
                 HttpResponseMessage response = await Proxy.ServerCall(model, this.Token);
-                response.EnsureSuccessStatusCode();
+                
                 sb.AppendLine(await response.Content.ReadAsStringAsync());
 
                 return Content(sb.ToString());
@@ -60,7 +60,7 @@ namespace web.Pages
             }
             catch (Exception ex)
             {
-                return Content(string.Format("{0} {1} {2}", ex.Message, ex.StackTrace, Token));
+                return Content(string.Format("{0} {1} {2}", ex.Message, ex.StackTrace, JsonConvert.SerializeObject(model)));
 //              throw ex;
             }
 
