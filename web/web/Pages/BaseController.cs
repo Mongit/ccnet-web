@@ -40,7 +40,7 @@ namespace web.Pages
 
 
 
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost]
         //public async Task<IActionResult> ServerCall(ApiProxyModel model)
         public async Task<IActionResult> ServerCall()
         {
