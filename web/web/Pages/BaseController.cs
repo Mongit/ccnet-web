@@ -41,17 +41,19 @@ namespace web.Pages
 
 
         [HttpPost, ValidateAntiForgeryToken]
+        //public async Task<IActionResult> ServerCall(ApiProxyModel model)
         public async Task<IActionResult> ServerCall()
         {
             try
             {
-
-                HttpResponseMessage response = await Proxy.ServerCall(new ApiProxyModel(), this.Token);
-                return Content(await response.Content.ReadAsStringAsync());
+                //HttpResponseMessage response = await Proxy.ServerCall(model, this.Token);
+                //return Content(await response.Content.ReadAsStringAsync());
+                return Content("Hola inicio");
             }
             catch (Exception ex)
             {
-               throw ex;
+                return Content(string.Format("{0} {1}", ex.Message, ex.StackTrace));
+//              throw ex;
             }
 
         }
