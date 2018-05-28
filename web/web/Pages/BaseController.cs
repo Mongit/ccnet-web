@@ -41,19 +41,16 @@ namespace web.Pages
 
 
         [HttpPost]
-        public async Task<IActionResult> ServerCall()
+        public async Task<IActionResult> ServerCall(ApiProxyModel model)
         {
             try
             {
-                //HttpResponseMessage response = await Proxy.ServerCall(model, this.Token);
-                //return Content(await response.Content.ReadAsStringAsync());
-                return Content("Hola checa tu model");
+                HttpResponseMessage response = await Proxy.ServerCall(model, this.Token);
+                return Content(await response.Content.ReadAsStringAsync());
             }
             catch (Exception ex)
             {
-                return Content(string.Format("{0} /r/n{1}", ex.Message, ex.StackTrace));
-               
-                //throw ex;
+               throw ex;
             }
 
         }
