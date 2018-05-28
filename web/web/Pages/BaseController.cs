@@ -41,14 +41,14 @@ namespace web.Pages
 
 
         [HttpPost]
-        //public async Task<IActionResult> ServerCall(ApiProxyModel model)
-        public async Task<IActionResult> ServerCall()
+        public async Task<IActionResult> ServerCall(ApiProxyModel model)
+        //public async Task<IActionResult> ServerCall()
         {
             try
             {
-                //HttpResponseMessage response = await Proxy.ServerCall(model, this.Token);
-                //return Content(await response.Content.ReadAsStringAsync());
-                return Content("Hola inicio");
+                HttpResponseMessage response = await Proxy.ServerCall(model, this.Token);
+                return Content(await response.Content.ReadAsStringAsync());
+                //return Content("Hola inicio");
             }
             catch (Exception ex)
             {
