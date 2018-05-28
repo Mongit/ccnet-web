@@ -46,11 +46,12 @@ namespace web.Pages
         public async Task<IActionResult> ServerCall(ApiProxyModel model)
         //public async Task<IActionResult> ServerCall()
         {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(Token);
+            sb.AppendLine(JsonConvert.SerializeObject(model));
+
             try
             {
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine( JsonConvert.SerializeObject(model) );
-
                 HttpResponseMessage response = await Proxy.ServerCall(model, this.Token);
                 
                 sb.AppendLine(await response.Content.ReadAsStringAsync());
@@ -60,7 +61,10 @@ namespace web.Pages
             }
             catch (Exception ex)
             {
-                return Content(string.Format("{0} {1} {2}", ex.Message, ex.StackTrace, JsonConvert.SerializeObject(model)));
+                sb.AppendLine(ex.Message);
+                sb.AppendLine(ex.StackTrace);
+               
+                return Content(sb.ToString());
 //              throw ex;
             }
 
