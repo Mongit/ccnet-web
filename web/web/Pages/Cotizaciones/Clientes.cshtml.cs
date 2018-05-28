@@ -8,7 +8,7 @@ namespace web.Pages
     {
         public void OnGet()
         {
-            ViewData["Message"] = "Hola Mundo.";
+            
         }
     }
 }
