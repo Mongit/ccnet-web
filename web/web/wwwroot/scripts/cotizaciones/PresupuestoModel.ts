@@ -158,7 +158,7 @@ class PresupuestoModel extends KoForm {
         if (await self.validate()) {
             let model = self.getModel();
             let serverModel = await self.proxy.post<IPresupuestoModel>(model);
-            alert("cotizacion" + JSON.stringify(serverModel));
+            alert("Cotización guardada exitosamente.");
         }
     }
 }

@@ -19204,7 +19204,7 @@ var PresupuestoModel = /** @class */ (function (_super) {
                         return [4 /*yield*/, self.proxy.post(model)];
                     case 2:
                         serverModel = _a.sent();
-                        alert("cotizacion" + JSON.stringify(serverModel));
+                        alert("Cotización guardada exitosamente.");
                         _a.label = 3;
                     case 3: return [2 /*return*/];
                 }
