@@ -19525,7 +19525,7 @@ var PresupuetosModel = /** @class */ (function (_super) {
                         return [4 /*yield*/, self.proxy.put(presupuesto.presupuestoId, model)];
                     case 3:
                         serverModel = _a.sent();
-                        alert("cotizacion" + JSON.stringify(serverModel));
+                        alert(JSON.stringify(serverModel));
                         _a.label = 4;
                     case 4: return [2 /*return*/];
                 }

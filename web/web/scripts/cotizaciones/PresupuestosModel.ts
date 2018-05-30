@@ -174,7 +174,7 @@ class PresupuetosModel extends KoForm {
             else {
                 let model = presupuesto.getModel();
                 let serverModel = await self.proxy.put<IPresupuestoModel>(presupuesto.presupuestoId, model);
-                alert("cotizacion" + JSON.stringify(serverModel));
+                alert(JSON.stringify(serverModel));
             }
         }
     }
