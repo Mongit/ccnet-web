@@ -1,5 +1,6 @@
 ﻿interface IProductoReportModel {
     id: string;
+    folio: number;
     nombre: string;
     color: string;
     cantidad: number;

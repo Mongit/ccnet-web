@@ -16,6 +16,7 @@
     <table class="table table-hover">
         <thead>
             <tr>
+                <th scope="col">Folio</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Color</th>
                 <th scope="col">Unidad</th>
@@ -25,6 +26,7 @@
         <tbody>
             <!-- ko foreach: productos -->
             <tr>
+                <td data-bind="text: folio"></td>
                 <td data-bind="text: nombre"></td>
                 <td data-bind="text: color"></td>
                 <td data-bind="text: unidad"></td>

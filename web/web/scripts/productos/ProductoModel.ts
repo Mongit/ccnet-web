@@ -10,6 +10,7 @@ class ProductoModel extends KoForm {
     public remoteValue: KnockoutObservable<string>;
     public currentTemplate: KnockoutObservable<string>;
     public proveedorId: KnockoutObservable<string>;
+    public folio: KnockoutObservable<number>;
 
     public proxy: ProxyRest;
     public productoIdUrlParam: string;
@@ -27,6 +28,7 @@ class ProductoModel extends KoForm {
         this.color = self.addField<string>([new stringValidators.RequiredStringValidator()]);
         this.unidad = self.addField<string>([new stringValidators.RequiredStringValidator()]);
 
+        this.folio = ko.observable<number>();
         this.remoteValue = ko.observable<string>();
         this.currentTemplate = ko.observable<string>("nuevo");
         this.proveedorId = ko.observable<string>();
@@ -48,7 +50,8 @@ class ProductoModel extends KoForm {
 
         let response = await self.proxy.get<IProductoModel>(self.productoIdUrlParam);
         let productoJson = JSON.parse(JSON.parse(JSON.stringify(response)));
-        
+
+        self.folio(productoJson.folio);
         self.nombre.value(productoJson.nombre);
         self.color.value(productoJson.color);
         self.unidad.value(productoJson.unidad);
@@ -90,6 +93,7 @@ class ProductoModel extends KoForm {
 
         return {
             id: self.productoIdUrlParam ? self.productoIdUrlParam : "00000000-0000-0000-0000-000000000000",
+            folio: self.folio(),
             nombre: self.nombre.value(),
             color: self.color.value(),
             unidad: self.unidad.value(),

@@ -811,6 +811,7 @@ var ProductoModel = /** @class */ (function (_super) {
         _this.nombre = self.addField([new stringValidators.RequiredStringValidator()]);
         _this.color = self.addField([new stringValidators.RequiredStringValidator()]);
         _this.unidad = self.addField([new stringValidators.RequiredStringValidator()]);
+        _this.folio = ko.observable();
         _this.remoteValue = ko.observable();
         _this.currentTemplate = ko.observable("nuevo");
         _this.proveedorId = ko.observable();
@@ -835,6 +836,7 @@ var ProductoModel = /** @class */ (function (_super) {
                     case 1:
                         response = _a.sent();
                         productoJson = JSON.parse(JSON.parse(JSON.stringify(response)));
+                        self.folio(productoJson.folio);
                         self.nombre.value(productoJson.nombre);
                         self.color.value(productoJson.color);
                         self.unidad.value(productoJson.unidad);
@@ -910,6 +912,7 @@ var ProductoModel = /** @class */ (function (_super) {
         var self = this;
         return {
             id: self.productoIdUrlParam ? self.productoIdUrlParam : "00000000-0000-0000-0000-000000000000",
+            folio: self.folio(),
             nombre: self.nombre.value(),
             color: self.color.value(),
             unidad: self.unidad.value(),

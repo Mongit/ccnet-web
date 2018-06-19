@@ -63,6 +63,7 @@ class ProductosModel {
     public getModel(producto: iProductoModel): iProductoModel {
         return {
             id: producto.id,
+            folio: producto.folio,
             nombre: producto.nombre,
             color: producto.color,
             unidad: producto.unidad,

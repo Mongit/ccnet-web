@@ -448,6 +448,7 @@ var ProductosModel = /** @class */ (function () {
     ProductosModel.prototype.getModel = function (producto) {
         return {
             id: producto.id,
+            folio: producto.folio,
             nombre: producto.nombre,
             color: producto.color,
             unidad: producto.unidad,

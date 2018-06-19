@@ -61,6 +61,7 @@ class ProductosReportModel {
         return {
             id: producto.id,
             nombre: producto.nombre,
+            folio: producto.folio,
             color: producto.color,
             cantidad: producto.cantidad,
             unidad: producto.unidad,
