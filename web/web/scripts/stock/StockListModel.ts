@@ -68,6 +68,7 @@ class StockListModel {
                 proveedorId: stock.proveedorId,
                 reciboId: stock.reciboId,
                 productoNombre: stock.productoNombre,
+                productoFolio: stock.productoFolio,
                 proveedorEmpresa: stock.proveedorEmpresa,
                 reciboFolio: stock.reciboFolio
             });

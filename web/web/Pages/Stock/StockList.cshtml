@@ -16,6 +16,7 @@
     <table class="table table-hover">
         <thead>
             <tr>
+                <th scope="col">Folio</th>
                 <th scope="col">Producto</th>
                 <th scope="col">Cantidad</th>
                 <th scope="col">Precio</th>
@@ -28,6 +29,7 @@
         <tbody>
             <!-- ko foreach: stockList -->
             <tr>
+                <td data-bind="text: productoFolio"></td>
                 <td data-bind="text: productoNombre"></td>
                 <td data-bind="text: cantidad"></td>
                 <td data-bind="text: precio"></td>

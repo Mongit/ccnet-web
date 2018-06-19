@@ -7,6 +7,7 @@
     proveedorId: string;
     reciboId: string;
     productoNombre: string;
+    productoFolio: string;
     proveedorEmpresa: string;
     reciboFolio: string;
 }
