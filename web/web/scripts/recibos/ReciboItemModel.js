@@ -60,8 +60,14 @@ var ReciboItemModel = /** @class */ (function (_super) {
         _this.descripcion = self.addField([new stringValidator.RequiredStringValidator()]);
         _this.precio = self.addField([new numberValidator.FloatValidator(), new numberValidator.RequiredNumberValidator()]);
         _this.cotizacionRemoteValue = ko.observable();
+        _this.cotizacionHasError = ko.observable(false);
         _this.costo = ko.computed(function () {
             return self.cantidad.value() * self.precio.value();
+        }, self);
+        _this.autocompleteFieldsValid = ko.computed(function () {
+            var cotValidation = self.isGUID(self.cotizacionRemoteValue()) || self.isEmpty(self.cotizacionRemoteValue()) ? true : false;
+            self.cotizacionHasError(cotValidation === true ? false : true);
+            return cotValidation;
         }, self);
         return _this;
     }
@@ -92,6 +98,20 @@ var ReciboItemModel = /** @class */ (function (_super) {
                 }
             });
         });
+    };
+    ReciboItemModel.prototype.isGUID = function (expression) {
+        if (expression != null) {
+            var guidRegExp = new RegExp('^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$');
+            return guidRegExp.test(expression);
+        }
+        return false;
+    };
+    ReciboItemModel.prototype.isEmpty = function (expression) {
+        if (expression === undefined || expression === null || $.trim(expression).length === 0
+            || expression === null || expression === undefined) {
+            return true;
+        }
+        return false;
     };
     return ReciboItemModel;
 }(KoForm));

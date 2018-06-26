@@ -61,14 +61,20 @@
                 <small class="text-muted">(Opcional)</small>
             </strong>
         </label>
-        <input type="text" class="form-control" placeholder="Buscar Cliente..." data-bind="jqAuto: { source: clienteRemoteHandler, value: clienteRemoteValue, inputProp: 'empresa', labelProp: 'empresa', valueProp: 'id' }" />
+        <input type="text" class="form-control" placeholder="Buscar y seleccionar un cliente..." data-bind="jqAuto: { source: clienteRemoteHandler, value: clienteRemoteValue, inputProp: 'empresa', labelProp: 'empresa', valueProp: 'id' }, css: { 'is-invalid': clienteHasError() }" />
+        <!-- ko if: clienteHasError() -->
+        <div class="invalid-feedback">Seleccione un cliente.</div>
+        <!-- /ko  -->
     </div>
     <div class="form-group">
         <label>
             <strong>Proveedor</strong>
             <small class="text-muted">(Opcional)</small>
         </label>
-        <input type="text" class="form-control" placeholder="Buscar Proveedor..." data-bind="jqAuto: { source: proveedorRemoteHandler, value: proveedorRemoteValue, inputProp: 'empresa', labelProp: 'empresa', valueProp: 'id' }" />
+        <input type="text" class="form-control" placeholder="Buscar y seleccionar un proveedor..." data-bind="jqAuto: { source: proveedorRemoteHandler, value: proveedorRemoteValue, inputProp: 'empresa', labelProp: 'empresa', valueProp: 'id' }, css: { 'is-invalid': proveedorHasError() }" />
+        <!-- ko if: proveedorHasError() -->
+        <div class="invalid-feedback">Seleccione un proveedor.</div>
+        <!-- /ko  -->
     </div>
     <div class="form-group text-right">
         <a class="btn btn-light" data-bind="attr: { href: 'Recibos' }">Cancelar</a>
@@ -89,7 +95,10 @@
                         <label>Cotización</label>
                         <small class="text-muted">(Opcional)</small>
                     </label>
-                    <input type="text" class="form-control" placeholder="Buscar folio..." data-bind="jqAuto: { source: cotizacionRemoteHandler, value: cotizacionRemoteValue, inputProp: 'folio', labelProp: 'fecha', valueProp: 'id', template: 'rowTmpl' }" />
+                    <input type="text" class="form-control" placeholder="Buscar y seleccionar un folio..." data-bind="jqAuto: { source: cotizacionRemoteHandler, value: cotizacionRemoteValue, inputProp: 'folio', labelProp: 'fecha', valueProp: 'id', template: 'rowTmpl' }, css: { 'is-invalid': cotizacionHasError() }" />
+                    <!-- ko if: cotizacionHasError() -->
+                    <div class="invalid-feedback">Seleccione un folio.</div>
+                    <!-- /ko  -->
                 </div>
             </div>
             <div class="form-row">

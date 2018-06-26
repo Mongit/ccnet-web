@@ -51,9 +51,18 @@ var ReciboModel = /** @class */ (function () {
         this.proveedorRemoteValue = ko.observable();
         this.temporalItem = ko.observable(new ReciboItemModel());
         this.temporalItemHasFocus = ko.observable();
+        this.clienteHasError = ko.observable(false);
+        this.proveedorHasError = ko.observable(false);
         this.reciboItems = ko.observableArray();
         this.proxy = new ProxyRest("/api/Recibos");
         this.reciboIdUrlParam = UrlUtils.getParameterByName("id", window.location);
+        this.autocompleteFieldsValid = ko.computed(function () {
+            var cteValidation = self.isGUID(self.clienteRemoteValue()) || self.isEmpty(self.clienteRemoteValue()) ? true : false;
+            var provValidation = self.isGUID(self.proveedorRemoteValue()) || self.isEmpty(self.proveedorRemoteValue()) ? true : false;
+            self.clienteHasError(cteValidation === true ? false : true);
+            self.proveedorHasError(provValidation === true ? false : true);
+            return cteValidation && provValidation;
+        }, self);
         this.getOne();
         this.total = ko.computed(function () {
             var sumaCostos = 0;
@@ -123,13 +132,18 @@ var ReciboModel = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         self = this;
+                        if (!self.autocompleteFieldsValid()) return [3 /*break*/, 2];
                         model = self.getModel();
                         return [4 /*yield*/, self.proxy.put(self.reciboIdUrlParam, model)];
                     case 1:
                         response = _a.sent();
                         alert(response);
                         window.location.href = "Recibos";
-                        return [2 /*return*/];
+                        return [3 /*break*/, 3];
+                    case 2:
+                        alert("Por favor, revise que los campos esten llenados correctamente.");
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
                 }
             });
         });
@@ -193,6 +207,20 @@ var ReciboModel = /** @class */ (function () {
                 }
             }
         });
+    };
+    ReciboModel.prototype.isGUID = function (expression) {
+        if (expression != null) {
+            var guidRegExp = new RegExp('^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$');
+            return guidRegExp.test(expression);
+        }
+        return false;
+    };
+    ReciboModel.prototype.isEmpty = function (expression) {
+        if (expression === undefined || expression === null || $.trim(expression).length === 0
+            || expression === null || expression === undefined) {
+            return true;
+        }
+        return false;
     };
     return ReciboModel;
 }());

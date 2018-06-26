@@ -17,10 +17,13 @@ class ReciboModel {
     public proveedorRemoteValue: KnockoutObservable<string>;
     public temporalItem: KnockoutObservable<ReciboItemModel>;
     public temporalItemHasFocus: KnockoutObservable<boolean>;
-
+    public clienteHasError: KnockoutObservable<boolean>;
+    public proveedorHasError: KnockoutObservable<boolean>;
+    
     public reciboItems: KnockoutObservableArray<ReciboItemModel>;
 
     public total: KnockoutComputed<number>;
+    public autocompleteFieldsValid: KnockoutComputed<boolean>
 
     public proxy: ProxyRest;
     public reciboIdUrlParam: string;
@@ -34,11 +37,23 @@ class ReciboModel {
         this.proveedorRemoteValue = ko.observable<string>();
         this.temporalItem = ko.observable<ReciboItemModel>(new ReciboItemModel());
         this.temporalItemHasFocus = ko.observable<boolean>();
-
+        this.clienteHasError = ko.observable<boolean>(false);
+        this.proveedorHasError = ko.observable<boolean>(false);
+        
         this.reciboItems = ko.observableArray<ReciboItemModel>();
 
         this.proxy = new ProxyRest("/api/Recibos");
         this.reciboIdUrlParam = UrlUtils.getParameterByName("id", window.location);
+
+        this.autocompleteFieldsValid = ko.computed<boolean>(function (): boolean {
+            let cteValidation = self.isGUID(self.clienteRemoteValue()) || self.isEmpty(self.clienteRemoteValue()) ? true : false;
+            let provValidation = self.isGUID(self.proveedorRemoteValue()) || self.isEmpty(self.proveedorRemoteValue()) ? true : false;
+            
+            self.clienteHasError(cteValidation === true ? false : true);
+            self.proveedorHasError(provValidation === true ? false : true);
+            
+            return cteValidation && provValidation;
+        }, self);
 
         this.getOne();
 
@@ -79,10 +94,15 @@ class ReciboModel {
     
     public async update(): Promise<void> {
         const self = this;
-        let model = self.getModel();
-        let response = await self.proxy.put<IReciboModel>(self.reciboIdUrlParam, model);
-        alert(response);
-        window.location.href = "Recibos";
+        if (self.autocompleteFieldsValid()) {
+            let model = self.getModel();
+            let response = await self.proxy.put<IReciboModel>(self.reciboIdUrlParam, model);
+            alert(response);
+            window.location.href = "Recibos";
+        }
+        else {
+            alert("Por favor, revise que los campos esten llenados correctamente.");
+        }
     }
 
     public getModel(): IReciboModel {
@@ -141,6 +161,22 @@ class ReciboModel {
                 }
             }
         });
+    }
+
+    public isGUID(expression: string): boolean {
+        if (expression != null) {
+            let guidRegExp = new RegExp('^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$');
+            return guidRegExp.test(expression);
+        }
+        return false;
+    }
+
+    public isEmpty(expression: string): boolean {
+        if (expression === undefined || expression === null || $.trim(expression).length === 0
+            || expression === null || expression === undefined) {
+            return true;
+        }
+        return false;
     }
 }
 
