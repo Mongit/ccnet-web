@@ -60,15 +60,25 @@ var ProductoModel = /** @class */ (function (_super) {
         _this.remoteValue = ko.observable();
         _this.currentTemplate = ko.observable("nuevo");
         _this.proveedorId = ko.observable();
+        _this.proveedorHasError = ko.observable(false);
         _this.proxy = new ProxyRest("/api/Productos");
         _this.productoIdUrlParam = UrlUtils.getParameterByName("id", window.location);
+        _this.unusedField = true;
+        _this.isDataFromServer = false;
         self.productoIdUrlParam ? self.editarTemplate() : self.currentTemplate('nuevo');
+        _this.autocompleteFieldsValid = ko.computed(function () {
+            var provValidation = self.isGUID(self.remoteValue()) || self.unusedField ? true : false;
+            self.unusedField = false;
+            self.proveedorHasError(provValidation === true || self.isDataFromServer === true ? false : true);
+            return provValidation;
+        }, self);
         return _this;
     }
     ProductoModel.prototype.editarTemplate = function () {
         var self = this;
         self.getOne();
         self.currentTemplate("editar");
+        self.isDataFromServer = true;
     };
     ProductoModel.prototype.getOne = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -106,6 +116,7 @@ var ProductoModel = /** @class */ (function (_super) {
                         self.remoteValue(proveedorJson.empresa);
                         self.proveedorName = proveedorJson.empresa;
                         self.proveedorId(proveedorJson.id);
+                        self.isDataFromServer = false;
                         return [2 /*return*/];
                 }
             });
@@ -137,7 +148,7 @@ var ProductoModel = /** @class */ (function (_super) {
                         self = this;
                         return [4 /*yield*/, self.validate()];
                     case 1:
-                        if (!((_a.sent()) && self.remoteValue())) return [3 /*break*/, 3];
+                        if (!((_a.sent()) && self.autocompleteFieldsValid())) return [3 /*break*/, 3];
                         model = self.getModel();
                         return [4 /*yield*/, self.proxy.post(model)];
                     case 2:
@@ -146,7 +157,7 @@ var ProductoModel = /** @class */ (function (_super) {
                         window.location.href = "Productos";
                         return [3 /*break*/, 4];
                     case 3:
-                        alert("Lo sentimos, ningun campo debe estar vacío.");
+                        self.proveedorHasError(self.isEmpty(self.remoteValue()) ? true : false);
                         _a.label = 4;
                     case 4: return [2 /*return*/];
                 }
@@ -176,7 +187,7 @@ var ProductoModel = /** @class */ (function (_super) {
                         }
                         return [4 /*yield*/, self.validate()];
                     case 1:
-                        if (!((_a.sent()) && self.remoteValue())) return [3 /*break*/, 3];
+                        if (!((_a.sent()) && self.autocompleteFieldsValid())) return [3 /*break*/, 3];
                         model = self.getModel();
                         return [4 /*yield*/, self.proxy.put(self.productoIdUrlParam, model)];
                     case 2:
@@ -188,6 +199,20 @@ var ProductoModel = /** @class */ (function (_super) {
                 }
             });
         });
+    };
+    ProductoModel.prototype.isGUID = function (expression) {
+        if (expression != null) {
+            var guidRegExp = new RegExp('^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$');
+            return guidRegExp.test(expression);
+        }
+        return false;
+    };
+    ProductoModel.prototype.isEmpty = function (expression) {
+        if (expression === undefined || expression === null || $.trim(expression).length === 0
+            || expression === null || expression === undefined) {
+            return true;
+        }
+        return false;
     };
     return ProductoModel;
 }(KoForm));
