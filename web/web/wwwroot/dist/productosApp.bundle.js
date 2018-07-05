@@ -396,7 +396,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var Page = __webpack_require__(146);
-var ProxyRest = __webpack_require__(4);
+var ProxyRest = __webpack_require__(3);
 var ConfirmModal = __webpack_require__(143);
 var BindedModal = __webpack_require__(142);
 var Size = __webpack_require__(14);
@@ -541,7 +541,7 @@ module.exports = KoBinder;
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

@@ -1,0 +1,42 @@
+﻿@page
+@model web.Pages.Productos.ProductoVerModel
+@{
+    ViewData["Title"] = "ProductoVer";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+@section Scripts {
+    <script src="~/dist/productoReportApp.bundle.js" type="text/javascript"></script>
+}
+
+<div id="productoReportModel">
+    <h2>Producto</h2>
+    <form>
+        <div class="form-group">
+            <label><strong>Folio</strong></label>
+            <input type="text" class="form-control" data-bind="value: folio" disabled/>
+        </div>
+        <div class="form-group">
+            <label><strong>Nombre del producto</strong></label>
+            <input type="text" class="form-control" data-bind="value: nombre" disabled/>
+        </div>
+        <div class="form-group">
+            <label><strong>Color</strong></label>
+            <input type="text" class="form-control" data-bind="value: color" disabled/>
+        </div>
+        <div class="form-group">
+            <label><strong>Cantidad</strong></label>
+            <input type="text" class="form-control" data-bind="value: cantidad" disabled/>
+        </div>
+        <div class="form-group">
+            <label><strong>Unidad</strong></label>
+            <input type="text" class="form-control" data-bind="value: unidad" disabled/>
+        </div>
+        <div class="form-group">
+            <label><strong>Proveedor</strong></label>
+            <input type="text" class="form-control" data-bind="value: proveedor" disabled/>
+        </div>
+        <div class="form-group text-right">
+            <a class="btn btn-light" data-bind="attr: { href: 'Productos' }">Volver</a>
+        </div>
+    </form>
+</div>

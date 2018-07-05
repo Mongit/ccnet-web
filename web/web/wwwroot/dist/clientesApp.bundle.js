@@ -4632,8 +4632,7 @@ module.exports = KoBinder;
 
 
 /***/ }),
-/* 3 */,
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4757,6 +4756,7 @@ module.exports = ProxyRest;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
+/* 4 */,
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18329,7 +18329,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var ClienteModel = __webpack_require__(161);
-var ProxyRest = __webpack_require__(4);
+var ProxyRest = __webpack_require__(3);
 var Page = __webpack_require__(146);
 var moment = __webpack_require__(0);
 moment.locale('es');

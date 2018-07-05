@@ -54,8 +54,11 @@ module.exports = {
         stockApp: [
             './scripts/stock/appStock.ts'
         ],
-        productoReportApp: [
+        productosReportApp: [
             './scripts/productos/appProductosReport.ts'
+        ],
+        productoReportApp: [
+            './scripts/productos/appProductoReport.ts'
         ]
     },
     module: {

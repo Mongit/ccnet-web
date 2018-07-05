@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 205);
+/******/ 	return __webpack_require__(__webpack_require__.s = 208);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -154,19 +154,28 @@ module.exports = ProxyBase;
 
 /***/ }),
 
-/***/ 146:
+/***/ 135:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var PageModel = /** @class */ (function () {
-    function PageModel(isSelected, pageNumber) {
-        this.isSelected = ko.observable(isSelected);
-        this.pageNumber = ko.observable(pageNumber);
+var UrlUtils = /** @class */ (function () {
+    function UrlUtils() {
     }
-    return PageModel;
+    UrlUtils.getParameterByName = function (name, url) {
+        if (!url)
+            url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
+        if (!results)
+            return null;
+        if (!results[2])
+            return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    };
+    return UrlUtils;
 }());
-module.exports = PageModel;
+module.exports = UrlUtils;
 
 
 /***/ }),
@@ -191,15 +200,15 @@ module.exports = KoBinder;
 
 /***/ }),
 
-/***/ 205:
+/***/ 208:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(206);
+module.exports = __webpack_require__(209);
 
 
 /***/ }),
 
-/***/ 206:
+/***/ 209:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -241,11 +250,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var KoBinder = __webpack_require__(2);
-var ProductosReportModel = __webpack_require__(207);
+var ProductoReportModel = __webpack_require__(210);
 $(function () {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            KoBinder.bind($("#productosReportModel"), new ProductosReportModel());
+            KoBinder.bind($("#productoReportModel"), new ProductoReportModel());
             return [2 /*return*/];
         });
     });
@@ -255,7 +264,7 @@ $(function () {
 
 /***/ }),
 
-/***/ 207:
+/***/ 210:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -295,103 +304,51 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var Page = __webpack_require__(146);
-var ProxyRest = __webpack_require__(4);
-var ProductosReportModel = /** @class */ (function () {
-    function ProductosReportModel() {
-        this.pageSize = 20;
-        this.pageNumber = ko.observable(1);
-        this.totalPages = ko.observable();
-        this.lastPage = ko.observable(false);
-        this.firstPage = ko.observable(true);
-        this.showPagination = ko.observable(false);
-        this.pages = ko.observableArray([]);
-        this.productos = ko.observableArray();
-        this.proxy = new ProxyRest("/api/Productos/Get/Report");
-        this.getAll();
+var ProxyRest = __webpack_require__(3);
+var UrlUtils = __webpack_require__(135);
+var ProductoReportModel = /** @class */ (function () {
+    function ProductoReportModel() {
+        this.proxy = new ProxyRest("/api/Productos/Get/One/Producto/Report/");
+        this.productoId = UrlUtils.getParameterByName("id", window.location);
+        this.nombre = ko.observable();
+        this.folio = ko.observable();
+        this.color = ko.observable();
+        this.cantidad = ko.observable();
+        this.unidad = ko.observable();
+        this.proveedor = ko.observable();
+        this.getOne();
     }
-    ProductosReportModel.prototype.getAll = function () {
+    ProductoReportModel.prototype.getOne = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var self, response, productosjson, i, pageNumber, isSelected, page, _i, _a, productojson;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var self, response, productojson;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         self = this;
-                        return [4 /*yield*/, self.proxy.get("", self.pageNumber(), self.pageSize)];
+                        return [4 /*yield*/, self.proxy.get(self.productoId)];
                     case 1:
-                        response = _b.sent();
-                        productosjson = JSON.parse((JSON.parse(JSON.stringify(response))));
-                        self.totalPages(productosjson.totalPages);
-                        if (self.totalPages() > 1) {
-                            self.showPagination(true);
-                        }
-                        self.pages.removeAll();
-                        for (i = 0; i < self.totalPages(); i++) {
-                            pageNumber = i + 1;
-                            isSelected = self.pageNumber() === pageNumber;
-                            page = new Page(isSelected, pageNumber);
-                            self.pages.push(page);
-                        }
-                        self.productos.removeAll();
-                        for (_i = 0, _a = productosjson.productos; _i < _a.length; _i++) {
-                            productojson = _a[_i];
-                            self.productos.push(self.getModel(productojson));
-                        }
+                        response = _a.sent();
+                        productojson = JSON.parse((JSON.parse(JSON.stringify(response))));
+                        self.nombre(productojson.nombre);
+                        self.folio(productojson.folio);
+                        self.color(productojson.color);
+                        self.cantidad(productojson.cantidad);
+                        self.unidad(productojson.unidad);
+                        self.proveedor(productojson.proveedor);
                         return [2 /*return*/];
                 }
             });
         });
     };
-    ProductosReportModel.prototype.getModel = function (producto) {
-        return {
-            id: producto.id,
-            nombre: producto.nombre,
-            folio: producto.folio,
-            color: producto.color,
-            cantidad: producto.cantidad,
-            unidad: producto.unidad,
-            proveedor: producto.proveedor
-        };
-    };
-    ProductosReportModel.prototype.selectedPage = function (page) {
-        var self = this;
-        self.pageNumber(page.pageNumber());
-        page.pageNumber() === self.totalPages() ? self.lastPage(true) : self.lastPage(false);
-        ;
-        page.pageNumber() === 1 ? self.firstPage(true) : self.firstPage(false);
-        self.getAll();
-    };
-    ProductosReportModel.prototype.next = function () {
-        var self = this;
-        var arrPosition = self.pageNumber() - 1;
-        var lastPage = self.pages()[arrPosition];
-        lastPage.isSelected(false);
-        var nextPage = self.pages()[arrPosition + 1];
-        if (nextPage.pageNumber() <= self.totalPages()) {
-            nextPage.isSelected(true);
-            self.selectedPage(nextPage);
-        }
-    };
-    ProductosReportModel.prototype.previous = function () {
-        var self = this;
-        var arrPosition = self.pageNumber() - 1;
-        var currentPage = self.pages()[arrPosition];
-        currentPage.isSelected(false);
-        var previousPage = self.pages()[arrPosition - 1];
-        if (previousPage.pageNumber() > 0) {
-            previousPage.isSelected(true);
-            self.selectedPage(previousPage);
-        }
-    };
-    return ProductosReportModel;
+    return ProductoReportModel;
 }());
-module.exports = ProductosReportModel;
+module.exports = ProductoReportModel;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
