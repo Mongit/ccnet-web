@@ -1,6 +1,7 @@
 ﻿import ProxyRest = require("./../api/proxyRest");
 import iProductoReportModel = require("./IProductoReportModel");
 import UrlUtils = require("./../utils/UrlUtils");
+import QRCode = require("davidshimjs-qrcodejs");
 
 class ProductoReportModel {
     public proxy: ProxyRest;
@@ -38,6 +39,20 @@ class ProductoReportModel {
         self.cantidad(productojson.cantidad);
         self.unidad(productojson.unidad);
         self.proveedor(productojson.proveedor);
+
+        let qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: self.nombre(),
+            width: 128,
+            height: 128,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+        qrcode.clear(); 
+        let code = "Folio: " + self.folio() + "\nNombre: " + self.nombre() + " " + self.color()
+            + "\nCantidad: " + self.cantidad() + " " +  self.unidad() + "\nProvedor: " + self.proveedor()
+            + "\nPagina: https://ccnet-web.azurewebsites.net/Productos/Producto?id=" + self.productoId;
+        qrcode.makeCode(code);
     }
 }
 

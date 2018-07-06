@@ -36,15 +36,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var ProxyRest = require("./../api/proxyRest");
 var UrlUtils = require("./../utils/UrlUtils");
+var QRCode = require("davidshimjs-qrcodejs");
 var ProductoReportModel = /** @class */ (function () {
     function ProductoReportModel() {
         this.proxy = new ProxyRest("/api/Productos/Get/One/Producto/Report/");
         this.productoId = UrlUtils.getParameterByName("id", window.location);
+        this.nombre = ko.observable();
+        this.folio = ko.observable();
+        this.color = ko.observable();
+        this.cantidad = ko.observable();
+        this.unidad = ko.observable();
+        this.proveedor = ko.observable();
         this.getOne();
     }
     ProductoReportModel.prototype.getOne = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var self, response, productojson;
+            var self, response, productojson, qrcode, code;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -59,6 +66,19 @@ var ProductoReportModel = /** @class */ (function () {
                         self.cantidad(productojson.cantidad);
                         self.unidad(productojson.unidad);
                         self.proveedor(productojson.proveedor);
+                        qrcode = new QRCode(document.getElementById("qrcode"), {
+                            text: self.nombre(),
+                            width: 128,
+                            height: 128,
+                            colorDark: "#000000",
+                            colorLight: "#ffffff",
+                            correctLevel: QRCode.CorrectLevel.H
+                        });
+                        qrcode.clear();
+                        code = "Folio: " + self.folio() + "\nNombre: " + self.nombre() + " " + self.color()
+                            + "\nCantidad: " + self.cantidad() + " " + self.unidad() + "\nProvedor: " + self.proveedor()
+                            + "\nPagina: https://ccnet-web.azurewebsites.net/Productos/Producto?id=" + self.productoId;
+                        qrcode.makeCode(code);
                         return [2 /*return*/];
                 }
             });
