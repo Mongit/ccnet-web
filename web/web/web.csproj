@@ -10,12 +10,14 @@
     <None Remove="scripts\productos\appProducto.ts" />
     <None Remove="scripts\productos\appProductoReport.ts" />
     <None Remove="scripts\productos\appProductos.ts" />
+    <None Remove="scripts\productos\appProductosQR.ts" />
     <None Remove="scripts\productos\appProductosReport.ts" />
     <None Remove="scripts\productos\IProductoModel.ts" />
     <None Remove="scripts\productos\IProductoReportModel.ts" />
     <None Remove="scripts\productos\ProductoModel.ts" />
     <None Remove="scripts\productos\ProductoReportModel.ts" />
     <None Remove="scripts\productos\ProductosModel.ts" />
+    <None Remove="scripts\productos\ProductosQRModel.ts" />
     <None Remove="scripts\productos\ProductosReportModel.ts" />
     <None Remove="scripts\proveedores\appCuenta.ts" />
     <None Remove="scripts\proveedores\appCuentas.ts" />
@@ -59,10 +61,12 @@
     <TypeScriptCompile Include="scripts\productos\appProducto.ts" />
     <TypeScriptCompile Include="scripts\productos\appProductoReport.ts" />
     <TypeScriptCompile Include="scripts\productos\appProductos.ts" />
+    <TypeScriptCompile Include="scripts\productos\appProductosQR.ts" />
     <TypeScriptCompile Include="scripts\productos\appProductosReport.ts" />
     <TypeScriptCompile Include="scripts\productos\IProductoModel.ts" />
     <TypeScriptCompile Include="scripts\productos\IProductoReportModel.ts" />
     <TypeScriptCompile Include="scripts\productos\ProductoReportModel.ts" />
+    <TypeScriptCompile Include="scripts\productos\ProductosQRModel.ts" />
     <TypeScriptCompile Include="scripts\productos\ProductosReportModel.ts" />
     <TypeScriptCompile Include="scripts\productos\ProductoModel.ts" />
     <TypeScriptCompile Include="scripts\productos\ProductosModel.ts" />

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 196);
+/******/ 	return __webpack_require__(__webpack_require__.s = 197);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -4609,7 +4609,7 @@ return hooks;
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(5).Promise;
+module.exports = __webpack_require__(4).Promise;
 
 
 /***/ }),
@@ -4759,98 +4759,6 @@ module.exports = ProxyRest;
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* WEBPACK VAR INJECTION */(function(Promise) {
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-var PromiseUtils = __webpack_require__(13);
-var FieldBase = /** @class */ (function () {
-    function FieldBase(validators, useStrictForComparations, value) {
-        this.validators = validators;
-        this.initialValue = value;
-        this.useStrictForComparations = useStrictForComparations;
-        this.errors = ko.observableArray([]);
-        var self = this;
-        this.hasChanged = ko.pureComputed(function () {
-            return self.getHasChanged();
-        }, self);
-        this.hasError = ko.pureComputed(function () {
-            return self.errors().length > 0;
-        }, self);
-    }
-    FieldBase.prototype.validate = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var self, isValid, _i, _a, validator, result;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        self = this;
-                        self.errors.removeAll();
-                        isValid = true;
-                        _i = 0, _a = self.validators;
-                        _b.label = 1;
-                    case 1:
-                        if (!(_i < _a.length)) return [3 /*break*/, 4];
-                        validator = _a[_i];
-                        return [4 /*yield*/, validator.check(self.value())];
-                    case 2:
-                        result = _b.sent();
-                        if (result.isValid === false) {
-                            self.errors.push(result.message);
-                            isValid = false;
-                        }
-                        _b.label = 3;
-                    case 3:
-                        _i++;
-                        return [3 /*break*/, 1];
-                    case 4: return [2 /*return*/, PromiseUtils.toPromise(isValid)];
-                }
-            });
-        });
-    };
-    return FieldBase;
-}());
-module.exports = FieldBase;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
 /* WEBPACK VAR INJECTION */(function(process, global) {var require;/*!
  * @overview es6-promise - a tiny implementation of Promises/A+.
  * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
@@ -4983,7 +4891,7 @@ function flush() {
 function attemptVertx() {
   try {
     var r = require;
-    var vertx = __webpack_require__(8);
+    var vertx = __webpack_require__(7);
     vertxNext = vertx.runOnLoop || vertx.runOnContext;
     return useVertxTimer();
   } catch (e) {
@@ -6005,10 +5913,10 @@ return Promise;
 
 })));
 //# sourceMappingURL=es6-promise.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(6)))
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -6198,7 +6106,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports) {
 
 var g;
@@ -6225,10 +6133,102 @@ module.exports = g;
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Promise) {
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var PromiseUtils = __webpack_require__(13);
+var FieldBase = /** @class */ (function () {
+    function FieldBase(validators, useStrictForComparations, value) {
+        this.validators = validators;
+        this.initialValue = value;
+        this.useStrictForComparations = useStrictForComparations;
+        this.errors = ko.observableArray([]);
+        var self = this;
+        this.hasChanged = ko.pureComputed(function () {
+            return self.getHasChanged();
+        }, self);
+        this.hasError = ko.pureComputed(function () {
+            return self.errors().length > 0;
+        }, self);
+    }
+    FieldBase.prototype.validate = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var self, isValid, _i, _a, validator, result;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        self = this;
+                        self.errors.removeAll();
+                        isValid = true;
+                        _i = 0, _a = self.validators;
+                        _b.label = 1;
+                    case 1:
+                        if (!(_i < _a.length)) return [3 /*break*/, 4];
+                        validator = _a[_i];
+                        return [4 /*yield*/, validator.check(self.value())];
+                    case 2:
+                        result = _b.sent();
+                        if (result.isValid === false) {
+                            self.errors.push(result.message);
+                            isValid = false;
+                        }
+                        _b.label = 3;
+                    case 3:
+                        _i++;
+                        return [3 /*break*/, 1];
+                    case 4: return [2 /*return*/, PromiseUtils.toPromise(isValid)];
+                }
+            });
+        });
+    };
+    return FieldBase;
+}());
+module.exports = FieldBase;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 9 */
@@ -18149,7 +18149,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var Field = __webpack_require__(137);
-var FieldBase = __webpack_require__(4);
+var FieldBase = __webpack_require__(8);
 var FieldArray = __webpack_require__(140);
 var ValidatableValidator = __webpack_require__(136);
 var KoForm = /** @class */ (function (_super) {
@@ -18333,7 +18333,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var equal = __webpack_require__(12);
-var FieldBase = __webpack_require__(4);
+var FieldBase = __webpack_require__(8);
 var Field = /** @class */ (function (_super) {
     __extends(Field, _super);
     function Field(validators, useStrictForComparations, value) {
@@ -18418,7 +18418,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var equal = __webpack_require__(12);
-var FieldBase = __webpack_require__(4);
+var FieldBase = __webpack_require__(8);
 var FieldArray = /** @class */ (function (_super) {
     __extends(FieldArray, _super);
     function FieldArray(validators, useStrictForComparations, value) {
@@ -19032,14 +19032,15 @@ module.exports = ReciboItemModel;
 /* 193 */,
 /* 194 */,
 /* 195 */,
-/* 196 */
+/* 196 */,
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(197);
+module.exports = __webpack_require__(198);
 
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19081,7 +19082,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var KoBinder = __webpack_require__(2);
-var ReciboVerModel = __webpack_require__(198);
+var ReciboVerModel = __webpack_require__(199);
 $(function () {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
@@ -19094,7 +19095,7 @@ $(function () {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

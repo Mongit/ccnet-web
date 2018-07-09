@@ -59,6 +59,9 @@ module.exports = {
         ],
         productoReportApp: [
             './scripts/productos/appProductoReport.ts'
+        ],
+        productosQRApp: [
+            './scripts/productos/appProductosQR'
         ]
     },
     module: {

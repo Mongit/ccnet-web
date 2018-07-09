@@ -1,0 +1,52 @@
+﻿@page
+@model web.Pages.Productos.ProductosQRModel
+@{
+    ViewData["Title"] = "ProductosQR";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+@section Scripts {
+    <script src="~/dist/productosQRApp.bundle.js" type="text/javascript"></script>
+}
+<h2>Buscar productos por QR</h2>
+
+<div class="mt-5">
+    <label><strong>Ingresar el rango de folios a buscar:</strong></label>
+</div>
+
+<div id="productosQRModel" class="mt-2">
+    <form class="form-inline">
+        <label class="sr-only">Desde</label>
+        <div class="input-group mb-2 mr-sm-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Desde</div>
+            </div>
+            <input type="text" class="form-control" placeholder="Folio" data-bind="value: desde">
+        </div>
+
+        <label class="sr-only">Hasta</label>
+        <div class="input-group mb-2 mr-sm-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Hasta</div>
+            </div>
+            <input type="text" class="form-control" placeholder="Folio" data-bind="value: hasta">
+        </div>
+
+        <button type="submit" class="btn btn-primary mb-2" data-bind="click: getAll">Buscar</button>
+    </form>
+    
+    <!-- ko foreach: productos-->
+    <div data-bind='template: { name: "qrTemplate",
+                            data: $data,
+                            afterRender: $parent.getQR }'></div>
+    <!-- /ko -->
+
+    <div class="text-right mt-3">
+        <button class="btn btn-primary" data-bind="click: print">Imprimir</button>
+    </div>
+
+</div>
+
+<script id="qrTemplate" type="text/html">
+    <div data-bind="attr: { id: folio }"></div>
+    <span data-bind="text: folio"></span>
+</script>
