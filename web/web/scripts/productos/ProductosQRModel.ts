@@ -9,6 +9,7 @@ class ProductosQRModel {
 
     public desde: KnockoutObservable<number>;
     public hasta: KnockoutObservable<number>;
+    public isPrinting: KnockoutObservable<boolean>;
     
     constructor() {
         this.proxy = new ProxyRest("/api/Productos/Get/Productos/Range");
@@ -17,6 +18,7 @@ class ProductosQRModel {
 
         this.desde = ko.observable<number>();
         this.hasta = ko.observable<number>();
+        this.isPrinting = ko.observable<boolean>(false);
     }
 
     public async getAll(): Promise<void> {
@@ -57,7 +59,20 @@ class ProductosQRModel {
     
     public print(): void {
         const self = this;
-        
+        self.isPrinting(true);
+        let data = $("#printableArea").html();
+        let myWindow = window.open('', 'ConfeccionesColombia', 'height=600,width=800,scrollbars=yes');
+        myWindow.document.write('<!DOCTYPE html>');
+        myWindow.document.write('<html><head>');
+        myWindow.document.write('<head>');
+        myWindow.document.write('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
+        myWindow.document.write('<title>Confecciones Colombia</title>');
+        myWindow.document.write('<link href="/css/bootstrap.print.min.css" rel="stylesheet" type="text/css"/>');
+        myWindow.document.write('</head><body>');
+        myWindow.document.write(data);
+        myWindow.document.write('</body></html>');
+        myWindow.document.close();
+        myWindow.print();
     }
 }
 

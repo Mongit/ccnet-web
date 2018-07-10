@@ -908,6 +908,7 @@ var ProductosQRModel = /** @class */ (function () {
         this.productos = ko.observableArray();
         this.desde = ko.observable();
         this.hasta = ko.observable();
+        this.isPrinting = ko.observable(false);
     }
     ProductosQRModel.prototype.getAll = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -956,6 +957,20 @@ var ProductosQRModel = /** @class */ (function () {
     };
     ProductosQRModel.prototype.print = function () {
         var self = this;
+        self.isPrinting(true);
+        var data = $("#printableArea").html();
+        var myWindow = window.open('', 'ConfeccionesColombia', 'height=600,width=800,scrollbars=yes');
+        myWindow.document.write('<!DOCTYPE html>');
+        myWindow.document.write('<html><head>');
+        myWindow.document.write('<head>');
+        myWindow.document.write('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
+        myWindow.document.write('<title>Confecciones Colombia</title>');
+        myWindow.document.write('<link href="/css/bootstrap.print.min.css" rel="stylesheet" type="text/css"/>');
+        myWindow.document.write('</head><body>');
+        myWindow.document.write(data);
+        myWindow.document.write('</body></html>');
+        myWindow.document.close();
+        myWindow.print();
     };
     return ProductosQRModel;
 }());
