@@ -1,42 +1,61 @@
 ﻿import ProxyRest = require("./../api/proxyRest");
 import IProductoReportModel = require("./IProductoReportModel");
 import QRCode = require("davidshimjs-qrcodejs");
+import KoForm = require("./../form/KoForm");
+import IField = require("./../field/iField");
+import * as numberValidators from './../validators/numberValidators';
 
-class ProductosQRModel {
+class ProductosQRModel extends KoForm{
     public proxy: ProxyRest;
 
     public productos: KnockoutObservableArray<IProductoReportModel>;
 
-    public desde: KnockoutObservable<number>;
-    public hasta: KnockoutObservable<number>;
     public isPrinting: KnockoutObservable<boolean>;
-    
+
+    public desde: IField<number>;
+    public hasta: IField<number>;
+
     constructor() {
+        super();
+        const self = this;
+
         this.proxy = new ProxyRest("/api/Productos/Get/Productos/Range");
 
         this.productos = ko.observableArray<IProductoReportModel>();
 
-        this.desde = ko.observable<number>();
-        this.hasta = ko.observable<number>();
         this.isPrinting = ko.observable<boolean>(false);
+
+        this.desde = self.addField<number>([new numberValidators.RequiredNumberValidator(), new numberValidators.FloatValidator()]);
+        this.hasta = self.addField<number>([new numberValidators.RequiredNumberValidator(), new numberValidators.FloatValidator()]);
+        
     }
 
     public async getAll(): Promise<void> {
         const self = this;
-        let response = await self.proxy.get("", self.desde(), self.hasta());
-        let productosjson = JSON.parse((JSON.parse(JSON.stringify(response))));
-        
-        self.productos.removeAll();
-        for (let productojson of productosjson) {
-            self.productos.push({
-                id: productojson.id,
-                nombre: productojson.nombre,
-                folio: productojson.folio,
-                color: productojson.color,
-                cantidad: productojson.cantidad,
-                unidad: productojson.unidad,
-                proveedor: productojson.proveedor
-            });
+        if (self.desde.validate() && self.hasta.validate()) {
+            let response = await self.proxy.get("", self.desde.value(), self.hasta.value());
+            let productosjson = JSON.parse((JSON.parse(JSON.stringify(response))));
+            self.productos.removeAll();
+
+            if (typeof productosjson !== 'undefined' && productosjson.length > 0) {
+                for (let productojson of productosjson) {
+                    self.productos.push({
+                        id: productojson.id,
+                        nombre: productojson.nombre,
+                        folio: productojson.folio,
+                        color: productojson.color,
+                        cantidad: productojson.cantidad,
+                        unidad: productojson.unidad,
+                        proveedor: productojson.proveedor
+                    });
+                }
+            }
+            else {
+                alert("Error: El rango de folios ingresado no existe.")
+            }
+        }
+        else {
+            alert("Lo sentimos, hubo un error con los datos.")
         }
     }
 

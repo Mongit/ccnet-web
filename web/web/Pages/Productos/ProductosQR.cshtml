@@ -7,6 +7,7 @@
 @section Scripts {
     <script src="~/dist/productosQRApp.bundle.js" type="text/javascript"></script>
 }
+@Html.Partial("_KoGlobalTemplates")
 
 <h2>Ingresar rango de folios:</h2>
 
@@ -17,7 +18,9 @@
             <div class="input-group-prepend">
                 <div class="input-group-text">Desde</div>
             </div>
-            <input type="text" class="form-control" placeholder="Folio" data-bind="value: desde" />
+            <input type="text" class="form-control" placeholder="Folio" data-bind="value: desde.value, css: { 'is-invalid': desde.hasError() }, hasFocus: true" />
+            <!-- ko  template: { name: "Validation", data: desde } -->
+            <!-- /ko -->
         </div>
 
         <label class="sr-only">Hasta</label>
@@ -25,7 +28,9 @@
             <div class="input-group-prepend">
                 <div class="input-group-text">Hasta</div>
             </div>
-            <input type="text" class="form-control" placeholder="Folio" data-bind="value: hasta" />
+            <input type="text" class="form-control" placeholder="Folio" data-bind="value: hasta.value, css: { 'is-invalid': hasta.hasError() }" />
+            <!-- ko  template: { name: "Validation", data: hasta } -->
+            <!-- /ko -->
         </div>
 
         <button class="btn btn-primary mb-2 mr-2" data-bind="click: getAll">Buscar</button>
