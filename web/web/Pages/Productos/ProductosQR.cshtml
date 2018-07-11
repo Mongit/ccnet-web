@@ -39,19 +39,25 @@
     </form>
 
     <div id="printableArea" class="mt-5">
-        <div class="row">
-            <!-- ko foreach: productos-->
-            <div data-bind="template: { name: 'qrTemplate',
+       
+        <div>
+            <!-- ko foreach: productos -->
+            <div style="border: 2px dashed black; margin: 3px; padding: 3px; display:inline-grid">
+                <div data-bind="template: { name: 'qrTemplate',
                         data: $data,
-                        afterRender: $parent.getQR },
-                        css: { 'col-sm-3': true, 'col-sm-2': $parent.isPrinting } "></div>
+                        afterRender: $root.getQR },
+                        "></div>
+            </div>
             <!-- /ko -->
         </div>
+       
     </div>
 
 </div>
 
 <script id="qrTemplate" type="text/html">
     <div data-bind="attr: { id: folio }"></div>
-    <span data-bind="text: 'Folio: ' + folio"></span>
+    
+    Folio: <span style="display:inline" data-bind="text: folio"></span>
+   
 </script>

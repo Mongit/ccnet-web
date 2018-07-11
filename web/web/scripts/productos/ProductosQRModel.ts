@@ -9,7 +9,7 @@ class ProductosQRModel extends KoForm{
     public proxy: ProxyRest;
 
     public productos: KnockoutObservableArray<IProductoReportModel>;
-
+   
     public isPrinting: KnockoutObservable<boolean>;
 
     public desde: IField<number>;
@@ -27,7 +27,7 @@ class ProductosQRModel extends KoForm{
 
         this.desde = self.addField<number>([new numberValidators.RequiredNumberValidator(), new numberValidators.FloatValidator()]);
         this.hasta = self.addField<number>([new numberValidators.RequiredNumberValidator(), new numberValidators.FloatValidator()]);
-        
+
     }
 
     public async getAll(): Promise<void> {
@@ -63,15 +63,14 @@ class ProductosQRModel extends KoForm{
         const self = this;
         let qrCode = new QRCode(document.getElementById(producto.folio.toString()), {
             text: "Producto",
-            width: 200,
-            height: 200,
+            width: 100,
+            height: 100,
             colorDark: "#000000",
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.H
         });
-        let code = "Folio: " + producto.folio + "\nNombre: " + producto.nombre + " " + producto.color
-            + "\nCantidad: " + producto.cantidad + " " + producto.unidad + "\nProvedor: " + producto.proveedor
-            + "\nPagina: https://ccnet-web.azurewebsites.net/Productos/Producto?id=" + producto.id;
+        let code = "[" + producto.folio + "] " + producto.nombre + " \n" + producto.color
+            + "\n\nhttps://ccnet-web.azurewebsites.net/Productos/Producto?id=" + producto.id;
         qrCode.clear();
         return qrCode.makeCode(code);
     }
@@ -86,7 +85,6 @@ class ProductosQRModel extends KoForm{
         myWindow.document.write('<head>');
         myWindow.document.write('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
         myWindow.document.write('<title>Confecciones Colombia</title>');
-        myWindow.document.write('<link href="/css/bootstrap.print.min.css" rel="stylesheet" type="text/css"/>');
         myWindow.document.write('</head><body>');
         myWindow.document.write(data);
         myWindow.document.write('</body></html>');

@@ -103,15 +103,14 @@ var ProductosQRModel = /** @class */ (function (_super) {
         var self = this;
         var qrCode = new QRCode(document.getElementById(producto.folio.toString()), {
             text: "Producto",
-            width: 200,
-            height: 200,
+            width: 100,
+            height: 100,
             colorDark: "#000000",
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.H
         });
-        var code = "Folio: " + producto.folio + "\nNombre: " + producto.nombre + " " + producto.color
-            + "\nCantidad: " + producto.cantidad + " " + producto.unidad + "\nProvedor: " + producto.proveedor
-            + "\nPagina: https://ccnet-web.azurewebsites.net/Productos/Producto?id=" + producto.id;
+        var code = "[" + producto.folio + "] " + producto.nombre + " \n" + producto.color
+            + "\n\nhttps://ccnet-web.azurewebsites.net/Productos/Producto?id=" + producto.id;
         qrCode.clear();
         return qrCode.makeCode(code);
     };
@@ -125,7 +124,6 @@ var ProductosQRModel = /** @class */ (function (_super) {
         myWindow.document.write('<head>');
         myWindow.document.write('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
         myWindow.document.write('<title>Confecciones Colombia</title>');
-        myWindow.document.write('<link href="/css/bootstrap.print.min.css" rel="stylesheet" type="text/css"/>');
         myWindow.document.write('</head><body>');
         myWindow.document.write(data);
         myWindow.document.write('</body></html>');
